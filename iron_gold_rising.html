@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Iron Gold Rising">
+<meta name="theme-color" content="#080c08">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23080c08' width='180' height='180' rx='40'/><text x='90' y='122' font-size='90' fill='%23c9a227' text-anchor='middle' font-weight='bold' font-family='Georgia'>⚔</text></svg>">
+<title>Iron Gold Rising — Training Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Barlow+Condensed:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* iOS-specific optimizations */
+  html { -webkit-text-size-adjust: 100%; height: -webkit-fill-available; }
+  * { -webkit-tap-highlight-color: transparent; }
+  input, textarea, select, button { -webkit-appearance: none; appearance: none; }
+  input, textarea { font-size: 16px !important; } /* prevents iOS zoom on focus */
+  body { -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+  button, .nav-btn, .day-tab, .sub-btn, .done-btn, .supp-add-btn, .mg-head, .hist-head { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+
+  :root {
+    --bg: #080c08;
+    --surface: #0e140e;
+    --surface2: #141c14;
+    --surface3: #1a241a;
+    --border: #1e2a1e;
+    --border2: #2a3a2a;
+    --text: #e8ede0;
+    --muted: #7a8c6e;
+    --dim: #4a5a42;
+    --gold: #c9a227;
+    --gold2: #e8c547;
+    --gold-dim: #7a5f10;
+    --green: #3a6b2a;
+    --green2: #4d8a3a;
+    --green-bright: #6aaa50;
+    --str: #5aa0e0;
+    --hype: #6aaa50;
+    --iso: #c9a227;
+    --warm: #a78bfa;
+    --pull: #e87070;
+    --core: #e8a070;
+    --danger: #d05a5a;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
+  /* PARTICLES */
+  #particle-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* KINTSUGI */
+  .kintsugi-layer {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.16;
+  }
+
+  /* VINES */
+  .vine-layer {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.25;
+  }
+  .vine-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: grow-vine 3s ease-out forwards;
+  }
+  .vine-leaf {
+    opacity: 0;
+    animation: leaf-appear 0.6s ease-out forwards;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes grow-vine { to { stroke-dashoffset: 0; } }
+  @keyframes leaf-appear { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+
+  .main-wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+
+  /* QUOTES WIDGET */
+  .quotes-widget {
+    background:
+      radial-gradient(120% 100% at 50% 0%, rgba(201,162,39,0.07), transparent 60%),
+      linear-gradient(135deg, #0e160a 0%, #0c1308 55%, #100a06 100%);
+    border-bottom: 1px solid var(--border2);
+    padding: calc(20px + env(safe-area-inset-top)) 52px 22px;
+    position: relative;
+    overflow: hidden;
+    min-height: 204px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .quotes-widget::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .quotes-widget::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+  /* faint corner flourishes */
+  .qw-flourish { position: absolute; width: 26px; height: 26px; opacity: 0.4; pointer-events: none; }
+  .qw-flourish.tl { top: 10px; left: 12px; }
+  .qw-flourish.tr { top: 10px; right: 12px; transform: scaleX(-1); }
+  .qw-flourish.bl { bottom: 10px; left: 12px; transform: scaleY(-1); }
+  .qw-flourish.br { bottom: 10px; right: 12px; transform: scale(-1,-1); }
+
+  .quote-label {
+    font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--gold); margin-bottom: 12px; opacity: 0.75;
+  }
+
+  /* PORTRAIT MEDALLION */
+  .quote-portrait { width: 66px; height: 66px; margin-bottom: 12px; position: relative; }
+  .quote-portrait svg { width: 100%; height: 100%; display: block; }
+  .quote-portrait.animate-in { animation: portrait-in 0.8s cubic-bezier(0.2,0.7,0.3,1); }
+  @keyframes portrait-in {
+    0% { opacity: 0; transform: scale(0.6) rotate(-8deg); filter: blur(3px); }
+    60% { opacity: 1; }
+    100% { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
+  }
+  .qp-ring { transform-origin: center; animation: ring-draw 0.9s ease-out; }
+  @keyframes ring-draw { from { stroke-dashoffset: 220; } to { stroke-dashoffset: 0; } }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-style: italic; color: var(--text);
+    line-height: 1.45; margin-bottom: 10px; max-width: 460px;
+    text-wrap: balance;
+  }
+  .quote-text .qmark { color: var(--gold); opacity: 0.5; font-size: 24px; font-weight: 600; }
+  .quote-author {
+    font-size: 11px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 3px;
+  }
+  .quote-author::before, .quote-author::after {
+    content: ''; display: inline-block; width: 16px; height: 1px;
+    background: var(--gold-dim); vertical-align: middle; margin: 0 8px;
+  }
+  .quote-book {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic; color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .quote-text.animate-in { animation: quote-in 0.7s cubic-bezier(0.2,0.7,0.3,1); }
+  .quote-author.animate-in { animation: quote-in 0.7s cubic-bezier(0.2,0.7,0.3,1) 0.12s both; }
+  .quote-book.animate-in { animation: quote-in 0.7s cubic-bezier(0.2,0.7,0.3,1) 0.2s both; }
+  @keyframes quote-in {
+    from { opacity: 0; transform: translateY(8px); letter-spacing: 0.1em; filter: blur(2px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  /* NAV ARROWS */
+  .q-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--border2); background: rgba(20,28,20,0.6);
+    color: var(--gold); cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; backdrop-filter: blur(4px); z-index: 3;
+  }
+  .q-arrow:hover { background: rgba(201,162,39,0.12); border-color: var(--gold-dim); transform: translateY(-50%) scale(1.08); }
+  .q-arrow:active { transform: translateY(-50%) scale(0.94); }
+  .q-arrow.left { left: 10px; }
+  .q-arrow.right { right: 10px; }
+  .q-arrow svg { width: 16px; height: 16px; }
+
+  /* HEADER */
+  .header {
+    padding: 18px 20px 14px; border-bottom: 1px solid var(--border2);
+    background: linear-gradient(180deg, #0c140a 0%, var(--bg) 100%);
+  }
+  .header-title {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    background: linear-gradient(135deg, var(--gold2), var(--gold), #a07820);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .header-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* MAIN NAV */
+  .main-nav { display: flex; border-bottom: 1px solid var(--border2); background: var(--surface); overflow-x: auto; }
+  .nav-btn {
+    flex: 1; min-width: 72px; padding: 11px 6px; text-align: center; cursor: pointer;
+    font-size: 11px; font-weight: 600; color: var(--muted); border-right: 1px solid var(--border2);
+    text-transform: uppercase; letter-spacing: 0.04em; transition: all 0.12s; white-space: nowrap;
+  }
+  .nav-btn:last-child { border-right: none; }
+  .nav-btn:hover { background: var(--surface2); }
+  .nav-btn.active { background: var(--surface2); color: var(--gold); }
+  .nav-btn.active { box-shadow: inset 0 -2px 0 var(--gold); }
+
+  /* NUTRITION */
+  .nutrition-bar { display: flex; border-bottom: 1px solid var(--border2); background: var(--surface); }
+  .nut-item { flex: 1; padding: 10px 14px; border-right: 1px solid var(--border2); }
+  .nut-item:last-child { border-right: none; }
+  .nut-label { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+  .nut-val {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700;
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .nut-unit { font-size: 10px; color: var(--muted); margin-left: 2px; }
+
+  /* DAY TABS */
+  .day-tabs { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--border2); background: var(--surface); }
+  .day-tab { padding: 11px 4px 9px; text-align: center; cursor: pointer; border-right: 1px solid var(--border2); transition: background 0.12s; position: relative; }
+  .day-tab:last-child { border-right: none; }
+  .day-tab:hover { background: var(--surface2); }
+  .day-tab.active { background: var(--surface2); }
+  .day-tab.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .tab-sub { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .tab-label { font-size: 11px; font-weight: 600; color: var(--muted); }
+  .day-tab.active .tab-label { color: var(--gold); }
+  .day-tab.rest .tab-label { color: var(--dim); }
+  .completion-dot { position: absolute; top: 5px; right: 50%; transform: translateX(50%); width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 4px var(--gold); opacity: 0; transition: opacity 0.3s; }
+  .completion-dot.show { opacity: 1; }
+
+  /* CONTENT */
+  .content { padding: 14px 16px; }
+  .day-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 12px; color: var(--green-bright); }
+
+  .section { margin-bottom: 12px; }
+  .section-label { display: inline-flex; align-items: center; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 2px; margin-bottom: 7px; }
+  .label-str { background: #0a1a2e; color: var(--str); border: 1px solid #0d2a4a; }
+  .label-hype { background: #0a1a0a; color: var(--hype); border: 1px solid #1a3a10; }
+  .label-iso { background: #1a1200; color: var(--iso); border: 1px solid #2a1e00; }
+  .label-warm { background: #130e20; color: var(--warm); border: 1px solid #1e1535; }
+  .label-pull { background: #1e0a0a; color: var(--pull); border: 1px solid #2e1010; }
+  .label-core { background: #1e0e00; color: var(--core); border: 1px solid #2e1800; }
+
+  .ex-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; position: relative; margin-bottom: 8px; }
+  .ex-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: linear-gradient(180deg, var(--green), transparent); }
+  .ex-head { padding: 9px 12px 9px 14px; }
+  .ex-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .ex-name { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .ex-tip { font-size: 11px; color: var(--dim); margin-top: 3px; line-height: 1.4; }
+  .ex-target { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; color: var(--gold); white-space: nowrap; padding-top: 1px; letter-spacing: 0.02em; }
+  .last-ref { font-size: 10px; color: var(--green2); margin-top: 4px; }
+
+  /* SET TRACKER */
+  .sets-wrap { padding: 0 12px 10px 14px; }
+  .set-head { display: grid; grid-template-columns: 28px 1fr 1fr 38px; gap: 7px; padding: 4px 0; }
+  .set-head span { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 38px; gap: 7px; align-items: center; margin-bottom: 6px; }
+  .set-num { font-size: 11px; color: var(--dim); text-align: center; }
+  .set-row input { padding: 6px 6px; font-size: 13px; border-radius: 3px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); width: 100%; text-align: center; font-family: 'Inter', sans-serif; }
+  .set-row input:focus { outline: none; border-color: var(--gold-dim); }
+  .done-btn { width: 32px; height: 30px; border-radius: 3px; border: 1px solid var(--border2); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+  .done-btn.done { background: #0d2410; border-color: var(--green); }
+  .done-btn svg { width: 14px; height: 14px; }
+
+  .notes-field { width: 100%; margin-top: 8px; padding: 8px 10px; font-size: 12px; border-radius: 3px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-family: 'Inter', sans-serif; resize: vertical; min-height: 38px; }
+  .notes-field:focus { outline: none; border-color: var(--gold-dim); }
+  .notes-label { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; margin: 12px 0 5px; }
+
+  /* COACH NOTE */
+  .coach-note { margin-top: 14px; padding: 11px 13px; background: var(--surface); border-left: 2px solid var(--green); position: relative; }
+  .coach-note::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--green), transparent); }
+  .coach-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-bright); margin-bottom: 5px; }
+  .coach-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* REST SCREEN */
+  .rest-screen { padding: 28px 16px; text-align: center; }
+  .rest-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; letter-spacing: 0.05em; }
+  .rest-list { list-style: none; max-width: 360px; margin: 0 auto; }
+  .rest-list li { font-size: 13px; color: var(--dim); padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .rest-list li:last-child { border-bottom: none; }
+  .rest-list li::before { content: '—'; margin-right: 8px; color: var(--gold); }
+
+  /* RULES */
+  .rules { margin: 0 16px 20px; background: var(--surface); border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; position: relative; }
+  .rules::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--gold-dim), transparent); }
+  .rules-title { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); padding: 9px 12px 7px; border-bottom: 1px solid var(--border2); }
+  .rule-row { display: flex; justify-content: space-between; padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .rule-row:last-child { border-bottom: none; }
+  .rule-key { color: var(--muted); }
+  .rule-val { color: var(--text); font-weight: 500; }
+
+  /* REST TIMER OVERLAY */
+  .rest-timer { position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; background: linear-gradient(180deg, #0e160a, #0a120a); border-top: 1px solid var(--gold-dim); padding: 14px 20px calc(14px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2,0.7,0.3,1); max-width: 640px; margin: 0 auto; }
+  .rest-timer.show { transform: translateY(0); }
+  .rest-timer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .rt-label { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+  .rt-time { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 700; color: var(--text); line-height: 1; }
+  .rt-controls { display: flex; gap: 8px; }
+  .rt-btn { padding: 8px 14px; border-radius: 4px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-size: 12px; cursor: pointer; font-weight: 500; }
+  .rt-btn:hover { background: var(--surface3); }
+  .rt-btn.primary { border-color: var(--gold-dim); color: var(--gold); }
+  .rt-progress { position: absolute; top: 0; left: 0; height: 2px; background: var(--gold); transition: width 1s linear; }
+
+  /* TRACKER TABS (bodyweight/calorie/fasting/PR) */
+  .panel { padding: 16px; }
+  .panel-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; color: var(--green-bright); }
+  .panel-sub { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border2); border-radius: 5px; padding: 14px; margin-bottom: 14px; position: relative; overflow: hidden; }
+  .card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold); margin-bottom: 10px; }
+  .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .input-row input, .input-row select { flex: 1; padding: 9px 10px; font-size: 13px; border-radius: 4px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-family: 'Inter', sans-serif; }
+  .input-row input:focus, .input-row select:focus { outline: none; border-color: var(--gold-dim); }
+  .btn { padding: 9px 16px; border-radius: 4px; border: 1px solid var(--gold-dim); background: linear-gradient(135deg, #1a1400, #120e00); color: var(--gold); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+  .btn:hover { background: linear-gradient(135deg, #241c00, #1a1400); }
+  .btn:active { transform: scale(0.97); }
+  .btn-sm { padding: 6px 10px; font-size: 11px; }
+  .btn-danger { border-color: #3a1a1a; color: var(--danger); background: #160a0a; }
+
+  /* CHART */
+  .chart-wrap { width: 100%; height: 160px; margin-top: 8px; position: relative; }
+  svg.chart { width: 100%; height: 100%; overflow: visible; }
+  .chart-empty { font-size: 12px; color: var(--dim); text-align: center; padding: 40px 0; }
+
+  /* EXERCISE LIBRARY */
+  .muscle-group { margin-bottom: 10px; border: 1px solid var(--border2); border-radius: 5px; overflow: hidden; background: var(--surface); }
+  .mg-head { padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.12s; }
+  .mg-head:hover { background: var(--surface2); }
+  .mg-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .mg-count { font-size: 10px; color: var(--gold); }
+  .mg-chevron { color: var(--dim); transition: transform 0.2s; font-size: 11px; }
+  .mg-head.open .mg-chevron { transform: rotate(90deg); }
+  .mg-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .mg-body.open { max-height: 1200px; }
+  .lib-ex { padding: 9px 14px; border-top: 1px solid var(--border); }
+  .lib-ex-name { font-size: 12px; color: var(--text); font-weight: 500; display: flex; justify-content: space-between; }
+  .lib-ex-region { font-size: 10px; color: var(--green2); }
+  .lib-ex-note { font-size: 11px; color: var(--dim); margin-top: 3px; line-height: 1.4; }
+
+  /* trend stat */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .stat-box { background: var(--surface2); border-radius: 4px; padding: 10px 12px; }
+  .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+  .stat-lbl { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .trend-up { color: var(--green-bright); }
+  .trend-down { color: var(--danger); }
+
+  .log-list { margin-top: 10px; }
+  .log-item { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .log-item:last-child { border-bottom: none; }
+  .log-date { color: var(--muted); }
+  .log-val { color: var(--text); font-weight: 500; }
+
+  /* WORKOUT HISTORY */
+  .hist-entry { border: 1px solid var(--border2); border-radius: 5px; margin-bottom: 8px; overflow: hidden; }
+  .hist-head { padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.12s; }
+  .hist-head:hover { background: var(--surface2); }
+  .hist-head.open .mg-chevron { transform: rotate(90deg); }
+  .hist-day { font-size: 13px; font-weight: 600; color: var(--text); }
+  .hist-meta { font-size: 10px; color: var(--gold); margin-top: 2px; }
+  .hist-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 12px; }
+  .hist-body.open { max-height: 1000px; padding: 4px 12px 12px; }
+  .hist-ex { padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .hist-ex:last-of-type { border-bottom: none; }
+  .hist-ex-name { font-size: 12px; color: var(--text); font-weight: 500; margin-bottom: 4px; }
+  .hist-sets { display: flex; flex-wrap: wrap; gap: 5px; }
+  .hist-set { font-size: 10px; color: var(--muted); background: var(--surface2); padding: 3px 7px; border-radius: 3px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; }
+  .hist-notes { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+
+  .fast-display { text-align: center; padding: 10px 0; }
+  .fast-time { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .fast-status { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .fast-ring { width: 140px; height: 140px; margin: 10px auto; }
+
+  /* SUB NAV */
+  .sub-nav { display: flex; gap: 6px; padding: 12px 16px 4px; flex-wrap: wrap; }
+  .sub-btn { padding: 7px 13px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
+  .sub-btn:hover { background: var(--surface2); }
+  .sub-btn.active { border-color: var(--gold-dim); color: var(--gold); background: linear-gradient(135deg,#1a1400,#120e00); }
+
+  /* DIET CARDS */
+  .diet-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+  .diet-head { padding: 12px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .diet-head:hover { background: var(--surface2); }
+  .diet-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .diet-tag { font-size: 10px; color: var(--gold); margin-top: 2px; }
+  .diet-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .diet-body.open { max-height: 1400px; }
+  .diet-inner { padding: 0 14px 14px; }
+  .diet-section-t { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green-bright); margin: 12px 0 6px; }
+  .meal-row { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); }
+  .meal-row:last-child { border-bottom: none; }
+  .meal-time { color: var(--gold); font-size: 11px; margin-right: 8px; }
+  .diet-pros { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  /* SUPP TIMING */
+  .supp-time-row { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .supp-time-name { flex: 1; font-size: 13px; color: var(--text); }
+  .supp-times { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .supp-time-chip { font-size: 10px; background: var(--surface3); color: var(--gold); padding: 3px 7px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; }
+  .supp-time-chip span { color: var(--danger); cursor: pointer; }
+  .supp-add-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--gold-dim); background: var(--surface2); color: var(--gold); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .supp-add-btn:active { transform: scale(0.9); }
+
+  /* LOG WORKOUT BUTTON */
+  .log-workout-btn { width: 100%; padding: 14px; margin: 16px 0 8px; border-radius: 6px; border: 1px solid var(--gold); background: linear-gradient(135deg, #1e1700, #141000); color: var(--gold2); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.05em; position: relative; overflow: hidden; }
+  .log-workout-btn:hover { background: linear-gradient(135deg, #2a2000, #1e1700); }
+  .log-workout-btn:active { transform: scale(0.98); }
+
+  /* HISTORY */
+  .hist-entry { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+  .hist-head { padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .hist-head:hover { background: var(--surface2); }
+  .hist-day { font-size: 13px; font-weight: 600; color: var(--text); }
+  .hist-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .hist-vol { font-size: 11px; color: var(--gold); }
+  .hist-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .hist-body.open { max-height: 2000px; }
+  .hist-ex { padding: 7px 14px; border-top: 1px solid var(--border); font-size: 12px; }
+  .hist-ex-name { color: var(--text); margin-bottom: 3px; }
+  .hist-sets { color: var(--muted); font-size: 11px; }
+  .toast-pop { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 1px solid var(--gold); color: var(--gold2); padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 60; opacity: 0; transition: all 0.3s; box-shadow: 0 6px 24px rgba(0,0,0,0.5); pointer-events: none; }
+  .toast-pop.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- KINTSUGI -->
+<svg class="kintsugi-layer" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="glow"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#glow)" stroke="#c9a227" stroke-linecap="round" fill="none">
+    <path d="M30,0 L45,80 L20,140 L55,200 L30,280" stroke-width="0.8"/>
+    <path d="M45,80 L90,95 L120,70" stroke-width="0.5"/>
+    <path d="M380,50 L360,130 L390,190 L350,260 L375,340" stroke-width="0.7"/>
+    <path d="M360,130 L320,145 L300,120" stroke-width="0.5"/>
+    <path d="M150,20 L170,90 L140,150" stroke-width="0.6"/>
+    <path d="M280,400 L260,480 L290,540 L260,620" stroke-width="0.7"/>
+    <path d="M100,450 L120,520 L90,590" stroke-width="0.6"/>
+    <path d="M50,700 L70,770 L40,840" stroke-width="0.6"/>
+    <path d="M340,680 L320,750 L350,820" stroke-width="0.6"/>
+    <path d="M200,600 L215,670 L190,730 L210,800" stroke-width="0.5"/>
+  </g>
+  <g fill="#e8c547" opacity="0.6">
+    <circle cx="45" cy="80" r="1.5"/><circle cx="360" cy="130" r="1.5"/><circle cx="170" cy="90" r="1.2"/>
+    <circle cx="260" cy="480" r="1.5"/><circle cx="120" cy="520" r="1.2"/><circle cx="320" cy="750" r="1.5"/>
+  </g>
+</svg>
+
+<!-- VINES (animated) -->
+<svg class="vine-layer" id="vines" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#3a6b2a" fill="none" stroke-linecap="round">
+    <path class="vine-path" d="M0,30 Q20,50 10,80 Q0,110 15,140" stroke-width="1.2"/>
+    <path class="vine-path" d="M10,80 Q30,70 40,55" stroke-width="0.8"/>
+    <path class="vine-path" d="M15,140 Q35,130 50,115" stroke-width="0.8"/>
+    <path class="vine-path" d="M400,10 Q375,40 385,75 Q395,110 370,145" stroke-width="1.2"/>
+    <path class="vine-path" d="M385,75 Q360,65 345,50" stroke-width="0.8"/>
+    <path class="vine-path" d="M370,145 Q348,138 335,120" stroke-width="0.8"/>
+    <path class="vine-path" d="M0,780 Q18,760 8,730 Q0,700 12,670" stroke-width="1.0"/>
+    <path class="vine-path" d="M8,730 Q28,720 42,705" stroke-width="0.7"/>
+    <path class="vine-path" d="M400,800 Q382,778 392,748 Q402,718 385,688" stroke-width="1.0"/>
+    <path class="vine-path" d="M392,748 Q370,738 355,722" stroke-width="0.7"/>
+    <path class="vine-path" d="M0,350 Q12,340 8,325 Q4,310 14,298" stroke-width="0.8"/>
+    <path class="vine-path" d="M400,420 Q388,408 392,393 Q396,378 386,365" stroke-width="0.8"/>
+  </g>
+  <g>
+    <ellipse class="vine-leaf" style="animation-delay:2.4s" cx="40" cy="52" rx="8" ry="5" transform="rotate(-30 40 52)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.6s" cx="51" cy="112" rx="7" ry="4" transform="rotate(20 51 112)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.4s" cx="345" cy="48" rx="8" ry="5" transform="rotate(30 345 48)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.6s" cx="333" cy="118" rx="7" ry="4" transform="rotate(-20 333 118)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.8s" cx="43" cy="703" rx="7" ry="4" transform="rotate(-25 43 703)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.8s" cx="353" cy="720" rx="7" ry="4" transform="rotate(25 353 720)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.5s" cx="14" cy="296" rx="6" ry="3.5" transform="rotate(-40 14 296)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+    <ellipse class="vine-leaf" style="animation-delay:2.5s" cx="385" cy="363" rx="6" ry="3.5" transform="rotate(40 385 363)" fill="#2d5a22" stroke="#3a6b2a" stroke-width="0.5"/>
+  </g>
+</svg>
+
+<div class="main-wrap">
+
+  <!-- QUOTES -->
+  <div class="quotes-widget">
+    <svg class="qw-flourish tl" viewBox="0 0 26 26" fill="none"><path d="M2 24 Q2 2 24 2" stroke="#c9a227" stroke-width="0.8"/><circle cx="24" cy="2" r="1.4" fill="#c9a227"/></svg>
+    <svg class="qw-flourish tr" viewBox="0 0 26 26" fill="none"><path d="M2 24 Q2 2 24 2" stroke="#c9a227" stroke-width="0.8"/><circle cx="24" cy="2" r="1.4" fill="#c9a227"/></svg>
+    <svg class="qw-flourish bl" viewBox="0 0 26 26" fill="none"><path d="M2 24 Q2 2 24 2" stroke="#7a5f10" stroke-width="0.8"/></svg>
+    <svg class="qw-flourish br" viewBox="0 0 26 26" fill="none"><path d="M2 24 Q2 2 24 2" stroke="#7a5f10" stroke-width="0.8"/></svg>
+
+    <button class="q-arrow left" onclick="prevQuote()" aria-label="Previous quote">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3 L5 8 L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="q-arrow right" onclick="nextQuote()" aria-label="Next quote">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M6 3 L11 8 L6 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="quote-label">Words to Train By</div>
+    <div class="quote-portrait" id="q-portrait"></div>
+    <div class="quote-text" id="q-text"></div>
+    <div class="quote-author" id="q-author"></div>
+    <div class="quote-book" id="q-book"></div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Iron Gold Rising</div>
+    <div class="header-sub">Break the chains · PPL/UL · Strength + Aesthetics · Summer Cut</div>
+  </div>
+
+  <!-- MAIN NAV -->
+  <div class="main-nav" id="main-nav"></div>
+
+  <!-- VIEW CONTAINER -->
+  <div id="view"></div>
+
+</div>
+
+<!-- REST TIMER -->
+<div class="rest-timer" id="rest-timer">
+  <div class="rt-progress" id="rt-progress"></div>
+  <div class="rest-timer-inner">
+    <div>
+      <div class="rt-label" id="rt-label">Rest</div>
+      <div class="rt-time" id="rt-time">1:30</div>
+    </div>
+    <div class="rt-controls">
+      <button class="rt-btn" onclick="adjustTimer(-15)">−15s</button>
+      <button class="rt-btn" onclick="adjustTimer(15)">+15s</button>
+      <button class="rt-btn primary" onclick="dismissTimer()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const DAYS = [
+  {l:"Push",s:"D1"},{l:"Pull",s:"D2"},{l:"Legs",s:"D3"},
+  {l:"Rest",s:"D4",r:true},{l:"Upper",s:"D5"},{l:"Lower",s:"D6"},{l:"Rest",s:"D7",r:true}
+];
+
+const SECTION_REST = { warm: 60, str: 210, hype: 90, iso: 60, pull: 90, core: 60 };
+
+const W = {
+  0:{title:"Push — Chest · Shoulders · Triceps",tip:"Lead with your heaviest compound first. On incline press, tuck elbows to 45°, drive feet into the floor, think about pushing yourself away from the bar.",secs:[
+    {l:"Warm-up",c:"warm",ex:[{n:"Stretches + shoulder circles",t:"5 min",sets:0},{n:"Around the worlds",t:"1 × 12",sets:1,tip:"Full controlled arc — no jerking through the bottom."},{n:"Incline press warm-up",t:"1 × 8 @ 50%",sets:1}]},
+    {l:"Strength",c:"str",ex:[{n:"Incline barbell press",t:"3 × 4–6",sets:3,tip:"Retract scapulae, 2 sec descent. Elbows at 45°."}]},
+    {l:"Hypertrophy",c:"hype",ex:[{n:"Incline machine chest press",t:"2 × 10–15",sets:2,tip:"Pre-fatigued — slow eccentric, focus on the squeeze. Don't lock out."},{n:"Cable chest fly",t:"2 × 10–12",sets:2,tip:"Think hugging a tree. Full stretch at the bottom."},{n:"Dumbbell lat pullover",t:"2 × 10–12",sets:2,tip:"Lower behind head slowly. At the top, protract your shoulder blades — that's the serratus firing."},{n:"Dumbbell shoulder press",t:"2 × 8–10",sets:2,tip:"Elbows slightly in front of body. Stop short of lockout."},{n:"Iso lateral cable raise",t:"2 × 12–15",sets:2,tip:"Lead with elbow, not hand. Control the negative."}]},
+    {l:"Isolation",c:"iso",ex:[{n:"Overhead tricep press",t:"2 × 10–12",sets:2,tip:"Pause at the bottom — long head stretch. Elbows forward."},{n:"Cable pushdown",t:"2 × 12–15",sets:2,tip:"Squeeze hard at the bottom — medial and lateral head."}]},
+    {l:"Core",c:"core",ex:[{n:"Dead bug",t:"3 × 8 each",sets:3,tip:"Lower back pressed to floor. Opposite arm and leg extend slowly."}]},
+    {l:"Sprint Finisher (optional)",c:"warm",ex:[{n:"Sprint intervals",t:"6–8 × 20s",sets:0,tip:"Research-backed fat-loss accelerator: 20s hard sprint, 60–90s walk, repeat. Bike, rower, or running. ~10–15 min total. Safe here since it won't compete with heavy leg recovery."}]}
+  ]},
+  1:{title:"Pull — Back · Rear Delts · Biceps",tip:"On all pulls, think elbows to hip/pocket — not hands to chest. This shifts the emphasis from your biceps to your lats.",secs:[
+    {l:"Pull-up Progression",c:"pull",ex:[{n:"Dead hang",t:"3 × 20–30s",sets:3,tip:"Builds grip and shoulder stability. Fully relax at the bottom."},{n:"Scapular pulls",t:"3 × 8",sets:3,tip:"Arms straight — pull shoulder blades down and together."},{n:"Negative pull-ups",t:"3 × 5",sets:3,tip:"Jump to top, lower as slowly as possible — 5–8 sec down."}]},
+    {l:"Strength",c:"str",ex:[{n:"Deadlift (conventional)",t:"3 × 4–6",sets:3,tip:"Push the floor away. Chest up, bar over mid-foot. Reset breath each rep."}]},
+    {l:"Hypertrophy",c:"hype",ex:[{n:"Biker handle pulldown",t:"2 × 8–12",sets:2,tip:"Elbows tucked, pull toward hip/pocket. Squeeze at the bottom."},{n:"Chest-supported T-bar row",t:"2 × 6–10",sets:2,tip:"Elbows flared, 3–4 sec eccentric. Full stretch at the bottom."},{n:"Single arm cable row",t:"2 × 10–15",sets:2,tip:"Weak arm first. Elbow to hip/pocket. Full extension."},{n:"Straight arm pulldown",t:"2 × 12–15",sets:2,tip:"Arms straight — lower lat in stretch. Protract shoulder blades at the bottom for serratus."},{n:"Face pull (head height)",t:"2 × 15–20",sets:2,tip:"Elbows high and back. Pull to forehead. Hold 1 sec."}]},
+    {l:"Isolation",c:"iso",ex:[{n:"Single arm preacher curl",t:"1 × 8–12",sets:1,tip:"Short head. Full stretch at the bottom — don't skip it."},{n:"Bayesian cable curl",t:"1 × 8–12",sets:1,tip:"Facing away from cable. Constant tension + full stretch."},{n:"Single arm hammer curl",t:"1 × 8–12",sets:1,tip:"Weak arm first. Builds brachialis — pushes the peak up."}]},
+    {l:"Core",c:"core",ex:[{n:"Hanging knee raise",t:"3 × 12",sets:3,tip:"Control the swing. Tuck knees to chest."}]}
+  ]},
+  2:{title:"Legs — Quads · Hamstrings · Glutes · Calves",tip:"On squats, brace like you're taking a punch — drive knees out. On RDL, push your hips back rather than bending over.",secs:[
+    {l:"Strength",c:"str",ex:[{n:"Back squat (barbell)",t:"3 × 4–6",sets:3,tip:"Elbows down, knees out. 3 sec descent. Brace hard."},{n:"Romanian deadlift",t:"3 × 5–7",sets:3,tip:"Hinge at the hip. Bar close to legs. Stop at max hamstring stretch."}]},
+    {l:"Hypertrophy",c:"hype",ex:[{n:"Leg press",t:"2 × 8–12",sets:2,tip:"High and wide foot placement for glute/hamstring. Don't lock out."},{n:"Walking lunges (dumbbell)",t:"2 × 10–12 each",sets:2,tip:"Long stride, back knee grazes floor. Torso upright."},{n:"Seated leg curl",t:"2 × 10–12",sets:2,tip:"Flex foot at the top. 3 sec eccentric."}]},
+    {l:"Isolation",c:"iso",ex:[{n:"Leg extension",t:"2 × 12–15",sets:2,tip:"Pause and squeeze at the top. No momentum."},{n:"Standing calf raise",t:"3 × 15–20",sets:3,tip:"Full range. Pause at the bottom."}]}
+  ]},
+  4:{title:"Upper — Chest · Back · Shoulders · Arms",tip:"Upper day uses different exercises and angles from Push/Pull. Pendlay row is a dead-stop row from the floor — no momentum, full reset each rep.",secs:[
+    {l:"Pull-up Progression",c:"pull",ex:[{n:"Dead hang",t:"2 × 20–30s",sets:2,tip:"Stay relaxed. Focus on grip and shoulder stability."},{n:"Scapular pulls",t:"2 × 8",sets:2,tip:"Arms straight, pull shoulder blades down and together."}]},
+    {l:"Strength",c:"str",ex:[{n:"Flat barbell bench press",t:"3 × 4–6",sets:3,tip:"Retract scapulae, feet flat. Bar path toward lower chest."},{n:"Pendlay row",t:"3 × 4–6",sets:3,tip:"Dead stop on the floor every rep. Horizontal torso. No bounce."}]},
+    {l:"Hypertrophy",c:"hype",ex:[{n:"Dumbbell shoulder press",t:"2 × 8–10",sets:2,tip:"More freedom than barbell. Don't let dumbbells drift forward."},{n:"Face pull (head height)",t:"2 × 15–20",sets:2,tip:"Elbows high and back for mid back + rear delt."},{n:"Lat pulldown (wide grip)",t:"2 × 10–12",sets:2,tip:"Lean back slightly, pull to upper chest. Feel the stretch at the top."}]},
+    {l:"Isolation",c:"iso",ex:[{n:"Cable lateral raise",t:"2 × 15–20",sets:2,tip:"Constant tension. Lead with elbow. Don't go above shoulder height."},{n:"Incline dumbbell curl",t:"2 × 10–12",sets:2,tip:"Arms behind body — extreme long head stretch. Slow and controlled."},{n:"Skull crusher (EZ bar)",t:"2 × 10–12",sets:2,tip:"Lower behind the head. Elbows pointed at ceiling — don't flare."}]},
+    {l:"Sprint Finisher (optional)",c:"warm",ex:[{n:"Sprint intervals",t:"6–8 × 20s",sets:0,tip:"Research-backed fat-loss accelerator: 20s hard sprint, 60–90s walk, repeat. Bike, rower, or running. ~10–15 min total. Placed on upper day so it won't compromise leg sessions."}]}
+  ]},
+  5:{title:"Lower — Quads · Hamstrings · Glutes · Core",tip:"Intentionally different from Legs day — sumo vs conventional, front/hack squat vs back squat, hip thrust added.",secs:[
+    {l:"Pull-up Practice",c:"pull",ex:[{n:"Dead hang",t:"1 × max",sets:1,tip:"Maintaining the habit and grip work."}]},
+    {l:"Strength",c:"str",ex:[{n:"Front squat or hack squat",t:"3 × 4–6",sets:3,tip:"Front squat — elbows high throughout. Hack squat is a solid alternative."},{n:"Sumo deadlift",t:"3 × 4–6",sets:3,tip:"Wide stance, toes out. Knees track over toes."}]},
+    {l:"Hypertrophy",c:"hype",ex:[{n:"Bulgarian split squat",t:"2 × 8–10 each",sets:2,tip:"Weak leg first. Long stride = glute. Shorter = quad."},{n:"Lying leg curl",t:"2 × 10–12",sets:2,tip:"Toes slightly out. Full extension at the bottom."},{n:"Hip thrust (barbell)",t:"2 × 10–12",sets:2,tip:"Squeeze glutes hard at top. Chin tucked, ribs down."}]},
+    {l:"Isolation",c:"iso",ex:[{n:"Leg extension",t:"2 × 15",sets:2,tip:"Toes slightly out — different quad head vs Legs day."},{n:"Seated calf raise",t:"3 × 15–20",sets:3,tip:"Targets soleus. Full range, pause at the bottom."},{n:"Cable crunch / ab wheel",t:"2 × 12–15",sets:2,tip:"Crunch: round your back. Ab wheel: brace hard, don't arch."}]}
+  ]}
+};
+
+const REST = {
+  3: ["8+ hours sleep","Hit 175g protein","Light walk if feeling stiff","Dead hangs — 1 set to keep the habit"],
+  6: ["8+ hours sleep","Hit 175g protein","Review the week — where did you add weight?","Plan next week's sessions"]
+};
+
+const QUOTES = [
+  {q:"You have power over your mind, not outside events. Realize this, and you will find strength.", s:"Marcus Aurelius", b:"Meditations"},
+  {q:"Waste no more time arguing what a good man should be. Be one.", s:"Marcus Aurelius", b:"Meditations"},
+  {q:"The impediment to action advances action. What stands in the way becomes the way.", s:"Marcus Aurelius", b:"Meditations"},
+  {q:"Confine yourself to the present.", s:"Marcus Aurelius", b:"Meditations"},
+  {q:"It is not the man who has little, but he who desires more, who is poor.", s:"Seneca", b:"Letters from a Stoic"},
+  {q:"We suffer more in imagination than in reality.", s:"Seneca", b:"Letters from a Stoic"},
+  {q:"Difficulties strengthen the mind, as labor does the body.", s:"Seneca", b:"Letters from a Stoic"},
+  {q:"Begin at once to live, and count each separate day as a separate life.", s:"Seneca", b:"On the Shortness of Life"},
+  {q:"No man is free who is not master of himself.", s:"Epictetus", b:"Discourses"},
+  {q:"Make the best use of what is in your power, and take the rest as it happens.", s:"Epictetus", b:"Enchiridion"},
+  {q:"First say to yourself what you would be, and then do what you have to do.", s:"Epictetus", b:"Discourses"},
+  {q:"Man conquers the world by conquering himself.", s:"Zeno of Citium", b:"Lives of the Eminent Philosophers"},
+  {q:"Seek not the good in external things; seek it in yourself.", s:"Zeno of Citium", b:"Lives of the Eminent Philosophers"},
+  {q:"He who conquers himself is the mightiest warrior.", s:"Confucius", b:"The Analects"},
+  {q:"He conquers who endures.", s:"Niccolò Machiavelli", b:"The Prince"},
+  {q:"Enter action with boldness.", s:"Robert Greene", b:"The 48 Laws of Power"},
+  {q:"I would have lived in peace. But my enemies brought me war.", s:"Darrow", b:"Red Rising"},
+  {q:"Break the chains, my love.", s:"Eo", b:"Red Rising"},
+  {q:"I am the Reaper and death is my shadow.", s:"Darrow", b:"Red Rising"},
+  {q:"A man thinks he can fly, but he is afraid to jump.", s:"Pierce Brown", b:"Red Rising"},
+  {q:"The measure of a man is what he does when he has power.", s:"Pierce Brown", b:"Red Rising"},
+  {q:"Funny thing, courage. Strange how it can live alongside such fear.", s:"Darrow", b:"Red Rising"},
+  {q:"Hic sunt leones — here be lions.", s:"Pierce Brown", b:"Red Rising"},
+  {q:"We are not our station in life. We are our choices.", s:"Pierce Brown", b:"Red Rising"},
+  {q:"Live for more.", s:"Eo", b:"Red Rising"},
+  {q:"The day is yours. Own it.", s:"Pierce Brown", b:"Red Rising"},
+  {q:"In the moment when I truly understand my enemy, in that moment I also love him.", s:"Ender Wiggin", b:"Ender's Game"},
+  {q:"There is no teacher but the enemy.", s:"Mazer Rackham", b:"Ender's Game"},
+  {q:"The way we win matters.", s:"Ender Wiggin", b:"Ender's Game"},
+  {q:"I will not let you go through your life believing you are no good.", s:"Orson Scott Card", b:"Ender's Game"},
+  {q:"Fairness is a wonderful attribute. It has nothing to do with winning or losing.", s:"Orson Scott Card", b:"Ender's Game"},
+  {q:"Welcome to the human race. Nobody controls his own life.", s:"Mazer Rackham", b:"Ender's Game"},
+  {q:"Remember, the enemy's gate is down.", s:"Ender Wiggin", b:"Ender's Game"},
+  {q:"It's not how you start. It's how you finish.", s:"Orson Scott Card", b:"Ender's Game"},
+  {q:"Victorious warriors win first and then go to war.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"In the midst of chaos, there is also opportunity.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"The supreme art of war is to subdue the enemy without fighting.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"Know yourself and you will win all battles.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"Opportunities multiply as they are seized.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"He will win who knows when to fight and when not to fight.", s:"Sun Tzu", b:"The Art of War"},
+  {q:"Discipline and composure: the strength of the warrior.", s:"Sun Tzu", b:"The Art of War"},
+];
+
+const EXERCISE_LIBRARY = {
+  "Chest": [
+    {n:"Incline barbell press",r:"Upper chest",note:"Compound — best mass builder for the upper chest."},
+    {n:"Flat barbell bench press",r:"Mid + lower chest",note:"The king of chest compounds. Full chest stimulus."},
+    {n:"Incline machine chest press",r:"Upper chest",note:"Stable, lets you isolate when fatigued."},
+    {n:"Cable chest fly",r:"Inner + stretch",note:"Constant tension, great stretch at the bottom."},
+    {n:"Dumbbell pullover",r:"Lower chest + serratus",note:"Stretch-focused, also hits lats and serratus."},
+    {n:"Dips",r:"Lower chest",note:"Lean forward for chest emphasis. Bodyweight compound."},
+  ],
+  "Back (Lats)": [
+    {n:"Deadlift",r:"Whole back",note:"Posterior chain king. Erectors, traps, lats."},
+    {n:"Pull-up / Lat pulldown",r:"Outer lat / width",note:"Vertical pull — builds the V-taper."},
+    {n:"Biker handle pulldown",r:"Lower lat",note:"Neutral grip, long range, strong contraction."},
+    {n:"Straight arm pulldown",r:"Lower lat (stretch)",note:"No bicep. Isolates lat in the stretched position."},
+    {n:"Chest-supported T-bar row",r:"Upper back + lats",note:"Elbows flared for upper back, tucked for lats."},
+    {n:"Pendlay row",r:"Mid back",note:"Dead-stop row from the floor. No momentum."},
+    {n:"Single arm cable row",r:"Lat + mid back",note:"Unilateral — fixes imbalances. Weak side first."},
+  ],
+  "Shoulders": [
+    {n:"Overhead press (barbell)",r:"Front + side delt",note:"Primary shoulder strength builder."},
+    {n:"Dumbbell shoulder press",r:"Front + side delt",note:"More range and freedom than barbell."},
+    {n:"Cable lateral raise",r:"Side delt",note:"Constant tension — builds width. Lead with elbow."},
+    {n:"Iso lateral cable raise",r:"Side delt",note:"Single arm, full control over the negative."},
+    {n:"Face pull",r:"Rear delt + mid back",note:"Elbows high for rear delt, back for mid traps."},
+    {n:"Rear delt fly",r:"Rear delt",note:"Often neglected — key for 3D shoulders + posture."},
+  ],
+  "Biceps": [
+    {n:"Single arm preacher curl",r:"Short head",note:"Stretched position. Don't skip the bottom half."},
+    {n:"Bayesian cable curl",r:"Long head",note:"Arm behind body. Constant tension + stretch."},
+    {n:"Incline dumbbell curl",r:"Long head",note:"Extreme stretch. The stretch is the whole point."},
+    {n:"Hammer curl",r:"Brachialis + forearm",note:"Neutral grip. Pushes the bicep peak up."},
+    {n:"Concentration curl",r:"Short head + peak",note:"Elbow braced on thigh. Peak contraction."},
+  ],
+  "Triceps": [
+    {n:"Overhead tricep press",r:"Long head",note:"Stretched overhead — pause at the bottom."},
+    {n:"Cable pushdown",r:"Medial + lateral head",note:"Squeeze at the bottom. Arms pinned to sides."},
+    {n:"Skull crusher (EZ bar)",r:"Long head",note:"Lower behind the head for more stretch."},
+    {n:"Cable kickback",r:"Lateral head",note:"Constant tension, peak contraction at lockout."},
+  ],
+  "Quads": [
+    {n:"Back squat",r:"Whole quad + glutes",note:"The fundamental lower body strength lift."},
+    {n:"Front squat",r:"Quad dominant",note:"Upright torso shifts load to the quads."},
+    {n:"Hack squat",r:"Quad (outer sweep)",note:"Machine stability, great for quad isolation."},
+    {n:"Leg press",r:"Whole quad",note:"Foot placement changes emphasis. Don't lock out."},
+    {n:"Bulgarian split squat",r:"Quad + glute (unilateral)",note:"Brutal single-leg builder. Weak leg first."},
+    {n:"Leg extension",r:"Quad isolation",note:"Pause and squeeze at the top."},
+  ],
+  "Hamstrings": [
+    {n:"Romanian deadlift",r:"Whole hamstring",note:"Hip hinge. Stop at maximum stretch."},
+    {n:"Lying leg curl",r:"Lower hamstring",note:"Toes out for bicep femoris. Full extension."},
+    {n:"Seated leg curl",r:"Hamstring (stretch)",note:"Flex foot at top for harder contraction."},
+    {n:"Sumo deadlift",r:"Hamstring + glute + inner quad",note:"Wide stance. More hip-dominant."},
+  ],
+  "Glutes": [
+    {n:"Hip thrust (barbell)",r:"Glute max",note:"Squeeze hard at top. Best glute isolator."},
+    {n:"Bulgarian split squat",r:"Glute (long stride)",note:"Longer stride shifts load to glutes."},
+    {n:"Romanian deadlift",r:"Glute + hamstring",note:"Hip hinge also loads the glutes heavily."},
+  ],
+  "Calves": [
+    {n:"Standing calf raise",r:"Gastrocnemius",note:"Full range. Pause and stretch at the bottom."},
+    {n:"Seated calf raise",r:"Soleus",note:"Bent knee targets the deeper soleus."},
+  ],
+  "Core / Serratus": [
+    {n:"Ab wheel rollout",r:"Anterior core + serratus",note:"Brace hard, don't let lower back arch."},
+    {n:"Cable crunch",r:"Rectus abdominis",note:"Round your back as you crunch — don't hip hinge."},
+    {n:"Hanging knee raise",r:"Lower abs",note:"Control the swing. Tuck knees to chest."},
+    {n:"Dead bug",r:"Deep core stability",note:"Lower back pressed flat. Opposite limbs."},
+    {n:"Dumbbell pullover",r:"Serratus anterior",note:"Protract shoulder blades at the top."},
+    {n:"Serratus wall slide",r:"Serratus anterior",note:"Slide arms up the wall, push shoulder blades apart."},
+  ],
+};
+
+const MAIN_LIFTS = ["Incline barbell press","Flat barbell bench press","Deadlift (conventional)","Back squat (barbell)","Sumo deadlift","Front squat or hack squat","Pendlay row","Overhead press"];
+
+/* ============ STORAGE ============ */
+const DB = {
+  get(k, def) { try { const v = localStorage.getItem('ironstoa_'+k); return v ? JSON.parse(v) : def; } catch(e) { return def; } },
+  set(k, v) { try { localStorage.setItem('ironstoa_'+k, JSON.stringify(v)); } catch(e) {} },
+};
+
+function todayStr() { return new Date().toISOString().slice(0,10); }
+function fmtDate(s) { const d = new Date(s+'T00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+
+/* ============ QUOTES ============ */
+let qIdx = 0, qTimer, quoteOrder = [];
+
+// The "source" for adjacency purposes is the book/work, so two quotes from the
+// same book never appear back to back regardless of who is speaking.
+function sourceKey(quote) {
+  return (quote && quote.b) ? quote.b : '';
+}
+
+// Shuffle, then reorder greedily so no two consecutive quotes share a book.
+function buildQuoteOrder() {
+  let idx = QUOTES.map((_,i)=>i);
+  // Fisher-Yates shuffle
+  for (let i=idx.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  // Greedy spread: repeatedly pick the next quote whose book differs from the previous,
+  // preferring the book with the most remaining quotes to keep things balanced.
+  const remaining = idx.slice();
+  const result = [];
+  let lastSrc = null;
+  while (remaining.length) {
+    let pick = -1;
+    const counts = {};
+    remaining.forEach(i => { const s=sourceKey(QUOTES[i]); counts[s]=(counts[s]||0)+1; });
+    let bestSrc = null, bestCount = -1;
+    Object.keys(counts).forEach(s => { if (s!==lastSrc && counts[s]>bestCount) { bestCount=counts[s]; bestSrc=s; } });
+    if (bestSrc === null) { pick = 0; }
+    else { pick = remaining.findIndex(i => sourceKey(QUOTES[i]) === bestSrc); }
+    const chosen = remaining.splice(pick,1)[0];
+    result.push(chosen);
+    lastSrc = sourceKey(QUOTES[chosen]);
+  }
+  return result;
+}
+
+function renderQuote(pos) {
+  const i = quoteOrder[pos];
+  const Q = QUOTES[i];
+  const qt = document.getElementById('q-text'), qa = document.getElementById('q-author'),
+        qb = document.getElementById('q-book'), qp = document.getElementById('q-portrait');
+  qt.classList.remove('animate-in'); qa.classList.remove('animate-in');
+  if (qb) qb.classList.remove('animate-in');
+  if (qp) qp.classList.remove('animate-in');
+  void qt.offsetWidth;
+  qt.innerHTML = '<span class="qmark">“</span>' + Q.q + '<span class="qmark">”</span>';
+  qa.textContent = Q.s;
+  if (qb) qb.textContent = Q.b;
+  if (qp) { qp.innerHTML = portraitSvg(Q); qp.classList.add('animate-in'); }
+  qt.classList.add('animate-in'); qa.classList.add('animate-in');
+  if (qb) qb.classList.add('animate-in');
+}
+function initQuotes() {
+  quoteOrder = buildQuoteOrder();
+  qIdx = 0; renderQuote(0); startQTimer();
+}
+function startQTimer() { clearInterval(qTimer); qTimer = setInterval(()=>{ qIdx=(qIdx+1)%quoteOrder.length; renderQuote(qIdx); }, 6000); }
+function nextQuote() { clearInterval(qTimer); qIdx=(qIdx+1)%quoteOrder.length; renderQuote(qIdx); startQTimer(); }
+function prevQuote() { clearInterval(qTimer); qIdx=(qIdx-1+quoteOrder.length)%quoteOrder.length; renderQuote(qIdx); startQTimer(); }
+
+// Classical cameo medallions — gold profile silhouettes / emblems per source.
+function portraitSvg(quote) {
+  const inner = portraitInner(quote);
+  // shared medallion frame: dark disc, gold double ring (one animated)
+  return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="pg" cx="50%" cy="38%" r="70%">
+        <stop offset="0%" stop-color="#1c2616"/><stop offset="100%" stop-color="#0a0f08"/>
+      </radialGradient>
+      <linearGradient id="pgold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#e8c547"/><stop offset="55%" stop-color="#c9a227"/><stop offset="100%" stop-color="#8a6d12"/>
+      </linearGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#pg)" stroke="#2a3a2a" stroke-width="1"/>
+    <circle class="qp-ring" cx="32" cy="32" r="28" fill="none" stroke="url(#pgold)" stroke-width="1.4" stroke-dasharray="220" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="24.5" fill="none" stroke="#7a5f10" stroke-width="0.5" opacity="0.6"/>
+    <g fill="url(#pgold)">${inner}</g>
+  </svg>`;
+}
+
+function portraitInner(quote) {
+  // Map each book/speaker to a representative animal emblem.
+  const b = quote.b || '', s = quote.s || '';
+  let animal;
+  if (b === 'Red Rising') animal = 'wolf';
+  else if (b === "Ender's Game") animal = 'dragon';      // Chinese dragon
+  else if (b === 'The Art of War') animal = 'falcon';    // falcon for Sun Tzu
+  else if (s === 'Robert Greene') animal = 'cobra';
+  else if (s === 'Marcus Aurelius') animal = 'lion';
+  else if (s === 'Seneca') animal = 'owl';
+  else if (s === 'Epictetus') animal = 'eagle';
+  else if (s === 'Zeno of Citium') animal = 'bear';
+  else if (s === 'Confucius') animal = 'tiger';          // tiger -> Confucius
+  else if (s === 'Niccolò Machiavelli') animal = 'fox';
+  else animal = 'lion';
+  return animalSvg(animal);
+}
+
+// Golden heraldic animal emblems, drawn to read clearly at ~64px.
+function animalSvg(a) {
+  switch (a) {
+    case 'lion': return `<g transform="translate(32,32) scale(0.2484) translate(-257.302,-194.250) translate(0.000000,388.000000) scale(0.100000,-0.100000)"><path d="M2425 2662 c17 -15 58 -50 90 -79 l60 -52 -86 34 c-159 63 -163 63 -271 16 -102 -45 -229 -122 -212 -128 6 -2 54 -12 105 -21 l94 -17 -140 -80 c-163 -93 -150 -75 -241 -327 l-56 -158 40 -48 c46 -55 202 -205 207 -200 2 2 0 35 -5 73 -17 132 -13 233 12 268 31 46 151 188 154 184 2 -2 -17 -53 -41 -114 -52 -130 -53 -141 -20 -254 54 -187 73 -220 193 -337 61 -61 125 -134 147 -169 21 -35 41 -61 45 -58 3 2 12 44 19 92 7 48 14 97 16 108 3 11 -22 71 -54 135 -33 63 -66 133 -75 155 l-16 40 31 -35 c151 -171 229 -313 254 -465 l7 -40 54 59 c55 61 144 223 144 264 0 12 -17 41 -37 63 -21 23 -109 128 -195 233 -175 212 -166 192 -149 331 7 58 6 62 -31 119 -46 72 -46 64 0 109 l38 37 68 -23 67 -23 -50 -39 c-53 -42 -60 -55 -37 -74 11 -9 13 -34 8 -117 l-5 -106 154 -154 154 -155 154 -49 c85 -28 160 -50 167 -50 14 0 49 86 64 159 20 101 -30 108 -225 36 -20 -8 -20 -7 1 14 11 12 61 37 110 55 84 31 90 35 102 71 11 34 10 41 -8 73 l-21 35 32 -7 c44 -9 44 -9 27 -73 -15 -53 -10 -93 13 -93 6 0 39 100 39 121 0 8 14 34 30 58 17 25 29 49 28 53 -2 5 -59 44 -128 87 -124 77 -125 78 -128 118 l-3 40 -108 50 c-90 43 -109 56 -115 78 -13 52 -57 105 -127 155 l-72 50 -151 0 -151 -1 30 -27z m581 -418 c21 -50 18 -50 -77 -6 l-84 39 73 2 73 2 15 -37z" fill="url(#pgold)"/></g>`;
+    case 'wolf': return `<g transform="translate(32,32) scale(0.2395) translate(-112.498,-122.317) translate(0.000000,225.000000) scale(0.100000,-0.100000)"><path d="M500 1862 c0 -4 16 -127 35 -273 l35 -266 -51 -117 c-28 -65 -49 -119 -47 -121 4 -4 455 168 463 177 17 17 -109 264 -163 323 -108 117 -272 283 -272 277z" fill="url(#pgold)"/><path d="M1579 1696 l-151 -164 -59 -133 c-51 -119 -56 -135 -41 -141 58 -25 447 -166 450 -163 2 1 -22 53 -53 114 l-56 112 34 269 c18 149 32 270 31 270 -2 0 -71 -74 -155 -164z" fill="url(#pgold)"/><path d="M881 1518 c0 -7 24 -65 53 -128 l52 -115 140 -3 140 -3 52 123 c29 68 52 126 52 131 0 4 -110 7 -245 7 -190 0 -245 -3 -244 -12z" fill="url(#pgold)"/><path d="M1004 1093 c4 -76 13 -275 21 -443 8 -168 15 -338 16 -378 2 -85 6 -89 56 -63 37 19 38 19 76 -1 22 -11 40 -18 42 -16 1 2 10 203 19 448 9 245 19 478 22 518 l6 72 -132 0 -133 0 7 -137z" fill="url(#pgold)"/><path d="M712 1122 l-224 -86 29 -26 c50 -42 305 -255 314 -261 5 -3 44 -121 86 -262 42 -141 78 -255 80 -254 1 2 -4 136 -12 298 -8 162 -15 297 -15 302 0 4 -27 7 -60 7 l-60 0 -48 65 c-100 136 -100 134 37 66 66 -34 123 -61 125 -61 5 0 -3 222 -10 268 -6 40 20 46 -242 -56z" fill="url(#pgold)"/><path d="M1296 1064 c-3 -81 -4 -149 -2 -151 2 -2 59 23 126 57 139 69 135 76 40 -63 l-45 -66 -62 -1 c-35 0 -63 -1 -64 -2 -2 -10 -26 -614 -24 -616 1 -2 31 113 66 253 35 141 66 260 69 264 3 4 85 71 183 150 97 79 177 147 177 150 0 7 -386 154 -437 167 -19 5 -20 -2 -27 -142z" fill="url(#pgold)"/></g>`;
+    case 'fox': return `<g transform="translate(32,32) scale(0.1614) translate(-223.504,-224.058) translate(0.000000,447.000000) scale(0.100000,-0.100000)"><path d="M1476 3428 c-93 -629 -45 -1043 152 -1302 20 -27 43 -57 51 -68 11 -15 2 -13 -52 11 -170 76 -292 194 -365 349 -26 56 -27 56 -30 25 -2 -18 4 -74 13 -124 31 -179 130 -340 283 -457 46 -35 33 -38 -30 -7 -74 38 -162 98 -237 163 -75 66 -76 53 -2 -72 65 -112 166 -209 309 -297 222 -137 308 -224 378 -384 62 -140 78 -166 127 -211 69 -62 136 -77 235 -52 76 19 137 88 199 228 87 193 168 281 366 399 171 102 267 194 347 331 66 112 62 121 -20 50 -94 -81 -272 -191 -286 -178 -2 2 24 27 57 55 169 146 284 385 267 556 -3 31 -4 29 -34 -33 -68 -142 -183 -255 -332 -327 -40 -19 -75 -33 -77 -31 -3 2 16 31 40 64 139 184 206 434 206 768 0 178 -2 220 -21 356 -35 257 -36 260 -65 188 -37 -95 -99 -180 -229 -316 -201 -210 -268 -307 -317 -456 l-21 -68 -22 39 c-11 21 -43 84 -71 141 -55 114 -63 119 -87 61 -11 -27 -21 -38 -29 -33 -8 4 -9 3 -5 -4 4 -6 -15 -55 -42 -108 l-48 -97 -23 69 c-49 146 -113 242 -273 409 -163 170 -212 232 -256 326 -43 91 -47 94 -56 37z m65 -215 c17 -52 89 -170 169 -278 133 -178 199 -332 225 -525 20 -147 18 -168 -9 -90 -45 128 -152 310 -174 296 -18 -11 -73 -138 -85 -196 l-13 -65 -12 47 c-20 79 -15 217 13 339 25 109 25 110 7 137 -47 66 -115 235 -137 340 -9 44 1 41 16 -5z m1390 -46 c-31 -112 -92 -254 -133 -304 -7 -8 -2 -47 16 -121 29 -121 35 -259 14 -340 l-12 -47 -13 64 c-12 59 -66 186 -84 197 -22 13 -131 -170 -175 -296 -27 -77 -29 -57 -9 90 25 186 73 306 191 478 146 211 171 250 194 305 31 76 35 66 11 -26z m-1121 -1272 c149 -31 250 -129 250 -242 l0 -22 -24 24 c-13 13 -50 31 -82 41 -70 20 -91 36 -114 89 -17 39 -51 76 -100 108 -30 21 -20 21 70 2z m920 -2 c-49 -32 -83 -69 -100 -108 -23 -53 -44 -69 -114 -90 -37 -10 -69 -27 -86 -45 l-27 -29 9 52 c20 111 99 185 233 218 95 24 118 24 85 2z m-486 -693 c39 1 88 7 109 14 44 16 46 9 11 -34 -74 -87 -184 -88 -257 -1 -38 45 -34 51 20 35 25 -8 78 -14 117 -14z" fill="url(#pgold)"/></g>`;
+    case 'tiger': return `<g transform="translate(32,32) scale(0.1447) translate(-276.539,-276.792) translate(0.000000,554.000000) scale(0.100000,-0.100000)"><path d="M2369 4135 c-29 -19 -99 -123 -99 -149 0 -12 186 24 258 49 10 4 4 18 -20 51 -52 73 -83 84 -139 49z" fill="url(#pgold)"/><path d="M3140 4131 c-14 -5 -69 -31 -123 -60 -94 -49 -100 -51 -180 -51 -127 -1 -354 -36 -380 -59 -4 -4 48 -24 115 -45 68 -21 160 -53 206 -71 45 -18 82 -29 82 -25 0 14 -106 107 -153 134 -61 36 -59 37 38 19 122 -22 247 -20 288 6 142 92 229 89 258 -8 41 -136 -80 -271 -242 -271 -29 0 -27 -3 55 -81 144 -136 206 -252 221 -409 l7 -75 -29 45 c-16 25 -55 67 -87 93 l-56 49 20 -52 c44 -111 36 -235 -22 -362 -17 -38 -34 -68 -37 -68 -3 0 -17 28 -30 63 -39 101 -47 109 -67 61 -38 -93 -104 -222 -134 -263 l-33 -45 -24 50 c-84 168 -283 235 -476 161 -119 -46 -187 -104 -187 -160 0 -25 -3 -27 -22 -21 -42 12 -97 44 -132 74 -18 17 -37 30 -41 30 -8 0 -1 -57 11 -99 6 -21 5 -22 -12 -13 -53 28 -97 91 -109 156 l-7 37 -29 -27 c-32 -31 -36 -21 -14 32 27 66 108 75 222 24 68 -30 128 -26 236 16 140 54 162 84 107 147 -40 46 -100 70 -253 102 -209 42 -267 72 -267 135 1 41 30 68 113 104 43 19 80 36 83 39 2 2 -27 14 -66 27 -70 22 -172 24 -265 5 l-30 -7 23 19 c12 10 110 63 217 117 107 54 195 103 195 107 0 5 -18 9 -40 9 l-40 0 19 38 c10 20 31 48 45 61 l26 25 208 -24 c114 -13 236 -27 272 -31 36 -4 66 -6 68 -4 8 7 -112 66 -193 94 -130 45 -124 42 -90 57 76 34 -117 -10 -280 -63 -133 -44 -139 -48 -155 -124 l-13 -60 -96 -49 c-53 -28 -123 -67 -157 -89 l-61 -39 -6 -73 c-9 -128 15 -221 80 -307 l25 -33 23 26 c35 37 42 32 53 -47 l11 -72 -34 -37 c-59 -66 -68 -155 -25 -252 l18 -42 14 33 15 33 27 -35 c62 -82 144 -135 230 -151 l38 -8 -27 47 c-15 25 -25 46 -22 46 2 0 24 -9 48 -19 69 -31 155 -39 144 -15 -23 52 -12 96 34 131 50 39 62 35 92 -32 23 -51 24 -136 2 -257 -20 -113 -24 -353 -6 -383 l12 -20 1 20 c0 11 12 45 27 75 l27 55 7 -100 c10 -127 31 -222 80 -358 36 -102 155 -347 168 -347 4 0 15 32 25 70 66 258 275 534 657 868 270 236 316 294 354 447 20 83 16 182 -14 290 -11 38 -19 71 -18 72 2 1 45 -22 97 -51 107 -60 112 -59 74 16 -56 113 -120 187 -299 348 l-50 44 77 7 c139 12 144 16 60 49 -67 26 -283 160 -310 193 -9 11 -7 23 9 58 44 90 32 235 -24 287 -48 45 -131 63 -197 43z m319 -811 c70 -132 89 -267 51 -374 -51 -148 -214 -369 -404 -546 -193 -181 -358 -419 -430 -621 -41 -113 -51 -103 -41 39 20 302 111 482 406 797 46 50 104 115 129 145 25 30 53 64 64 75 179 191 221 374 132 590 l-16 40 40 -45 c21 -25 52 -70 69 -100z m-1744 74 c15 -6 55 -75 69 -121 6 -20 -56 -85 -69 -71 -8 8 -33 171 -28 184 6 16 6 16 28 8z m351 -298 c20 -6 20 -10 11 -56 -5 -28 -13 -50 -18 -50 -15 0 -40 46 -46 85 -6 40 -10 39 53 21z m1603 -249 c-10 -80 -45 -160 -85 -198 l-26 -24 17 40 c45 106 76 203 82 258 6 56 7 59 14 29 4 -19 3 -66 -2 -105z m-1104 -228 c53 -103 53 -202 0 -394 l-25 -90 5 135 4 135 -51 -55 c-47 -51 -50 -53 -43 -25 24 100 57 287 58 328 1 56 9 51 52 -34z" fill="url(#pgold)"/><path d="M3165 3998 c-37 -10 -53 -23 -88 -69 -36 -48 -35 -60 5 -48 18 5 39 9 46 9 42 0 -71 -76 -139 -93 l-52 -14 33 -11 c126 -45 265 22 278 133 9 86 -14 112 -83 93z" fill="url(#pgold)"/><path d="M2450 3721 c-93 -17 -164 -66 -242 -163 -37 -48 -34 -53 23 -32 30 12 74 17 139 16 90 0 160 16 160 37 0 17 78 85 118 102 50 22 54 39 10 39 -18 0 -62 2 -98 4 -36 3 -85 1 -110 -3z" fill="url(#pgold)"/><path d="M2870 3662 c0 -5 11 -29 25 -54 63 -114 72 -268 19 -373 -59 -118 -95 -135 -282 -135 -139 0 -144 -5 -45 -51 202 -95 385 -57 466 95 37 70 32 220 -11 311 -48 100 -172 250 -172 207z" fill="url(#pgold)"/><path d="M2745 3625 c4 -11 10 -57 13 -102 10 -168 -83 -251 -283 -255 -79 -1 -73 -12 24 -49 245 -93 428 95 316 324 -28 56 -88 127 -70 82z" fill="url(#pgold)"/><path d="M2625 3562 c-34 -84 -107 -118 -237 -109 -43 3 -78 3 -78 1 0 -3 32 -20 72 -39 162 -78 303 -23 284 111 -10 76 -22 86 -41 36z" fill="url(#pgold)"/><path d="M2088 3350 c-32 -20 -9 -37 60 -44 159 -16 255 -19 248 -8 -21 34 -269 76 -308 52z" fill="url(#pgold)"/><path d="M2080 3247 c0 -19 8 -21 140 -42 142 -22 157 -19 82 17 -77 37 -222 53 -222 25z" fill="url(#pgold)"/></g>`;
+    case 'bear': return `<g transform="translate(32,32) scale(0.1795) translate(-179.821,-179.900) translate(0.000000,360.000000) scale(0.100000,-0.100000)"><path d="M857 2863 c-39 -54 -88 -171 -89 -212 -3 -84 110 -313 190 -384 20 -18 20 -18 -14 -118 -76 -226 -85 -462 -27 -673 l16 -58 18 23 17 23 42 -85 c145 -289 380 -507 708 -655 l82 -37 62 27 c323 140 575 366 710 636 29 58 54 107 56 110 2 3 12 -6 22 -20 l18 -24 12 43 c66 245 49 521 -44 746 l-16 38 33 36 c75 83 133 191 170 316 21 71 -21 198 -92 285 l-29 35 -89 -18 c-101 -21 -217 -65 -284 -108 l-46 -29 -69 31 c-98 44 -239 89 -277 89 -17 0 -56 -11 -84 -25 l-53 -24 -52 24 c-29 14 -65 25 -79 25 -37 0 -174 -43 -270 -84 l-82 -36 -56 34 c-75 45 -170 81 -263 100 -105 22 -102 22 -141 -31z m195 -70 c60 -25 82 -38 179 -99 40 -25 40 -25 24 -51 -9 -14 -13 -24 -8 -22 4 2 37 19 73 38 74 38 172 77 245 97 57 15 119 -6 196 -67 l39 -31 38 30 c20 16 63 42 94 58 l56 27 99 -32 c54 -18 136 -53 182 -77 97 -52 96 -51 75 -19 -16 24 -15 24 42 61 64 41 151 85 207 105 36 13 39 12 64 -14 l28 -27 -27 0 c-39 0 -93 -67 -147 -182 l-47 -98 -18 31 c-47 79 -18 -21 52 -182 97 -222 135 -400 130 -597 l-3 -103 -35 26 -35 26 -16 -54 c-18 -62 -68 -162 -109 -221 -36 -53 -106 -119 -95 -91 80 206 109 481 69 657 l-16 70 -30 -52 c-33 -57 -39 -56 -57 10 -21 73 -68 156 -128 227 -31 37 -52 68 -46 70 7 3 30 17 52 33 35 26 43 28 71 19 53 -19 43 -3 -19 30 -67 35 -164 52 -258 45 -79 -7 -106 14 -94 68 10 45 -8 40 -53 -13 l-26 -31 -26 31 c-45 53 -63 58 -53 13 12 -54 -15 -75 -94 -68 -85 6 -190 -10 -246 -39 -66 -33 -84 -57 -26 -35 21 8 32 5 66 -20 22 -16 45 -30 52 -33 6 -2 -15 -33 -46 -70 -60 -71 -107 -154 -128 -227 -18 -66 -24 -67 -57 -11 l-29 52 -12 -43 c-46 -161 -17 -473 64 -683 5 -13 -9 -4 -37 23 -58 55 -124 167 -158 265 l-26 77 -35 -25 -34 -26 -3 105 c-5 198 29 355 133 601 79 189 95 248 46 173 -21 -33 -21 -33 -27 -10 -31 112 -139 267 -181 259 -29 -5 -29 0 -1 30 27 29 33 29 110 -4z m-122 -138 c-15 -65 -12 -80 30 -128 30 -33 40 -54 40 -79 0 -18 4 -48 9 -66 6 -18 6 -32 2 -30 -20 7 -86 98 -112 153 -40 83 -37 116 14 172 26 29 28 26 17 -22z m1786 -17 c20 -38 17 -65 -11 -127 -49 -104 -135 -201 -114 -128 5 18 9 47 9 65 0 25 10 46 41 80 42 48 48 89 22 160 -10 26 35 -16 53 -50z m-839 -266 c110 -45 243 -148 243 -189 0 -9 -13 -40 -30 -70 -40 -70 -42 -145 -5 -199 40 -60 41 -77 4 -129 -35 -48 -47 -53 -82 -31 -12 7 -35 17 -52 21 -28 6 -29 5 -14 -12 33 -37 30 -51 -18 -93 -45 -39 -47 -40 -123 -40 -76 0 -78 1 -124 41 l-47 41 20 34 c24 40 14 43 -44 14 -22 -11 -45 -20 -51 -20 -12 0 -74 86 -74 102 0 14 39 86 50 93 23 14 11 123 -20 178 -16 30 -30 61 -30 70 0 38 143 150 246 192 73 30 68 31 151 -3z m-547 -757 c72 -172 251 -441 393 -592 17 -18 29 -35 26 -37 -8 -9 -163 127 -213 186 -27 32 -51 57 -52 55 -5 -5 22 -101 36 -126 26 -50 -12 -7 -63 72 -120 182 -174 341 -191 562 l-6 70 19 -55 c10 -30 33 -91 51 -135z m1001 78 c-24 -205 -75 -347 -184 -515 -71 -109 -79 -113 -49 -26 30 89 26 91 -34 20 -50 -59 -205 -195 -213 -186 -3 2 11 21 30 42 169 179 364 492 427 685 34 106 37 103 23 -20z m-703 -139 l52 -25 0 -56 c0 -66 33 -235 60 -306 11 -29 20 -54 20 -57 0 -3 -25 33 -56 80 -73 111 -148 267 -173 358 l-20 73 32 -21 c18 -12 56 -33 85 -46z m441 -6 c-30 -107 -199 -438 -224 -438 -2 0 8 34 21 75 29 91 54 229 54 296 l0 48 53 24 c28 13 63 34 77 45 38 33 40 28 19 -50z" fill="url(#pgold)"/><path d="M1753 2315 c-54 -16 -100 -45 -142 -89 l-34 -35 23 -35 c35 -58 54 -62 80 -18 l23 37 13 -38 c7 -20 20 -47 29 -59 35 -51 -2 -157 -57 -158 -44 0 -77 -18 -98 -52 -24 -40 -23 -42 31 -22 64 23 287 23 353 0 59 -20 61 -19 36 22 -21 34 -54 52 -98 52 -55 1 -92 107 -57 158 9 12 22 39 29 59 l13 38 22 -37 c26 -42 39 -41 75 7 34 44 34 45 -19 94 -74 69 -156 97 -222 76z" fill="url(#pgold)"/><path d="M1705 1830 c-11 -17 23 -66 59 -85 36 -19 36 -19 73 0 36 20 76 71 67 87 -7 11 -192 10 -199 -2z" fill="url(#pgold)"/></g>`;
+    case 'eagle': return `<g transform="translate(32,32) scale(0.0909) translate(-220.000,-207.554) translate(0.000000,415.000000) scale(0.100000,-0.100000)"><path d="M0 4049 l0 -101 33 48 c17 27 51 63 75 81 89 68 -63 63 2162 61 l2015 -3 50 -24 c28 -14 53 -27 58 -29 4 -2 7 12 7 32 l0 36 -2200 0 -2200 0 0 -101z" fill="url(#pgold)"/><path d="M1841 4008 c-32 -68 -70 -156 -82 -195 -20 -64 -39 -94 -39 -63 0 16 -69 46 -79 34 -4 -5 -18 -34 -29 -64 -19 -46 -42 -123 -133 -436 -5 -18 -17 -38 -26 -45 -14 -12 -15 -11 -8 11 19 59 25 100 25 183 0 48 -4 87 -8 87 -13 0 -242 -237 -319 -330 -191 -231 -325 -426 -344 -500 l-13 -51 -180 -90 c-409 -206 -531 -351 -544 -646 -5 -115 18 -270 39 -258 5 4 9 -7 9 -23 0 -25 5 -31 33 -37 28 -7 29 -9 10 -12 -31 -6 -29 -15 13 -84 45 -75 119 -151 172 -178 53 -27 53 -27 32 17 -52 108 -42 223 26 293 139 144 696 364 847 335 75 -14 34 -47 -78 -62 -276 -36 -654 -226 -725 -363 -44 -87 -22 -117 48 -66 197 141 555 184 671 80 36 -32 118 -80 94 -54 -7 7 -13 18 -13 23 0 6 15 -5 33 -25 17 -20 57 -49 87 -64 170 -84 325 -224 393 -353 l37 -70 -69 -193 c-168 -475 -253 -809 -206 -809 24 0 173 359 291 697 43 126 47 130 62 73 9 -38 7 -46 -43 -143 -83 -159 -146 -370 -144 -480 1 -33 4 -25 15 38 33 188 158 492 193 471 4 -3 18 -64 32 -137 26 -148 34 -145 45 21 7 108 -7 263 -36 373 -21 85 -23 82 25 57 86 -44 85 -23 -10 140 l-26 45 51 -54 c65 -68 122 -152 182 -266 60 -114 63 -91 3 31 -70 144 -170 269 -353 440 -226 212 -354 292 -544 338 -100 24 -107 32 -40 43 72 12 172 6 289 -17 92 -19 114 -20 167 -10 91 17 92 20 30 70 -174 139 -246 247 -252 380 l-4 86 59 36 c71 44 141 110 212 201 58 74 76 83 126 67 61 -20 116 -117 154 -273 27 -109 56 -189 81 -219 l18 -23 12 30 c7 18 10 62 8 108 -5 88 -3 88 36 -3 16 -36 50 -105 76 -155 44 -82 103 -227 175 -427 40 -113 65 -97 65 42 0 45 3 80 8 78 4 -2 54 -27 112 -55 217 -105 361 -273 464 -538 17 -45 38 -92 48 -106 35 -52 3 343 -37 437 -27 66 23 18 56 -54 110 -236 177 -552 201 -955 6 -114 15 -207 19 -207 12 0 59 116 77 193 l17 75 34 -40 33 -39 30 28 c85 79 92 301 18 609 -10 43 -17 80 -15 82 13 14 129 -322 173 -505 21 -89 31 -113 47 -119 18 -5 18 -7 3 -11 -22 -6 -23 -32 -3 -59 14 -19 15 -18 35 6 l20 25 0 -23 c0 -15 -9 -27 -26 -34 -21 -10 -25 -17 -21 -42 2 -17 10 -73 17 -124 8 -50 17 -92 22 -92 13 0 58 97 71 155 l12 54 34 -99 c39 -115 37 -113 96 -59 100 92 130 233 81 384 -31 96 -32 94 40 50 69 -41 170 -75 225 -75 l39 0 0 221 -1 221 -25 -6 c-22 -6 -25 -4 -19 14 5 16 2 20 -19 20 -17 0 -27 7 -32 23 -4 12 -41 59 -83 103 -50 54 -90 108 -116 160 -22 44 -55 105 -73 136 -18 32 -41 92 -52 133 -34 132 -160 362 -279 510 -31 38 -32 40 -12 49 l20 9 -21 41 c-33 65 -98 157 -142 202 -23 23 -62 66 -89 97 -64 76 -152 142 -267 200 -52 27 -96 50 -98 52 -9 8 85 -18 193 -55 121 -41 155 -47 155 -31 0 48 -402 157 -664 181 -151 14 -144 20 22 20 112 0 143 3 149 14 11 20 201 -12 321 -54 127 -44 145 -39 121 32 -47 145 -238 223 -624 255 l-90 7 100 17 c129 22 56 26 -85 5 -170 -26 -129 -13 170 54 120 26 160 49 160 90 0 44 -43 62 -162 68 -85 4 -231 -9 -276 -25 -36 -13 5 17 78 56 94 50 251 112 355 140 144 39 161 54 113 98 -82 74 -372 47 -577 -53 -47 -23 -87 -41 -88 -40 -1 1 28 26 64 56 94 78 123 106 123 119 0 53 -344 -249 -509 -447 -24 -28 -46 -50 -49 -47 -10 9 66 111 152 205 113 122 127 151 134 264 l5 89 -42 -7 c-24 -3 -65 -18 -93 -32 -62 -31 -60 -34 -38 51 19 69 27 225 13 225 -25 0 -140 -98 -182 -154 -45 -60 -46 -59 -47 32 -3 129 -47 292 -80 292 -7 0 -40 -55 -73 -122z m79 -55 c6 -21 14 -83 17 -138 l5 -100 -55 -172 c-44 -135 -69 -194 -117 -275 -33 -56 -60 -106 -60 -110 0 -27 53 38 90 110 54 106 122 210 223 342 44 58 66 92 48 75 -18 -16 -58 -63 -88 -102 -69 -90 -74 -91 -27 -5 60 108 104 170 142 202 49 40 56 38 49 -17 -7 -47 -19 -75 -169 -368 -131 -257 -119 -275 27 -40 97 156 161 226 245 270 47 24 53 20 48 -35 -5 -44 -16 -64 -120 -202 -343 -453 -319 -538 52 -185 206 197 324 277 484 326 126 39 130 24 9 -34 -62 -29 -113 -56 -113 -59 0 -4 30 9 68 28 88 44 212 86 253 86 47 0 28 -14 -71 -50 -315 -116 -677 -383 -658 -486 7 -33 -242 -108 -353 -105 -68 2 -106 -2 -132 -13 -47 -19 -50 -38 -5 -25 142 40 585 -123 658 -243 56 -92 7 -99 -99 -14 -141 114 -240 163 -361 180 -34 4 -21 -2 50 -27 111 -37 165 -68 235 -131 l50 -45 -73 24 c-40 13 -85 32 -100 43 -56 39 -65 31 -17 -15 185 -173 225 -213 253 -252 27 -37 42 -81 28 -81 -2 0 -62 34 -132 76 -325 193 -412 219 -580 172 -104 -30 -205 2 -184 57 17 45 17 45 -212 -35 -148 -52 -275 -70 -331 -47 l-37 16 0 65 c0 87 23 143 105 262 121 173 395 481 416 468 28 -17 -48 -242 -90 -268 -17 -11 -13 -26 7 -26 10 0 47 25 83 55 81 70 168 130 175 122 8 -8 -24 -36 -121 -107 -131 -95 -239 -200 -223 -216 2 -2 35 26 74 62 100 94 234 207 239 202 13 -13 -63 -124 -123 -178 -63 -57 -65 -59 -32 -50 53 15 63 13 57 -12 -7 -26 1 -68 13 -68 25 0 180 326 180 379 0 6 15 30 33 54 42 55 80 157 117 312 24 98 79 273 115 368 11 27 23 20 35 -20z m-213 -295 c33 -73 -127 -412 -172 -366 -7 7 102 355 114 362 9 6 7 -12 -15 -123 -8 -40 -14 -76 -13 -80 2 -20 30 83 41 150 13 80 27 98 45 57z m1209 -400 c14 -22 -35 -45 -143 -67 -294 -61 -482 -123 -470 -155 4 -10 -6 -17 -34 -24 -21 -5 -39 -7 -39 -3 0 27 233 216 279 226 136 30 394 45 407 23z m-35 -253 c162 -15 236 -32 295 -67 47 -28 40 -30 -42 -13 -113 24 -128 16 -17 -10 56 -13 111 -29 122 -35 24 -12 29 -35 5 -26 -31 12 -211 45 -279 52 -44 4 -86 15 -113 30 -111 60 -495 47 -598 -21 -39 -25 -29 -25 96 -4 209 37 440 26 440 -20 0 -4 -46 -11 -102 -14 -129 -8 -259 -30 -367 -63 l-83 -25 -82 34 c-44 19 -98 40 -118 47 -21 6 -38 13 -38 16 0 5 63 32 144 60 56 19 66 21 55 7 -12 -15 -12 -16 3 -10 199 74 379 91 679 62z m-441 -235 c11 -6 75 -17 142 -26 307 -37 542 -126 736 -277 94 -73 88 -70 111 -55 33 20 63 -13 37 -41 -13 -14 -14 -21 -6 -26 7 -4 16 -1 21 6 4 7 11 10 15 6 4 -3 2 -12 -4 -19 -7 -10 -4 -21 15 -43 106 -128 96 -162 -28 -97 -30 15 -72 29 -94 31 -27 1 -52 12 -75 32 -178 151 -324 230 -462 254 -54 9 -47 1 28 -34 102 -48 398 -251 412 -283 2 -5 8 -8 14 -8 5 0 -2 14 -17 31 -14 17 -23 34 -19 38 15 15 64 -62 50 -78 -8 -9 -16 -31 -18 -50 -5 -57 -29 -61 -85 -15 -43 35 -46 36 -30 11 10 -16 17 -33 15 -39 -2 -5 -21 15 -41 46 -75 113 -349 272 -614 357 -65 20 -73 26 -79 53 -9 43 -29 80 -65 121 l-31 35 30 0 c83 0 366 -69 560 -136 139 -48 165 -52 71 -9 -147 66 -369 128 -664 187 l-60 11 40 13 c51 16 71 17 95 4z m-1096 -252 c79 -112 -45 -259 -160 -189 -52 32 -91 158 -49 163 8 0 21 1 28 2 8 1 11 -10 9 -30 -4 -41 25 -76 63 -76 49 0 73 63 41 107 -13 18 -12 21 12 32 37 16 39 16 56 -9z m1014 -12 c169 -45 432 -170 612 -290 89 -59 116 -73 127 -64 7 6 17 8 20 4 4 -4 1 -11 -6 -15 -19 -12 -5 -31 23 -31 14 0 27 -9 34 -24 6 -13 43 -48 83 -77 132 -99 306 -279 398 -412 39 -57 22 -63 -66 -23 l-52 25 34 -48 c70 -97 145 -287 145 -367 0 -72 -15 -57 -43 43 -45 159 -174 389 -268 478 l-42 40 7 -33 c3 -21 23 -50 54 -80 118 -116 298 -484 259 -530 -9 -12 -17 -3 -42 49 -17 35 -41 83 -54 107 l-22 43 -19 -23 c-10 -13 -22 -19 -27 -14 -4 5 -2 11 5 13 6 3 12 11 12 18 0 7 5 15 10 17 6 2 -15 36 -45 76 -30 41 -53 77 -50 82 6 9 -85 115 -294 343 -210 230 -352 338 -607 468 -104 52 -131 71 -151 102 -13 22 -23 40 -21 42 15 14 377 -155 553 -260 108 -63 75 -29 -44 46 -108 68 -329 179 -472 237 -82 32 -168 81 -147 82 4 0 47 -11 96 -24z m-270 -110 c57 -36 98 -97 242 -358 29 -54 55 -96 57 -94 5 5 -118 258 -157 324 -29 48 -31 63 -5 44 6 -4 54 -61 107 -127 101 -127 207 -234 374 -377 117 -101 150 -137 176 -196 31 -69 19 -78 -51 -43 -32 17 -99 47 -147 67 -237 98 -294 155 -422 426 -57 121 -110 209 -186 311 -41 54 -40 56 12 23z m-1618 -46 c0 -111 70 -247 168 -325 79 -62 84 -62 288 -9 305 80 427 67 427 -46 0 -25 -7 -48 -17 -58 -15 -15 -16 -13 -14 27 5 129 -181 117 -552 -36 -145 -60 -237 -106 -307 -154 -56 -37 -57 -37 -37 9 63 149 -15 384 -150 451 l-50 25 57 51 c50 45 157 114 180 115 4 0 7 -23 7 -50z m2109 -135 c228 -117 377 -247 635 -552 48 -57 84 -107 81 -113 -15 -24 -49 -7 -101 48 -47 50 -54 54 -54 34 0 -23 -1 -23 -41 10 -93 77 -83 72 -113 53 -36 -24 -67 -10 -191 90 -239 191 -416 399 -366 429 25 16 330 -217 511 -390 107 -102 111 -105 65 -46 -81 104 -324 315 -497 432 -134 90 -98 92 71 5z m965 -231 c39 -44 110 -136 159 -203 48 -68 87 -121 87 -117 0 25 -150 241 -247 355 -73 86 -72 82 -6 74 l51 -6 74 -111 c65 -99 233 -414 225 -422 -2 -2 -34 7 -73 21 -63 22 -73 30 -122 92 -29 37 -106 121 -170 186 l-117 117 0 53 c-1 28 -5 68 -9 87 l-8 35 42 -40 c23 -22 74 -76 114 -121z m-2449 -163 c-71 -20 -178 -56 -236 -79 -109 -43 -191 -60 -119 -23 135 67 368 140 445 140 31 0 11 -9 -90 -38z m2016 -245 c37 -35 88 -76 113 -91 53 -31 132 -176 191 -350 18 -55 34 -93 34 -84 2 35 -51 192 -95 289 -51 109 -51 111 -12 103 30 -6 53 -58 107 -244 88 -306 113 -534 69 -619 -34 -67 -42 -57 -55 70 -35 355 -165 631 -411 874 l-80 79 31 18 c18 9 34 17 36 18 2 0 34 -28 72 -63z m787 -134 c20 -20 57 -75 82 -120 108 -198 195 -302 324 -387 83 -55 82 -54 63 -79 -25 -34 -87 -38 -132 -8 -61 41 -206 193 -240 250 -36 61 -50 66 -42 15 15 -93 171 -262 322 -350 50 -29 97 -57 105 -62 19 -12 4 -40 -33 -61 -120 -68 -537 245 -537 404 0 36 13 49 23 22 23 -59 218 -253 327 -325 l35 -23 -30 26 c-248 218 -329 326 -370 491 -13 53 -38 124 -55 157 -37 74 -37 72 0 53 16 -8 42 -15 57 -15 25 0 33 -8 55 -52 39 -80 140 -216 210 -283 66 -64 62 -52 -11 30 -88 101 -214 306 -192 313 9 3 8 9 -5 23 -32 36 6 19 44 -19z m-69 -587 c18 -41 55 -135 83 -208 80 -207 83 -184 7 47 -36 107 -35 108 23 48 115 -119 145 -376 52 -453 -20 -16 -18 -18 -59 114 -19 65 -66 204 -103 310 -38 105 -67 198 -64 205 10 29 32 7 61 -63z" fill="url(#pgold)"/><path d="M1842 3723 c-32 -131 -97 -315 -142 -402 -12 -25 -20 -56 -18 -74 6 -64 136 287 178 480 33 153 20 150 -18 -4z" fill="url(#pgold)"/><path d="M2133 3423 c-86 -96 -183 -224 -183 -240 0 -7 -5 -13 -11 -13 -5 0 -7 -5 -4 -10 4 -6 40 34 80 89 40 54 103 133 139 175 37 42 63 76 57 76 -5 0 -40 -35 -78 -77z" fill="url(#pgold)"/><path d="M1289 3238 c-80 -93 -179 -244 -178 -272 0 -20 1 -20 12 -2 35 56 171 257 203 299 54 70 33 57 -37 -25z" fill="url(#pgold)"/><path d="M493 499 c-147 -25 -303 -131 -362 -247 l-21 -41 68 28 c94 39 165 54 249 53 68 0 145 -21 82 -22 -56 0 -46 -125 14 -176 61 -52 244 -104 207 -59 -7 9 -10 18 -7 22 4 3 16 -5 27 -20 14 -17 26 -23 40 -20 25 7 25 9 0 40 -11 15 -18 29 -14 32 6 6 39 -30 46 -51 4 -12 28 -3 28 11 0 4 -9 17 -20 28 -10 12 -22 34 -26 50 -7 27 -7 28 13 10 24 -21 48 -2 37 29 -6 16 -5 17 7 7 7 -7 22 -13 32 -13 15 0 17 -3 9 -13 -14 -16 11 -57 34 -57 8 0 14 -4 14 -10 0 -5 -9 -10 -19 -10 -15 0 -31 -18 -31 -35 0 -29 323 -50 371 -25 60 33 2 105 -85 105 -36 0 -70 5 -75 10 -8 8 0 10 24 7 49 -6 44 4 -16 29 -52 23 -53 27 -7 47 24 10 30 8 57 -20 39 -40 51 -31 15 12 -21 24 -32 30 -48 25 -19 -6 -40 -9 -85 -14 -11 -1 -11 -4 -1 -16 7 -9 10 -18 6 -22 -3 -4 -13 3 -22 15 -8 12 -22 22 -31 22 -13 0 -13 -3 -3 -15 11 -13 10 -18 -8 -31 -34 -24 -30 -51 4 -29 18 11 25 13 22 4 -13 -39 -56 -36 -84 7 -18 26 -18 27 10 50 15 13 23 24 19 25 -4 0 0 4 10 8 15 5 9 11 -32 31 -50 23 -52 23 -88 6 l-37 -17 37 40 c55 61 38 135 -39 167 -49 20 -53 12 -15 -31 54 -62 26 -131 -74 -176 -65 -30 -100 -24 -39 6 27 13 68 44 92 68 l42 43 -25 36 c-31 46 -93 82 -163 97 -59 12 -65 12 -139 0z m189 -50 c42 -21 68 -54 68 -85 0 -31 -9 -34 -43 -14 -80 47 -213 47 -385 -1 -91 -25 -96 -21 -34 25 132 97 292 127 394 75z" fill="url(#pgold)"/><path d="M4344 423 c-28 -38 -56 -79 -63 -91 -7 -14 -20 -22 -31 -20 -12 2 -40 -24 -90 -84 -39 -49 -82 -91 -94 -94 -13 -3 -52 -34 -87 -70 l-63 -64 45 0 c39 0 47 4 62 30 10 16 29 33 42 36 46 11 247 232 294 323 55 106 49 119 -15 34z" fill="url(#pgold)"/><path d="M4340 203 c-31 -53 -60 -91 -67 -88 -7 2 -15 -6 -19 -18 -3 -12 -22 -39 -42 -60 l-36 -37 30 0 c38 0 54 17 134 139 48 73 60 100 58 125 -3 29 -6 25 -58 -61z" fill="url(#pgold)"/><path d="M190 28 c-85 -29 -48 -36 93 -17 76 10 112 10 161 1 104 -19 132 -15 76 11 -69 32 -242 35 -330 5z" fill="url(#pgold)"/></g>`;
+    case 'falcon': return `<g transform="translate(32,32) scale(0.1629) translate(-275.224,-180.054) translate(0.000000,365.000000) scale(0.100000,-0.100000)"><path d="M2545 2886 c-158 -27 -275 -65 -423 -140 -102 -52 -152 -86 -87 -60 235 95 416 99 734 14 160 -43 229 -56 336 -64 56 -4 65 -3 45 6 -109 48 -231 110 -259 132 l-35 26 36 0 c84 0 253 -48 361 -102 120 -60 137 -60 45 0 -238 155 -524 226 -753 188z" fill="url(#pgold)"/><path d="M2199 2694 c-205 -37 -373 -142 -430 -269 -22 -49 -22 -50 32 -25 101 45 189 8 247 -105 l21 -40 1 60 c0 77 14 127 47 165 31 37 39 34 18 -6 -8 -16 -15 -40 -15 -55 0 -24 2 -23 51 23 89 83 247 147 434 175 l50 7 -39 4 c-43 4 -211 -21 -296 -43 -72 -19 -76 -11 -9 20 l54 26 -71 -5 c-39 -3 -88 -11 -108 -20 -20 -8 -36 -11 -36 -7 0 16 80 61 152 86 l73 24 -50 0 c-27 -1 -84 -7 -126 -15z" fill="url(#pgold)"/><path d="M2825 2545 c-33 -7 -136 -37 -230 -65 -106 -32 -213 -57 -285 -66 -63 -9 -117 -17 -118 -19 -5 -5 72 -15 138 -18 l54 -2 8 -39 c24 -116 181 -146 257 -50 23 29 28 83 9 102 -6 6 -10 13 -7 15 7 7 133 36 137 32 11 -10 -42 -97 -86 -143 -111 -114 -230 -132 -328 -49 -44 37 -54 34 -54 -17 0 -47 -9 -56 -58 -56 -31 0 -152 -40 -152 -51 0 -12 317 -57 422 -59 47 -1 -36 -21 -127 -30 -164 -17 -177 -32 -99 -119 25 -28 44 -51 41 -51 -2 0 -24 7 -48 16 -56 21 -210 24 -262 6 -66 -24 -74 -49 -39 -129 77 -175 71 -263 -28 -410 -36 -55 -43 -70 -23 -51 68 65 190 125 395 193 310 103 405 159 500 295 16 24 17 22 2 -30 -43 -150 -139 -222 -509 -378 -344 -145 -495 -279 -549 -488 -23 -89 -19 -109 8 -39 80 213 221 299 558 340 235 28 353 95 460 260 65 100 88 208 104 500 7 134 30 238 69 314 31 62 37 65 20 9 -26 -89 -27 -171 -5 -390 34 -323 9 -436 -120 -550 -33 -29 -58 -53 -57 -55 8 -8 173 54 251 95 214 110 369 279 437 475 59 172 45 393 -28 426 -97 44 -144 -20 -213 -289 -58 -226 -114 -400 -125 -388 -2 2 1 21 6 43 5 22 14 159 19 305 9 295 19 352 73 407 49 52 143 67 222 37 58 -22 -16 28 -107 73 -190 94 -376 125 -533 88z" fill="url(#pgold)"/><path d="M3480 2547 c0 -5 11 -23 25 -41 54 -71 110 -233 124 -358 39 -350 -156 -697 -559 -997 -57 -43 -38 -36 74 27 139 77 238 155 391 308 209 207 253 217 413 88 l32 -27 -22 49 c-12 27 -52 141 -90 254 -75 224 -157 406 -236 521 -51 75 -151 191 -152 176z" fill="url(#pgold)"/><path d="M1716 2319 c-169 -90 -242 -328 -154 -509 l32 -65 6 61 c11 104 79 178 188 206 54 13 54 32 2 83 -22 21 -40 45 -40 52 0 19 -18 16 -67 -12 l-43 -26 0 32 c0 23 10 41 39 70 48 48 63 49 89 5 23 -39 54 -58 125 -75 27 -6 60 -19 74 -29 25 -16 26 -16 15 4 -14 27 -34 43 -90 74 -33 18 -56 42 -82 84 -42 70 -44 71 -94 45z" fill="url(#pgold)"/><path d="M1953 2039 c-134 -28 -323 -130 -323 -175 0 -29 208 -11 263 23 5 3 -1 12 -12 20 -28 19 -27 54 2 81 32 31 104 50 227 60 l105 9 -85 1 c-48 0 -125 -8 -177 -19z" fill="url(#pgold)"/><path d="M2089 2002 c-107 -56 -180 -105 -170 -115 18 -18 91 5 152 46 33 23 81 54 107 69 l47 28 -41 0 c-26 0 -61 -10 -95 -28z" fill="url(#pgold)"/></g>`;
+    case 'dragon': return `<g transform="translate(32,32) scale(0.1164) translate(-277.001,-277.561) translate(0.000000,554.000000) scale(0.100000,-0.100000)"><path d="M2266 4482 c-9 -14 51 -176 90 -243 21 -36 76 -103 126 -152 l88 -87 -42 6 c-535 75 -948 226 -1117 409 -48 52 -51 42 -17 -58 59 -176 242 -405 405 -508 l46 -29 -35 0 c-63 -1 -213 -37 -295 -72 -75 -32 -211 -115 -203 -123 2 -2 40 2 83 10 401 69 841 11 1160 -154 l70 -36 -125 -6 c-136 -6 -234 -29 -305 -73 l-40 -25 95 0 c141 1 160 -11 68 -40 -168 -54 -285 -140 -347 -256 -11 -22 -21 -45 -21 -51 0 -6 -46 -18 -102 -28 -57 -10 -140 -33 -185 -51 -95 -38 -95 -36 -16 63 81 99 234 233 395 345 154 108 181 150 123 196 -92 72 -688 82 -810 14 -13 -7 11 -14 94 -27 325 -50 331 -69 111 -351 -185 -237 -260 -387 -320 -638 -29 -121 -25 -128 29 -46 59 90 151 181 231 230 64 38 165 77 176 67 3 -4 -6 -48 -20 -100 -106 -392 -77 -804 79 -1120 42 -84 96 -171 102 -164 3 2 0 13 -6 24 -18 33 -34 193 -27 255 l8 58 68 -64 c73 -70 150 -112 220 -123 l44 -7 -48 49 c-273 276 -335 805 -138 1177 26 49 60 105 77 124 l30 35 0 -104 c1 -243 91 -397 290 -494 104 -51 113 -44 39 30 -235 235 -181 617 106 750 89 41 173 51 265 33 93 -19 95 -19 95 40 0 90 -75 133 -233 133 -83 0 -87 1 -75 19 31 50 86 71 191 71 96 0 99 1 128 29 115 116 -147 310 -556 412 -219 54 -361 112 -535 215 -99 59 -97 64 9 19 114 -48 225 -78 464 -125 419 -84 587 -141 834 -286 266 -156 493 -338 557 -448 55 -93 66 -101 386 -255 41 -20 96 -57 123 -82 47 -45 47 -46 47 -110 0 -45 -7 -78 -23 -113 l-23 -50 -21 35 c-35 55 -226 229 -253 229 -5 0 -10 -27 -12 -61 l-3 -60 -33 43 c-76 100 -263 270 -280 254 -2 -2 4 -18 12 -35 9 -16 16 -51 16 -76 l0 -47 -57 50 c-61 52 -251 182 -266 182 -5 0 -2 -10 7 -22 17 -25 29 -49 41 -86 7 -23 7 -23 -25 -7 -83 43 -239 63 -285 37 -21 -11 100 -68 258 -123 79 -27 103 -39 80 -39 -67 0 -248 43 -421 100 -147 49 -192 60 -246 60 -262 0 -425 -286 -302 -534 79 -160 178 -229 522 -360 242 -92 243 -92 360 -183 241 -185 298 -473 159 -807 -29 -69 142 109 184 192 111 221 71 469 -104 644 -104 104 -161 136 -453 252 -202 80 -307 152 -362 250 -97 169 62 292 351 271 54 -4 99 -9 99 -12 0 -3 -22 -24 -48 -48 -42 -38 -103 -138 -91 -149 3 -3 36 10 75 29 123 60 211 79 364 79 324 0 538 -122 543 -311 2 -64 15 -65 104 -6 185 122 260 276 250 513 -7 181 -55 274 -176 339 -70 37 -71 36 -30 -23 71 -100 40 -143 -81 -112 -202 52 -319 156 -361 322 -44 175 -156 300 -311 345 -35 10 -35 9 7 -37 37 -42 106 -162 85 -149 -40 25 -143 160 -212 280 -70 120 -146 184 -268 224 -82 27 -89 26 -58 -6 40 -44 84 -108 68 -98 -8 5 -40 27 -70 50 -79 60 -159 110 -262 162 -147 75 -263 173 -338 285 -21 32 -41 55 -44 50z" fill="url(#pgold)"/><path d="M3226 3418 c25 -81 124 -183 219 -227 39 -18 92 -43 119 -57 59 -31 62 -29 37 30 -45 103 -98 154 -206 196 -33 13 -86 36 -118 52 -59 29 -59 29 -51 6z" fill="url(#pgold)"/><path d="M4039 2884 c22 -25 45 -61 51 -80 14 -41 27 -44 36 -8 11 45 -7 77 -61 106 -69 38 -73 35 -26 -18z" fill="url(#pgold)"/><path d="M2007 2554 c-14 -14 -7 -340 8 -430 43 -252 135 -422 279 -518 90 -60 111 -62 56 -7 -135 135 -54 270 129 215 105 -31 167 -123 159 -234 -11 -149 -154 -225 -353 -187 -36 6 -35 5 19 -19 324 -141 690 23 713 320 19 230 -222 466 -476 466 l-35 0 50 -31 c83 -53 131 -96 173 -160 46 -69 51 -88 19 -67 -13 9 -104 59 -203 113 -274 149 -385 255 -498 479 -18 37 -36 63 -40 60z" fill="url(#pgold)"/><path d="M2945 2029 c5 -8 19 -27 31 -44 163 -222 131 -563 -75 -772 -54 -55 -194 -153 -219 -153 -7 0 -11 -4 -7 -9 11 -19 193 21 290 64 356 158 480 573 237 796 -76 70 -285 166 -257 118z" fill="url(#pgold)"/></g>`;
+    case 'cobra': return `<g transform="translate(32,32) scale(0.1341) translate(-266.435,-266.463) translate(0.000000,460.000000) scale(0.100000,-0.100000)"><path d="M2210 3424 c-14 -2 -62 -11 -107 -20 l-83 -16 51 -56 c36 -39 70 -96 114 -187 35 -71 85 -161 110 -200 36 -52 41 -64 20 -45 -42 39 -108 136 -159 235 -231 447 -627 148 -567 -428 28 -266 108 -522 273 -871 228 -486 281 -694 282 -1113 1 -138 2 -250 3 -249 15 14 37 277 37 444 l1 203 18 -43 c45 -105 150 -397 184 -511 20 -70 39 -125 41 -123 1 2 -18 97 -44 212 -85 385 -205 781 -344 1144 -228 594 -292 996 -200 1244 29 75 86 136 128 136 34 0 34 0 178 -164 144 -164 373 -336 476 -358 144 -30 373 134 675 485 53 63 117 42 173 -56 122 -213 60 -666 -173 -1267 -134 -348 -256 -747 -341 -1120 -70 -306 -70 -319 0 -95 38 124 167 475 184 504 7 11 8 -22 4 -104 -7 -123 8 -357 29 -475 11 -57 12 -43 8 128 -8 426 56 685 289 1181 165 350 244 605 270 869 58 579 -334 874 -566 427 -51 -99 -117 -196 -159 -235 -21 -19 -16 -7 20 45 25 39 76 130 111 203 46 96 79 149 114 186 l50 53 -82 18 c-118 27 -277 24 -393 -5 -115 -29 -222 -29 -335 -2 -83 21 -240 35 -290 26z m220 -400 c36 -79 41 -97 29 -105 -27 -17 -47 -9 -58 23 -12 34 -27 178 -19 178 2 0 24 -43 48 -96z m517 27 c-9 -111 -36 -157 -76 -132 -13 9 61 201 77 201 3 0 2 -31 -1 -69z" fill="url(#pgold)"/><path d="M2092 2868 c-103 -130 -96 -373 23 -748 97 -307 177 -626 256 -1025 28 -137 53 -252 56 -255 3 -3 3 9 0 25 -3 17 -9 66 -12 110 -27 338 -116 759 -240 1130 -140 423 -162 624 -79 750 17 26 14 35 -4 13z" fill="url(#pgold)"/><path d="M3234 2858 c75 -127 57 -347 -55 -678 -143 -421 -235 -842 -264 -1205 -3 -44 -9 -93 -12 -110 -3 -16 -3 -28 0 -25 3 3 31 131 62 285 66 328 154 683 226 915 147 470 159 688 44 825 -16 19 -16 18 -1 -7z" fill="url(#pgold)"/><path d="M2638 2576 c8 -95 -14 -213 -53 -290 -19 -38 -33 -71 -31 -74 6 -6 84 95 91 119 11 35 26 0 19 -43 -6 -42 9 -100 32 -119 13 -10 13 -8 3 17 -8 22 -8 47 2 102 12 71 7 289 -7 326 -4 9 -17 16 -33 16 -27 0 -28 -1 -23 -54z" fill="url(#pgold)"/><path d="M2265 2073 c30 -31 204 -76 335 -88 133 -12 440 45 466 86 4 7 0 9 -12 6 -193 -58 -566 -58 -774 -1 -17 4 -22 3 -15 -3z" fill="url(#pgold)"/><path d="M2316 1880 c18 -18 145 -58 224 -71 136 -21 358 6 449 56 34 18 11 18 -64 -1 -140 -34 -482 -25 -593 17 -20 8 -24 7 -16 -1z" fill="url(#pgold)"/><path d="M2405 1691 c49 -52 350 -66 468 -21 74 28 70 31 -18 14 -116 -22 -310 -17 -430 11 -22 6 -27 5 -20 -4z" fill="url(#pgold)"/><path d="M2430 1535 c0 -2 33 -14 73 -27 100 -31 226 -31 326 0 90 28 89 34 -4 16 -92 -18 -233 -17 -320 1 -80 17 -75 16 -75 10z" fill="url(#pgold)"/><path d="M2825 1379 c-55 -17 -189 -22 -264 -10 -85 13 -103 8 -40 -11 92 -27 339 -8 339 27 0 3 -1 5 -2 4 -2 0 -16 -5 -33 -10z" fill="url(#pgold)"/></g>`;
+    case 'owl': return `<g transform="translate(32,32) scale(0.1415) translate(-194.902,-173.590) translate(0.000000,345.000000) scale(0.100000,-0.100000)"><path d="M2345 3080 c-33 -34 -79 -70 -103 -80 -67 -30 -118 -75 -157 -141 -42 -68 -52 -76 -29 -21 9 20 18 42 21 48 14 36 -233 51 -324 20 -65 -22 -68 -26 -48 -72 22 -54 19 -54 -19 1 -54 81 -106 115 -173 115 -32 0 -112 42 -142 74 -37 39 -45 33 -37 -31 11 -98 58 -172 151 -242 l30 -22 -31 15 c-18 8 -45 27 -62 41 -70 59 -55 2 20 -73 l61 -61 -16 -43 c-35 -94 -31 -170 15 -278 11 -25 23 -63 27 -85 6 -35 10 -40 31 -38 14 1 57 -1 95 -4 l70 -7 -60 -8 c-145 -19 -181 -48 -251 -193 -135 -281 -55 -609 237 -975 129 -163 132 -176 53 -245 -87 -74 -106 -153 -48 -192 32 -21 39 -12 24 31 -13 41 -5 61 41 100 47 39 56 31 15 -14 -49 -54 -45 -111 10 -141 32 -17 38 -8 23 39 -13 43 1 75 46 102 19 13 19 12 2 -11 -48 -66 -39 -131 19 -142 38 -7 40 -4 19 39 -12 26 -15 42 -8 53 14 23 73 61 94 61 31 0 141 -92 194 -162 59 -79 65 -75 30 17 -50 135 -16 99 40 -41 40 -102 79 -144 131 -144 68 0 71 23 18 175 -7 22 -14 45 -14 50 0 18 59 -89 81 -148 41 -110 149 -124 149 -19 0 89 -116 389 -146 378 -53 -20 -129 31 -149 101 -10 34 -15 39 -50 43 -71 10 -125 71 -125 139 0 15 -10 21 -40 26 -62 10 -115 55 -134 113 -16 46 -20 50 -56 56 -62 10 -92 42 -98 106 -4 44 -10 58 -38 82 -59 52 -69 148 -29 276 20 67 28 63 15 -8 -31 -164 10 -265 87 -215 25 17 26 17 19 -1 -5 -11 -10 -47 -13 -81 -9 -105 36 -141 116 -92 l34 20 -7 -31 c-22 -112 73 -202 163 -156 l27 15 0 -74 c-1 -117 67 -164 143 -99 l31 26 -6 -46 c-17 -120 75 -196 123 -103 18 35 14 39 43 -39 13 -37 62 -90 88 -96 64 -17 78 41 42 167 -31 107 -57 288 -75 520 -40 512 -119 660 -381 708 -45 9 -62 15 -48 19 36 9 136 -11 203 -42 l63 -30 -7 38 c-3 20 -20 68 -35 106 -28 66 -29 72 -23 185 6 115 -4 175 -43 268 -3 7 15 34 39 60 85 92 89 138 5 57 l-51 -49 45 60 c62 81 74 108 93 203 22 110 19 112 -50 42z m-134 -415 l-20 -26 25 -52 c55 -119 22 -177 -156 -277 -41 -24 -96 -58 -121 -76 -60 -44 -60 -44 -43 19 20 74 18 150 -4 177 -53 65 -88 -66 -48 -179 18 -50 14 -62 -11 -39 -10 9 -64 39 -120 67 -174 87 -223 155 -188 265 10 30 15 62 12 71 -4 8 -2 15 3 15 21 0 166 -96 221 -147 32 -30 59 -50 59 -44 0 27 49 35 80 13 l29 -22 29 43 c37 52 82 93 179 163 82 59 105 68 74 29z" fill="url(#pgold)"/><path d="M2109 2598 c0 -1 -2 -26 -2 -54 -2 -65 -32 -95 -89 -92 -51 3 -71 -17 -32 -32 82 -32 173 53 155 143 -5 24 -28 50 -32 35z" fill="url(#pgold)"/><path d="M1597 2563 c-13 -13 -7 -84 9 -109 32 -48 116 -70 165 -43 32 17 12 28 -46 26 -67 -2 -96 21 -101 80 -2 21 -3 41 -3 46 -1 9 -15 9 -24 0z" fill="url(#pgold)"/><path d="M1318 911 c-70 -10 -67 -17 19 -44 95 -31 194 -75 252 -111 l43 -27 43 38 c55 49 55 50 -9 78 -123 54 -252 79 -348 66z" fill="url(#pgold)"/><path d="M1899 652 c-37 -33 -35 -72 4 -95 12 -7 51 -31 87 -52 72 -43 179 -126 224 -174 67 -70 46 -15 -47 124 -59 89 -123 161 -172 195 -53 37 -57 37 -96 2z" fill="url(#pgold)"/></g>`;
+    case 'serpent': case 'crane': return animalSvg('cobra');
+    default: return `<circle cx="32" cy="32" r="10" fill="url(#pgold)"/>`;
+  }
+}
+
+/* ============ PARTICLES ============ */
+function initParticles() {
+  const c = document.getElementById('particle-canvas'), ctx = c.getContext('2d');
+  let w, h, particles;
+  function resize() { w = c.width = window.innerWidth; h = c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  particles = Array.from({length: 28}, () => ({
+    x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.6+0.4,
+    vy: -(Math.random()*0.25+0.06), vx: (Math.random()-0.5)*0.18,
+    a: Math.random()*0.4+0.1, drift: Math.random()*Math.PI*2
+  }));
+  function tick() {
+    ctx.clearRect(0,0,w,h);
+    for (const p of particles) {
+      p.y += p.vy; p.drift += 0.01; p.x += p.vx + Math.sin(p.drift)*0.15;
+      if (p.y < -5) { p.y = h+5; p.x = Math.random()*w; }
+      if (p.x < -5) p.x = w+5; if (p.x > w+5) p.x = -5;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(201,162,39,${p.a})`; ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+/* ============ REST TIMER ============ */
+let timerInterval, timerRemaining, timerTotal;
+function startRestTimer(seconds, label) {
+  clearInterval(timerInterval);
+  timerTotal = seconds; timerRemaining = seconds;
+  document.getElementById('rt-label').textContent = label + ' rest';
+  updateTimerDisplay();
+  document.getElementById('rest-timer').classList.add('show');
+  timerInterval = setInterval(()=>{
+    timerRemaining--;
+    updateTimerDisplay();
+    if (timerRemaining <= 0) { finishTimer(); }
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.floor(Math.max(0,timerRemaining)/60), s = Math.max(0,timerRemaining)%60;
+  document.getElementById('rt-time').textContent = m+':'+String(s).padStart(2,'0');
+  document.getElementById('rt-progress').style.width = (100*(timerTotal-timerRemaining)/timerTotal)+'%';
+}
+function finishTimer() {
+  clearInterval(timerInterval);
+  beep(); if (navigator.vibrate) navigator.vibrate([200,100,200]);
+  document.getElementById('rt-time').textContent = "Done";
+  setTimeout(dismissTimer, 1500);
+}
+function adjustTimer(d) { timerRemaining = Math.max(1, timerRemaining + d); timerTotal = Math.max(timerTotal, timerRemaining); updateTimerDisplay(); }
+function dismissTimer() { clearInterval(timerInterval); document.getElementById('rest-timer').classList.remove('show'); }
+function beep() {
+  try {
+    const ac = new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.2,0.4].forEach(t=>{
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = 740; o.type = 'sine';
+      g.gain.setValueAtTime(0.0001, ac.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.3, ac.currentTime+t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime+t+0.15);
+      o.start(ac.currentTime+t); o.stop(ac.currentTime+t+0.16);
+    });
+  } catch(e) {}
+}
+
+/* ============ NAV / VIEW ROUTING ============ */
+const NAV = [
+  {id:"train", label:"Train"},
+  {id:"summary", label:"Summary"},
+  {id:"progress", label:"Progress"},
+  {id:"standards", label:"Standards"},
+  {id:"wellness", label:"Wellness"},
+  {id:"research", label:"Research"},
+  {id:"library", label:"Exercises"},
+];
+let wellnessSub = "recovery";
+let currentView = "train";
+let activeDay = 0;
+
+function renderNav() {
+  document.getElementById('main-nav').innerHTML = NAV.map(n =>
+    `<div class="nav-btn ${n.id===currentView?'active':''}" onclick="switchView('${n.id}')">${n.label}</div>`
+  ).join('');
+}
+function switchView(id) { currentView = id; renderNav(); renderView(); }
+
+function renderView() {
+  const v = document.getElementById('view');
+  if (currentView === 'train') v.innerHTML = trainView();
+  else if (currentView === 'summary') v.innerHTML = summaryView();
+  else if (currentView === 'progress') v.innerHTML = progressView();
+  else if (currentView === 'standards') v.innerHTML = standardsView();
+  else if (currentView === 'wellness') v.innerHTML = wellnessView();
+  else if (currentView === 'research') v.innerHTML = researchView();
+  else if (currentView === 'library') v.innerHTML = libraryView();
+
+  if (currentView === 'train') { renderDayTabs(); renderDay(); }
+  if (currentView === 'progress') drawProgressCharts();
+  if (currentView === 'standards') drawStandards();
+  if (currentView === 'wellness') renderWellnessSub();
+}
+
+function wellnessView() {
+  const subs = [
+    {id:"recovery", label:"Recovery"},
+    {id:"body", label:"Body"},
+    {id:"diet", label:"Diet & Fasting"},
+    {id:"supps", label:"Supplements"},
+  ];
+  let h = `<div class="sub-nav">`;
+  h += subs.map(s=>`<div class="sub-btn ${s.id===wellnessSub?'active':''}" onclick="switchWellness('${s.id}')">${s.label}</div>`).join('');
+  h += `</div><div id="wellness-body"></div>`;
+  return h;
+}
+function switchWellness(id) { wellnessSub = id; renderWellnessSub(); }
+function renderWellnessSub() {
+  const el = document.getElementById('wellness-body');
+  if (!el) return;
+  if (wellnessSub === 'recovery') { el.innerHTML = recoveryView(); drawRecoveryChart(); }
+  else if (wellnessSub === 'body') { el.innerHTML = bodyView(); drawBodyChart(); }
+  else if (wellnessSub === 'diet') { el.innerHTML = dietView(); initFastDisplay(); }
+  else if (wellnessSub === 'supps') { el.innerHTML = suppsView(); }
+  // re-mark active sub button
+  document.querySelectorAll('.sub-btn').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('onclick').includes("'"+wellnessSub+"'"));
+  });
+}
+
+/* ============ TRAIN VIEW ============ */
+function trainView() {
+  return `
+    <div class="nutrition-bar">
+      <div class="nut-item"><div class="nut-label">Maintenance</div><div class="nut-val">2,750<span class="nut-unit">kcal</span></div></div>
+      <div class="nut-item"><div class="nut-label">Cut target</div><div class="nut-val">2,350<span class="nut-unit">kcal</span></div></div>
+      <div class="nut-item"><div class="nut-label">Protein</div><div class="nut-val">175<span class="nut-unit">g+</span></div></div>
+    </div>
+    <div class="day-tabs" id="tabs"></div>
+    <div id="day-content"></div>
+    <div class="rules">
+      <div class="rules-title">Key Rules</div>
+      <div class="rule-row"><span class="rule-key">Progressive overload</span><span class="rule-val">Hit top of range → add weight</span></div>
+      <div class="rule-row"><span class="rule-key">Strength rest</span><span class="rule-val">3–4 min</span></div>
+      <div class="rule-row"><span class="rule-key">Hypertrophy rest</span><span class="rule-val">90 sec</span></div>
+      <div class="rule-row"><span class="rule-key">Isolation rest</span><span class="rule-val">60 sec</span></div>
+      <div class="rule-row"><span class="rule-key">Eccentric</span><span class="rule-val">2–3 sec down on every lift</span></div>
+      <div class="rule-row"><span class="rule-key">Unilateral</span><span class="rule-val">Weak side always first</span></div>
+      <div class="rule-row"><span class="rule-key">Intensity</span><span class="rule-val">Leave 1–3 reps in reserve</span></div>
+      <div class="rule-row"><span class="rule-key">What drives growth</span><span class="rule-val">Weekly volume &gt; rest timing</span></div>
+      <div class="rule-row"><span class="rule-key">Pre-workout fuel</span><span class="rule-val">20–40g protein within 2h</span></div>
+    </div>`;
+}
+
+function renderDayTabs() {
+  const sessions = DB.get('sessions', {});
+  document.getElementById('tabs').innerHTML = DAYS.map((d,i) => {
+    const done = isDayComplete(i, sessions);
+    return `<div class="day-tab ${d.r?'rest':''} ${i===activeDay?'active':''}" onclick="setDay(${i})">
+      <div class="completion-dot ${done?'show':''}"></div>
+      <div class="tab-sub">${d.s}</div>
+      <div class="tab-label">${d.l}</div>
+    </div>`;
+  }).join('');
+}
+
+function isDayComplete(dayIdx, sessions) {
+  if (DAYS[dayIdx].r) return false;
+  const w = W[dayIdx]; if (!w) return false;
+  const key = dayIdx + ':' + todayStr();
+  const sess = sessions[key];
+  if (!sess) return false;
+  let totalSets = 0, doneSets = 0;
+  w.secs.forEach((sec,si) => sec.ex.forEach((ex,ei) => {
+    for (let s=0; s<ex.sets; s++) { totalSets++; if (sess[`${si}-${ei}-${s}`]?.done) doneSets++; }
+  }));
+  return totalSets > 0 && doneSets === totalSets;
+}
+
+function setDay(i) { activeDay = i; renderDayTabs(); renderDay(); }
+
+function renderDay() {
+  const el = document.getElementById('day-content');
+  const d = DAYS[activeDay];
+  if (d.r) {
+    el.innerHTML = `<div class="rest-screen"><div class="rest-title">Rest Day</div><ul class="rest-list">${REST[activeDay].map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+    return;
+  }
+  const w = W[activeDay];
+  const sessions = DB.get('sessions', {});
+  const sessKey = activeDay + ':' + todayStr();
+  const sess = sessions[sessKey] || {};
+  // find last session for this day (most recent date != today)
+  const lastSess = findLastSession(activeDay, sessions);
+
+  let h = `<div class="content"><div class="day-title">${w.title}</div>`;
+
+  // Warm-up generator
+  h += warmupCard(w);
+
+  w.secs.forEach((sec,si) => {
+    h += `<div class="section"><div class="section-label label-${sec.c}">${sec.l}</div>`;
+    sec.ex.forEach((ex,ei) => {
+      h += `<div class="ex-card"><div class="ex-head"><div class="ex-top">
+        <div><div class="ex-name">${ex.n}</div>${ex.tip?`<div class="ex-tip">${ex.tip}</div>`:''}</div>
+        <div class="ex-target">${ex.t}</div>
+      </div>`;
+      // last ref
+      if (ex.sets > 0 && lastSess) {
+        const ref = lastBest(lastSess.data, si, ei);
+        if (ref) h += `<div class="last-ref">Last (${fmtDate(lastSess.date)}): ${ref}</div>`;
+      }
+      h += `</div>`;
+      // sets
+      if (ex.sets > 0) {
+        h += `<div class="sets-wrap"><div class="set-head"><span>Set</span><span>lbs</span><span>Reps</span><span></span></div>`;
+        for (let s=0; s<ex.sets; s++) {
+          const cell = sess[`${si}-${ei}-${s}`] || {};
+          const doneC = cell.done ? 'done' : '';
+          h += `<div class="set-row" id="sr-${si}-${ei}-${s}">
+            <span class="set-num">${s+1}</span>
+            <input type="number" inputmode="decimal" placeholder="—" value="${cell.w||''}" onchange="saveSet(${si},${ei},${s},'w',this.value)">
+            <input type="number" inputmode="numeric" placeholder="—" value="${cell.reps||''}" onchange="saveSet(${si},${ei},${s},'reps',this.value)">
+            <button class="done-btn ${doneC}" onclick="toggleSet(${si},${ei},${s},'${sec.c}')">${checkSvg(cell.done)}</button>
+          </div>`;
+        }
+        h += `</div>`;
+      }
+      h += `</div>`;
+    });
+    h += `</div>`;
+  });
+
+  // notes
+  h += `<div class="notes-label">Session notes</div>
+    <textarea class="notes-field" placeholder="How did it feel? Energy, pumps, anything notable..." onchange="saveNotes(this.value)">${sess._notes||''}</textarea>`;
+
+  h += `<div class="coach-note"><div class="coach-label">Coach's note</div><div class="coach-text">${w.tip}</div></div>`;
+  
+  // Log Workout button
+  h += `<div style="margin-top:16px;"><button class="btn" style="width:100%;padding:12px;font-size:14px;background:linear-gradient(135deg,#1a1400,#120e00);border-color:var(--gold-dim);color:var(--gold);" onclick="logWorkoutBtn()">📝 Log Workout</button></div>`;
+  
+  h += `</div>`;
+  el.innerHTML = h;
+}
+
+function checkSvg(done) {
+  return done
+    ? `<svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6.5" stroke="#6aaa50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    : `<svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#2a3a2a" stroke-width="1"/></svg>`;
+}
+
+function findLastSession(dayIdx, sessions) {
+  const today = todayStr();
+  let best = null;
+  Object.keys(sessions).forEach(k => {
+    const [d, date] = k.split(':');
+    if (+d === dayIdx && date !== today) {
+      if (!best || date > best.date) best = {date, data: sessions[k]};
+    }
+  });
+  return best;
+}
+
+function lastBest(data, si, ei) {
+  let bw = 0, br = 0, found = false;
+  Object.keys(data).forEach(k => {
+    const parts = k.split('-');
+    if (parts.length===3 && +parts[0]===si && +parts[1]===ei) {
+      const c = data[k];
+      if (c.w && c.reps && +c.w >= bw) { bw = +c.w; br = +c.reps; found = true; }
+    }
+  });
+  return found ? `${bw}lbs × ${br}` : null;
+}
+
+function saveSet(si, ei, s, field, val) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cell = sessions[key][`${si}-${ei}-${s}`] || {};
+  cell[field] = val;
+  sessions[key][`${si}-${ei}-${s}`] = cell;
+  DB.set('sessions', sessions);
+  maybeUpdatePR(si, ei);
+}
+
+function toggleSet(si, ei, s, secClass) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cell = sessions[key][`${si}-${ei}-${s}`] || {};
+  cell.done = !cell.done;
+  sessions[key][`${si}-${ei}-${s}`] = cell;
+  DB.set('sessions', sessions);
+  // update button
+  const btn = document.querySelector(`#sr-${si}-${ei}-${s} .done-btn`);
+  if (btn) { btn.classList.toggle('done', cell.done); btn.innerHTML = checkSvg(cell.done); }
+  renderDayTabs();
+  // start rest timer when marking done
+  if (cell.done) {
+    const secName = W[activeDay].secs[si].l;
+    startRestTimer(SECTION_REST[secClass] || 90, secName);
+  }
+  maybeUpdatePR(si, ei);
+}
+
+function saveNotes(val) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  sessions[key]._notes = val;
+  DB.set('sessions', sessions);
+}
+
+/* ============ PR TRACKING ============ */
+function maybeUpdatePR(si, ei) {
+  const ex = W[activeDay].secs[si].ex[ei];
+  if (!MAIN_LIFTS.some(m => ex.n.includes(m.split(' (')[0]))) return;
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  const sess = sessions[key]; if (!sess) return;
+  // find best e1RM today for this exercise
+  let bestE1RM = 0, bestW = 0, bestR = 0;
+  for (let s=0; s<ex.sets; s++) {
+    const c = sess[`${si}-${ei}-${s}`];
+    if (c && c.w && c.reps) {
+      const e1rm = +c.w * (1 + (+c.reps)/30); // Epley
+      if (e1rm > bestE1RM) { bestE1RM = e1rm; bestW = +c.w; bestR = +c.reps; }
+    }
+  }
+  if (bestE1RM === 0) return;
+  const prs = DB.get('prs', {});
+  if (!prs[ex.n]) prs[ex.n] = [];
+  // upsert today's entry
+  const today = todayStr();
+  const existing = prs[ex.n].find(e => e.date === today);
+  if (existing) { existing.e1rm = Math.round(bestE1RM); existing.w = bestW; existing.reps = bestR; }
+  else { prs[ex.n].push({date: today, e1rm: Math.round(bestE1RM), w: bestW, reps: bestR}); }
+  prs[ex.n].sort((a,b)=>a.date.localeCompare(b.date));
+  DB.set('prs', prs);
+}
+
+/* ============ PROGRESS VIEW ============ */
+function progressView() {
+  const prs = DB.get('prs', {});
+  const lifts = Object.keys(prs).filter(k => prs[k].length > 0);
+  let h = `<div class="panel"><div class="panel-title">Progress</div><div class="panel-sub">Estimated 1-rep max over time, calculated from your logged sets (Epley formula).</div>`;
+  if (lifts.length === 0) {
+    h += `<div class="card"><div class="chart-empty">No data yet. Log weight and reps on your main compound lifts in the Train tab and your PR charts will appear here.</div></div>`;
+  } else {
+    lifts.forEach((lift, idx) => {
+      const data = prs[lift];
+      const latest = data[data.length-1];
+      const first = data[0];
+      const change = latest.e1rm - first.e1rm;
+      h += `<div class="card">
+        <div class="card-title">${lift}</div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-num">${latest.e1rm}<span style="font-size:12px;color:var(--muted)">lbs</span></div><div class="stat-lbl">Est. 1RM</div></div>
+          <div class="stat-box"><div class="stat-num ${change>=0?'trend-up':'trend-down'}">${change>=0?'+':''}${change}<span style="font-size:12px;color:var(--muted)">lbs</span></div><div class="stat-lbl">Since start</div></div>
+        </div>
+        <div class="chart-wrap"><svg class="chart" id="chart-${idx}"></svg></div>
+      </div>`;
+    });
+  }
+  h += `</div>`;
+  return h;
+}
+
+function drawProgressCharts() {
+  const prs = DB.get('prs', {});
+  const lifts = Object.keys(prs).filter(k => prs[k].length > 0);
+  lifts.forEach((lift, idx) => drawLineChart(`chart-${idx}`, prs[lift].map(d=>({x:d.date, y:d.e1rm})), '#c9a227'));
+}
+
+function drawLineChart(id, points, color) {
+  const svg = document.getElementById(id);
+  if (!svg || points.length === 0) return;
+  const W_ = svg.clientWidth || 300, H_ = svg.clientHeight || 160;
+  const pad = {l: 30, r: 10, t: 14, b: 22};
+  const ys = points.map(p=>p.y);
+  let minY = Math.min(...ys), maxY = Math.max(...ys);
+  if (minY === maxY) { minY -= 5; maxY += 5; }
+  const range = maxY - minY;
+  minY -= range*0.1; maxY += range*0.1;
+  const n = points.length;
+  const xFor = i => pad.l + (n===1 ? (W_-pad.l-pad.r)/2 : i*(W_-pad.l-pad.r)/(n-1));
+  const yFor = v => pad.t + (1-(v-minY)/(maxY-minY))*(H_-pad.t-pad.b);
+
+  let svgC = '';
+  // gridlines
+  for (let g=0; g<=3; g++) {
+    const val = minY + (maxY-minY)*g/3;
+    const yy = yFor(val);
+    svgC += `<line x1="${pad.l}" y1="${yy}" x2="${W_-pad.r}" y2="${yy}" stroke="#1e2a1e" stroke-width="1"/>`;
+    svgC += `<text x="${pad.l-5}" y="${yy+3}" text-anchor="end" font-size="8" fill="#4a5a42">${Math.round(val)}</text>`;
+  }
+  // area + line
+  if (n > 1) {
+    let d = `M ${xFor(0)} ${yFor(points[0].y)}`;
+    for (let i=1;i<n;i++) d += ` L ${xFor(i)} ${yFor(points[i].y)}`;
+    let area = d + ` L ${xFor(n-1)} ${H_-pad.b} L ${xFor(0)} ${H_-pad.b} Z`;
+    svgC += `<path d="${area}" fill="${color}" opacity="0.08"/>`;
+    svgC += `<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>`;
+  }
+  // points
+  points.forEach((p,i)=>{
+    svgC += `<circle cx="${xFor(i)}" cy="${yFor(p.y)}" r="2.5" fill="${color}"/>`;
+    if (i===0 || i===n-1 || n<=5) svgC += `<text x="${xFor(i)}" y="${H_-pad.b+12}" text-anchor="middle" font-size="8" fill="#4a5a42">${fmtDate(p.x)}</text>`;
+  });
+  svg.innerHTML = svgC;
+}
+
+/* ============ BODY VIEW ============ */
+function bodyView() {
+  const log = DB.get('bodylog', []);
+  const recent = log.slice(-7);
+  let avgCal = 0, calCount = 0;
+  recent.forEach(e=>{ if(e.cal){avgCal+=+e.cal;calCount++;} });
+  avgCal = calCount ? Math.round(avgCal/calCount) : 0;
+  const latest = log.length ? log[log.length-1] : null;
+  let wTrend = 0;
+  if (log.length >= 2) wTrend = +(log[log.length-1].kg - log[0].kg).toFixed(1);
+
+  let h = `<div class="panel"><div class="panel-title">Body</div><div class="panel-sub">Log your morning weight and daily calories. Track the weekly trend against your 2,350 kcal cut target.</div>`;
+  h += `<div class="card"><div class="card-title">Log today</div>
+    <div class="input-row">
+      <input type="number" inputmode="decimal" id="bw-kg" placeholder="Weight (kg)" value="${latest&&latest.date===todayStr()?latest.kg:''}">
+      <input type="number" inputmode="numeric" id="bw-cal" placeholder="Calories" value="${latest&&latest.date===todayStr()?latest.cal||'':''}">
+    </div>
+    <button class="btn" onclick="logBody()">Save today</button>
+  </div>`;
+
+  if (log.length) {
+    h += `<div class="card"><div class="card-title">7-day snapshot</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-num">${latest.kg||'—'}<span style="font-size:12px;color:var(--muted)">kg</span></div><div class="stat-lbl">Latest weight</div></div>
+        <div class="stat-box"><div class="stat-num ${wTrend<=0?'trend-up':'trend-down'}">${wTrend>0?'+':''}${wTrend}<span style="font-size:12px;color:var(--muted)">kg</span></div><div class="stat-lbl">Trend (logged)</div></div>
+        <div class="stat-box"><div class="stat-num">${avgCal||'—'}</div><div class="stat-lbl">Avg kcal (7d)</div></div>
+        <div class="stat-box"><div class="stat-num ${avgCal&&avgCal<=2350?'trend-up':'trend-down'}">${avgCal?(avgCal-2350>0?'+':'')+(avgCal-2350):'—'}</div><div class="stat-lbl">vs target</div></div>
+      </div>
+      <div class="chart-wrap"><svg class="chart" id="body-chart"></svg></div>
+    </div>`;
+    h += `<div class="card"><div class="card-title">Recent log</div><div class="log-list">`;
+    log.slice(-10).reverse().forEach(e=>{
+      h += `<div class="log-item"><span class="log-date">${fmtDate(e.date)}</span><span class="log-val">${e.kg||'—'} kg · ${e.cal||'—'} kcal</span></div>`;
+    });
+    h += `</div></div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
+function logBody() {
+  const kg = document.getElementById('bw-kg').value;
+  const cal = document.getElementById('bw-cal').value;
+  if (!kg && !cal) return;
+  const log = DB.get('bodylog', []);
+  const today = todayStr();
+  const existing = log.find(e=>e.date===today);
+  if (existing) { if(kg) existing.kg=+kg; if(cal) existing.cal=+cal; }
+  else log.push({date: today, kg: kg?+kg:null, cal: cal?+cal:null});
+  log.sort((a,b)=>a.date.localeCompare(b.date));
+  DB.set('bodylog', log);
+  renderView();
+}
+
+function drawBodyChart() {
+  const log = DB.get('bodylog', []).filter(e=>e.kg);
+  if (log.length) drawLineChart('body-chart', log.slice(-14).map(e=>({x:e.date,y:e.kg})), '#6aaa50');
+}
+
+/* ============ FASTING VIEW ============ */
+function fastView() {
+  const fast = DB.get('fast', null);
+  let h = `<div class="panel"><div class="panel-title">Fasting</div><div class="panel-sub">Track your fasting window. 16:8 is the default — adjust the target to match your protocol.</div>`;
+  h += `<div class="card">
+    <div class="card-title">Window</div>
+    <div class="fast-display">
+      <div class="fast-ring"><svg viewBox="0 0 120 120" id="fast-ring-svg"></svg></div>
+      <div class="fast-time" id="fast-time">—</div>
+      <div class="fast-status" id="fast-status"></div>
+    </div>
+    <div class="input-row" style="margin-top:12px;">
+      <select id="fast-target">
+        ${[12,14,16,18,20,24,36,48].map(hr=>`<option value="${hr}" ${fast&&fast.target===hr?'selected':''}>${hr}h fast</option>`).join('')}
+      </select>
+    </div>
+    <div id="fast-btns"></div>
+  </div></div>`;
+  return h;
+}
+
+let fastInterval;
+function initFastDisplay() {
+  clearInterval(fastInterval);
+  updateFastDisplay();
+  const fast = DB.get('fast', null);
+  const btns = document.getElementById('fast-btns');
+  if (fast && fast.start) {
+    btns.innerHTML = `<button class="btn btn-danger" onclick="endFast()">End fast</button>`;
+    fastInterval = setInterval(updateFastDisplay, 1000);
+  } else {
+    btns.innerHTML = `<button class="btn" onclick="startFast()">Start fasting</button>`;
+  }
+}
+function startFast() {
+  const target = +document.getElementById('fast-target').value;
+  DB.set('fast', {start: Date.now(), target});
+  initFastDisplay();
+}
+function endFast() { DB.set('fast', null); clearInterval(fastInterval); initFastDisplay(); }
+function updateFastDisplay() {
+  const fast = DB.get('fast', null);
+  const timeEl = document.getElementById('fast-time'), statusEl = document.getElementById('fast-status'), ring = document.getElementById('fast-ring-svg');
+  if (!timeEl) return;
+  if (!fast || !fast.start) {
+    timeEl.textContent = '—'; statusEl.textContent = 'Not fasting'; ring.innerHTML = ringSvg(0); return;
+  }
+  const elapsed = (Date.now()-fast.start)/1000;
+  const targetSec = fast.target*3600;
+  const h = Math.floor(elapsed/3600), m = Math.floor((elapsed%3600)/60), s = Math.floor(elapsed%60);
+  timeEl.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const pct = Math.min(1, elapsed/targetSec);
+  if (elapsed >= targetSec) { statusEl.textContent = `Target reached! ${(elapsed/3600).toFixed(1)}h elapsed`; statusEl.style.color = 'var(--green-bright)'; }
+  else { const rem = targetSec - elapsed; statusEl.textContent = `${Math.floor(rem/3600)}h ${Math.floor((rem%3600)/60)}m until ${fast.target}h target`; statusEl.style.color = 'var(--muted)'; }
+  ring.innerHTML = ringSvg(pct);
+}
+function ringSvg(pct) {
+  const r = 52, c = 2*Math.PI*r, off = c*(1-pct);
+  return `<circle cx="60" cy="60" r="${r}" fill="none" stroke="#1e2a1e" stroke-width="7"/>
+    <circle cx="60" cy="60" r="${r}" fill="none" stroke="#c9a227" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 0.5s"/>`;
+}
+
+/* ============ LIBRARY VIEW ============ */
+function libraryView() {
+  let h = `<div class="panel"><div class="panel-title">Exercise Library</div><div class="panel-sub">Exercises grouped by muscle, with the specific region each one targets. Tap a group to expand.</div>`;
+  Object.keys(EXERCISE_LIBRARY).forEach((group, gi) => {
+    const exs = EXERCISE_LIBRARY[group];
+    h += `<div class="muscle-group">
+      <div class="mg-head" onclick="toggleGroup(${gi})" id="mgh-${gi}">
+        <span class="mg-name">${group}</span>
+        <span style="display:flex;align-items:center;gap:8px;"><span class="mg-count">${exs.length}</span><span class="mg-chevron">▶</span></span>
+      </div>
+      <div class="mg-body" id="mgb-${gi}">`;
+    exs.forEach((ex, ei) => {
+      const vidQuery = encodeURIComponent(ex.n + " proper form technique");
+      h += `<div class="lib-ex">
+        <div class="lib-ex-name"><span>${ex.n}</span><span class="lib-ex-region">${ex.r}</span></div>
+        <div class="lib-ex-note">${ex.note}</div>
+        <a href="https://www.youtube.com/results?search_query=${vidQuery}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;color:var(--str);text-decoration:none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
+          Watch form video
+        </a>
+      </div>`;
+    });
+    h += `</div></div>`;
+  });
+  h += `</div>`;
+  return h;
+}
+function toggleGroup(gi) {
+  document.getElementById('mgh-'+gi).classList.toggle('open');
+  document.getElementById('mgb-'+gi).classList.toggle('open');
+}
+
+/* ============ WARM-UP GENERATOR ============ */
+const WARMUP_MAP = {
+  "press": ["Arm circles + band pull-aparts — 1 min","Shoulder dislocates (band/broomstick) — 10 reps","Empty bar press — 1 × 10","Ramp set @ 50% — 1 × 8","Ramp set @ 70% — 1 × 5"],
+  "squat": ["Hip circles + leg swings — 1 min","Bodyweight squats — 1 × 15","Walking knee hugs — 10 steps","Empty bar squat — 1 × 10","Ramp set @ 50% — 1 × 8","Ramp set @ 70% — 1 × 5"],
+  "deadlift": ["Cat-cow + hip hinge drill — 1 min","Glute bridges — 1 × 15","Bodyweight good mornings — 1 × 10","Bar @ 40% — 1 × 8","Ramp set @ 60% — 1 × 5","Ramp set @ 75% — 1 × 3"],
+  "row": ["Band pull-aparts — 1 × 20","Scapular retractions — 1 × 12","Light row @ 50% — 1 × 10","Ramp set @ 70% — 1 × 6"],
+  "default": ["5 min light cardio (bike/row)","Dynamic stretches for target muscles — 2 min","2 ramp-up sets on your first compound at 50% and 70%"]
+};
+
+function getWarmup(w) {
+  // Find first strength exercise
+  let mainLift = "";
+  for (const sec of w.secs) {
+    if (sec.c === 'str' && sec.ex.length) { mainLift = sec.ex[0].n.toLowerCase(); break; }
+  }
+  if (!mainLift) for (const sec of w.secs) { if (sec.ex.length && sec.ex[0].sets>0) { mainLift = sec.ex[0].n.toLowerCase(); break; } }
+  let key = "default";
+  if (/press|bench/.test(mainLift)) key = "press";
+  else if (/squat/.test(mainLift)) key = "squat";
+  else if (/deadlift/.test(mainLift)) key = "deadlift";
+  else if (/row|pulldown/.test(mainLift)) key = "row";
+  return { lift: mainLift, steps: WARMUP_MAP[key] };
+}
+
+function warmupCard(w) {
+  const wu = getWarmup(w);
+  const open = DB.get('warmup_open', false);
+  return `<div style="background:linear-gradient(135deg,#130e20,#0e0a18);border:1px solid #2a1e45;border-radius:6px;padding:10px 13px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
+    <span style="font-size:18px;">🥛</span>
+    <div style="font-size:11px;color:var(--text);line-height:1.45;"><span style="color:var(--warm);font-weight:600;">Fuel first:</span> 20–40g protein within 2h of training keeps muscle-building elevated for 4–5h. If you train fasted, you're leaving gains on the table.</div>
+  </div>
+  <div class="muscle-group" style="margin-bottom:14px;">
+    <div class="mg-head ${open?'open':''}" onclick="toggleWarmup()" id="warmup-head">
+      <span class="mg-name" style="color:var(--gold)">⚡ Warm-up</span>
+      <span class="mg-chevron">▶</span>
+    </div>
+    <div class="mg-body ${open?'open':''}" id="warmup-body">
+      <div style="padding:10px 14px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">Tailored to today's first lift. Ramp sets build to your working weight without burning energy.</div>
+        ${wu.steps.map((s,i)=>`<div style="font-size:12px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--gold);margin-right:8px;">${i+1}</span>${s}</div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+function toggleWarmup() {
+  const open = !DB.get('warmup_open', false);
+  DB.set('warmup_open', open);
+  document.getElementById('warmup-head').classList.toggle('open', open);
+  document.getElementById('warmup-body').classList.toggle('open', open);
+}
+
+/* ============ WEEKLY SUMMARY ============ */
+function summaryView() {
+  const sessions = DB.get('sessions', {});
+  const bodylog = DB.get('bodylog', []);
+  const recovery = DB.get('recovery', []);
+  const prs = DB.get('prs', {});
+
+  // This week's date range (last 7 days)
+  const now = new Date();
+  const weekAgo = new Date(now); weekAgo.setDate(now.getDate()-7);
+  const inWeek = d => { const dt = new Date(d+'T00:00'); return dt >= weekAgo && dt <= now; };
+
+  // Sessions completed this week
+  let sessionsThisWeek = 0, totalVolume = 0, totalSets = 0;
+  Object.keys(sessions).forEach(k => {
+    const [dayIdx, date] = k.split(':');
+    if (inWeek(date)) {
+      let hasData = false;
+      Object.keys(sessions[k]).forEach(sk => {
+        if (sk.startsWith('_')) return;
+        const c = sessions[k][sk];
+        if (c.done || (c.w && c.reps)) hasData = true;
+        if (c.w && c.reps) { totalVolume += +c.w * +c.reps; totalSets++; }
+      });
+      if (hasData) sessionsThisWeek++;
+    }
+  });
+
+  // Avg calories & sleep this week
+  const weekBody = bodylog.filter(e=>inWeek(e.date));
+  let avgCal = 0, calN = 0, latestW = null;
+  weekBody.forEach(e=>{ if(e.cal){avgCal+=e.cal;calN++;} if(e.kg) latestW=e.kg; });
+  avgCal = calN ? Math.round(avgCal/calN) : 0;
+
+  // Weight change this week
+  let weekWChange = null;
+  const weekW = weekBody.filter(e=>e.kg);
+  if (weekW.length >= 2) weekWChange = +(weekW[weekW.length-1].kg - weekW[0].kg).toFixed(1);
+
+  // Avg recovery this week
+  const weekRec = recovery.filter(e=>inWeek(e.date));
+  let avgFatigue = 0, recN = 0;
+  weekRec.forEach(e=>{ if(e.fatigue){avgFatigue+=e.fatigue;recN++;} });
+  avgFatigue = recN ? (avgFatigue/recN).toFixed(1) : null;
+
+  // PR gains this week
+  let prGains = 0;
+  Object.keys(prs).forEach(lift => {
+    const inWk = prs[lift].filter(e=>inWeek(e.date));
+    if (inWk.length >= 2) { const g = inWk[inWk.length-1].e1rm - inWk[0].e1rm; if (g>0) prGains += g; }
+  });
+
+  let h = `<div class="panel"><div class="panel-title">Weekly Summary</div><div class="panel-sub">Your last 7 days at a glance. Are you winning the week?</div>`;
+
+  h += `<div class="card"><div class="card-title">Training</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num">${sessionsThisWeek}<span style="font-size:12px;color:var(--muted)">/5</span></div><div class="stat-lbl">Sessions done</div></div>
+      <div class="stat-box"><div class="stat-num">${totalSets}</div><div class="stat-lbl">Sets logged</div></div>
+      <div class="stat-box"><div class="stat-num">${(totalVolume/1000).toFixed(1)}<span style="font-size:12px;color:var(--muted)">t</span></div><div class="stat-lbl">Total volume</div></div>
+      <div class="stat-box"><div class="stat-num ${prGains>0?'trend-up':''}">${prGains>0?'+':''}${prGains}<span style="font-size:12px;color:var(--muted)">lbs</span></div><div class="stat-lbl">Est. 1RM gains</div></div>
+    </div>
+  </div>`;
+
+  h += `<div class="card"><div class="card-title">Nutrition & Body</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num">${avgCal||'—'}</div><div class="stat-lbl">Avg kcal/day</div></div>
+      <div class="stat-box"><div class="stat-num ${avgCal&&avgCal<=2350?'trend-up':'trend-down'}">${avgCal?((avgCal-2350)>0?'+':'')+(avgCal-2350):'—'}</div><div class="stat-lbl">vs cut target</div></div>
+      <div class="stat-box"><div class="stat-num">${latestW||'—'}<span style="font-size:12px;color:var(--muted)">kg</span></div><div class="stat-lbl">Latest weight</div></div>
+      <div class="stat-box"><div class="stat-num ${weekWChange!==null&&weekWChange<=0?'trend-up':'trend-down'}">${weekWChange!==null?(weekWChange>0?'+':'')+weekWChange:'—'}<span style="font-size:12px;color:var(--muted)">kg</span></div><div class="stat-lbl">Weight Δ (7d)</div></div>
+    </div>
+  </div>`;
+
+  h += `<div class="card"><div class="card-title">Recovery</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num">${avgFatigue||'—'}<span style="font-size:12px;color:var(--muted)">/10</span></div><div class="stat-lbl">Avg fatigue</div></div>
+      <div class="stat-box"><div class="stat-num">${weekRec.length}</div><div class="stat-lbl">Days logged</div></div>
+    </div>
+  </div>`;
+
+  // Verdict
+  let wins = 0;
+  if (sessionsThisWeek >= 4) wins++;
+  if (avgCal && avgCal <= 2400) wins++;
+  if (prGains > 0) wins++;
+  if (weekWChange !== null && weekWChange <= 0) wins++;
+  const verdicts = [
+    "Tough week. Reset and attack the next one.",
+    "Some progress. Tighten up the weak areas.",
+    "Solid week. You're moving in the right direction.",
+    "Strong week. Consistency is paying off.",
+    "Dominant week. This is exactly how it's done."
+  ];
+  h += `<div class="card" style="border-color:var(--gold-dim);">
+    <div class="card-title">Verdict</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--text);line-height:1.5;">${verdicts[wins]}</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted);">${wins}/4 targets hit — sessions, calories, strength, weight trend.</div>
+  </div>`;
+
+  // ── WORKOUT MEMORY / HISTORY ──
+  const history = DB.get('history', []);
+  h += `<div class="card"><div class="card-title">Workout Memory</div>`;
+  if (!history.length) {
+    h += `<div style="font-size:12px;color:var(--dim);padding:10px 0;">No logged workouts yet. Finish a session in the Train tab and tap "Log Workout" to save it here.</div>`;
+  } else {
+    h += `<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">${history.length} session${history.length>1?'s':''} logged. Tap one to expand.</div>`;
+    history.slice().reverse().forEach((entry, ri) => {
+      const realIdx = history.length - 1 - ri;
+      const setCount = entry.exercises.reduce((a,e)=>a+e.sets.length,0);
+      h += `<div class="hist-entry">
+        <div class="hist-head" onclick="toggleHist(${realIdx})" id="hist-head-${realIdx}">
+          <div>
+            <div class="hist-day">${entry.day} <span style="color:var(--dim);font-weight:400;">· ${fmtDate(entry.date)}</span></div>
+            <div class="hist-meta">${entry.exercises.length} exercises · ${setCount} sets · ${entry.volume}lbs volume</div>
+          </div>
+          <span class="mg-chevron">▶</span>
+        </div>
+        <div class="hist-body" id="hist-body-${realIdx}">
+          ${entry.exercises.map(ex=>`
+            <div class="hist-ex">
+              <div class="hist-ex-name">${ex.name}</div>
+              <div class="hist-sets">${ex.sets.map((s,i)=>`<span class="hist-set">${s.w||'—'}lbs × ${s.reps||'—'}</span>`).join('')}</div>
+            </div>`).join('')}
+          ${entry.notes?`<div class="hist-notes">"${entry.notes}"</div>`:''}
+          <button class="btn btn-sm btn-danger" style="margin-top:8px;" onclick="deleteHist(${realIdx})">Delete entry</button>
+        </div>
+      </div>`;
+    });
+  }
+  h += `</div>`;
+
+  // ── DATA BACKUP ──
+  h += `<div class="card" style="border-color:var(--border2);">
+    <div class="card-title">Data Backup</div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:10px;">Your data lives only in this browser. Export a backup file regularly — especially before clearing history or if you haven't opened the app in a few days. Restore it anytime, or use it to move your data to a new device.</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn" style="flex:1;" onclick="exportData()">⬇ Export backup</button>
+      <button class="btn" style="flex:1;background:var(--surface2);border-color:var(--border2);color:var(--text);" onclick="document.getElementById('import-file').click()">⬆ Import backup</button>
+    </div>
+    <input type="file" id="import-file" accept="application/json,.json" style="display:none;" onchange="importData(this)">
+  </div>`;
+
+  h += `</div>`;
+  return h;
+}
+function deleteHist(idx) {
+  const history = DB.get('history', []);
+  history.splice(idx, 1);
+  DB.set('history', history);
+  renderView();
+}
+
+/* ============ STRENGTH STANDARDS ============ */
+// Multipliers of bodyweight for a 22yo male, intermediate-ish. Rough industry standards.
+const STRENGTH_STANDARDS = [
+  {lift:"Flat barbell bench press", key:"Flat barbell bench press", levels:{Beginner:0.75, Novice:1.0, Intermediate:1.25, Advanced:1.5, Elite:1.85}},
+  {lift:"Back squat", key:"Back squat (barbell)", levels:{Beginner:1.0, Novice:1.25, Intermediate:1.5, Advanced:2.0, Elite:2.5}},
+  {lift:"Deadlift", key:"Deadlift (conventional)", levels:{Beginner:1.25, Novice:1.5, Intermediate:2.0, Advanced:2.5, Elite:3.0}},
+  {lift:"Overhead press", key:"Overhead press", levels:{Beginner:0.45, Novice:0.6, Intermediate:0.8, Advanced:1.0, Elite:1.25}},
+];
+
+function standardsView() {
+  const bodylog = DB.get('bodylog', []).filter(e=>e.kg);
+  const bw = bodylog.length ? bodylog[bodylog.length-1].kg : 75;
+  let h = `<div class="panel"><div class="panel-title">Strength Standards</div><div class="panel-sub">Where your estimated 1RM (lbs) sits relative to typical standards for your bodyweight (${bw} kg). Based on logged lifts.</div>`;
+
+  h += `<div class="card"><div class="card-title">Your bodyweight</div>
+    <div class="input-row">
+      <input type="number" inputmode="decimal" id="std-bw" placeholder="Bodyweight (kg)" value="${bw}">
+      <button class="btn" onclick="recalcStandards()">Update</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);">Auto-filled from your latest Body log entry.</div>
+  </div>`;
+
+  const prs = DB.get('prs', {});
+  STRENGTH_STANDARDS.forEach((std, idx) => {
+    // find user's best e1rm matching this lift
+    let userMax = 0;
+    Object.keys(prs).forEach(name => {
+      if (name.includes(std.key.split(' (')[0]) || std.key.includes(name.split(' (')[0])) {
+        const last = prs[name][prs[name].length-1];
+        if (last && last.e1rm > userMax) userMax = last.e1rm;
+      }
+    });
+    h += `<div class="card" id="std-card-${idx}" data-lift="${idx}">
+      <div class="card-title">${std.lift}</div>
+      <div style="font-size:12px;color:${userMax?'var(--gold)':'var(--dim)'};margin-bottom:10px;">${userMax?`Your est. 1RM: ${userMax} lb`:'No data — log this lift to see your level'}</div>
+      <div class="std-bar-wrap" id="std-bar-${idx}"></div>
+    </div>`;
+  });
+  h += `</div>`;
+  return h;
+}
+
+function drawStandards() {
+  const bwInput = document.getElementById('std-bw');
+  const bwKg = bwInput ? +bwInput.value || 75 : 75;
+  const bw = bwKg * 2.20462; // standards multipliers apply to bodyweight; lifts are in lbs
+  const prs = DB.get('prs', {});
+  STRENGTH_STANDARDS.forEach((std, idx) => {
+    let userMax = 0;
+    Object.keys(prs).forEach(name => {
+      if (name.includes(std.key.split(' (')[0]) || std.key.includes(name.split(' (')[0])) {
+        const last = prs[name][prs[name].length-1];
+        if (last && last.e1rm > userMax) userMax = last.e1rm;
+      }
+    });
+    const wrap = document.getElementById('std-bar-'+idx);
+    if (!wrap) return;
+    const levels = Object.keys(std.levels);
+    const eliteVal = std.levels.Elite * bw;
+    let bars = '';
+    levels.forEach(lvl => {
+      const val = Math.round(std.levels[lvl] * bw);
+      const pct = (val/eliteVal)*100;
+      const reached = userMax >= val;
+      bars += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <div style="width:74px;font-size:10px;color:${reached?'var(--green-bright)':'var(--dim)'};">${lvl}</div>
+        <div style="flex:1;height:14px;background:var(--surface2);border-radius:3px;overflow:hidden;position:relative;">
+          <div style="position:absolute;left:0;top:0;height:100%;width:${pct}%;background:${reached?'linear-gradient(90deg,#2d5a22,#4d8a3a)':'#1e2a1e'};"></div>
+        </div>
+        <div style="width:48px;text-align:right;font-size:10px;color:${reached?'var(--text)':'var(--muted)'};">${val} lb</div>
+      </div>`;
+    });
+    // user marker
+    if (userMax > 0) {
+      const userPct = Math.min(100,(userMax/eliteVal)*100);
+      bars += `<div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <div style="width:74px;font-size:10px;color:var(--gold);font-weight:600;">YOU</div>
+        <div style="flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${userPct}%;background:var(--gold);"></div>
+        </div>
+        <div style="width:48px;text-align:right;font-size:10px;color:var(--gold);font-weight:600;">${userMax} lb</div>
+      </div>`;
+    }
+    wrap.innerHTML = bars;
+  });
+}
+function recalcStandards() {
+  const bw = +document.getElementById('std-bw').value;
+  if (bw) {
+    // persist as a body log entry so it sticks
+    const log = DB.get('bodylog', []);
+    const today = todayStr();
+    const ex = log.find(e=>e.date===today);
+    if (ex) ex.kg = bw; else log.push({date:today, kg:bw, cal:null});
+    log.sort((a,b)=>a.date.localeCompare(b.date));
+    DB.set('bodylog', log);
+  }
+  drawStandards();
+}
+
+/* ============ RECOVERY TRACKER ============ */
+const MUSCLE_AREAS = ["Chest","Back","Shoulders","Arms","Legs","Core"];
+function recoveryView() {
+  const log = DB.get('recovery', []);
+  const today = todayStr();
+  const todayEntry = log.find(e=>e.date===today) || {soreness:{}, fatigue:5, sleep:''};
+
+  let h = `<div class="panel"><div class="panel-title">Recovery</div><div class="panel-sub">Rate soreness per muscle group and overall fatigue. Spot which sessions beat you up and when you need to back off.</div>`;
+
+  h += `<div class="card"><div class="card-title">Log today</div>`;
+  // Soreness sliders per muscle
+  MUSCLE_AREAS.forEach(m => {
+    const val = todayEntry.soreness[m] || 0;
+    h += `<div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+        <span style="color:var(--text);">${m}</span>
+        <span style="color:${sorenessColor(val)};" id="sore-val-${m}">${sorenessLabel(val)}</span>
+      </div>
+      <input type="range" min="0" max="5" value="${val}" style="width:100%;accent-color:#c9a227;" oninput="updateSoreness('${m}',this.value)">
+    </div>`;
+  });
+  // Fatigue
+  h += `<div style="margin-bottom:10px;margin-top:14px;">
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+      <span style="color:var(--gold);font-weight:600;">Overall fatigue</span>
+      <span style="color:var(--gold);" id="fatigue-val">${todayEntry.fatigue||5}/10</span>
+    </div>
+    <input type="range" min="1" max="10" value="${todayEntry.fatigue||5}" style="width:100%;accent-color:#c9a227;" oninput="updateFatigue(this.value)">
+  </div>`;
+  // Sleep hours
+  h += `<div class="input-row" style="margin-top:12px;">
+    <input type="number" inputmode="decimal" step="0.5" id="rec-sleep" placeholder="Sleep (hours)" value="${todayEntry.sleep||''}">
+    <button class="btn" onclick="saveRecovery()">Save</button>
+  </div></div>`;
+
+  // Trend chart of fatigue
+  if (log.length) {
+    h += `<div class="card"><div class="card-title">Fatigue trend (14d)</div><div class="chart-wrap"><svg class="chart" id="recovery-chart"></svg></div></div>`;
+    // Recent log
+    h += `<div class="card"><div class="card-title">Recent</div><div class="log-list">`;
+    log.slice(-7).reverse().forEach(e=>{
+      const sore = Object.keys(e.soreness||{}).filter(k=>e.soreness[k]>=3);
+      h += `<div class="log-item"><span class="log-date">${fmtDate(e.date)}</span><span class="log-val">Fatigue ${e.fatigue||'—'}/10${e.sleep?' · '+e.sleep+'h sleep':''}${sore.length?' · sore: '+sore.join(', '):''}</span></div>`;
+    });
+    h += `</div></div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+function sorenessLabel(v) { return ['None','Mild','Moderate','Sore','Very sore','Severe'][v] || 'None'; }
+function sorenessColor(v) { return v>=4?'var(--danger)':v>=3?'var(--core)':v>=1?'var(--gold)':'var(--dim)'; }
+
+let recDraft = null;
+function getRecDraft() {
+  if (!recDraft) {
+    const log = DB.get('recovery', []);
+    const today = todayStr();
+    const e = log.find(x=>x.date===today);
+    recDraft = e ? JSON.parse(JSON.stringify(e)) : {date:today, soreness:{}, fatigue:5, sleep:''};
+  }
+  return recDraft;
+}
+function updateSoreness(m, val) {
+  const d = getRecDraft(); d.soreness[m] = +val;
+  document.getElementById('sore-val-'+m).textContent = sorenessLabel(+val);
+  document.getElementById('sore-val-'+m).style.color = sorenessColor(+val);
+}
+function updateFatigue(val) {
+  const d = getRecDraft(); d.fatigue = +val;
+  document.getElementById('fatigue-val').textContent = val+'/10';
+}
+function saveRecovery() {
+  const d = getRecDraft();
+  d.sleep = document.getElementById('rec-sleep').value;
+  const log = DB.get('recovery', []);
+  const today = todayStr();
+  const idx = log.findIndex(e=>e.date===today);
+  if (idx>=0) log[idx] = d; else log.push(d);
+  log.sort((a,b)=>a.date.localeCompare(b.date));
+  DB.set('recovery', log);
+  recDraft = null;
+  renderView();
+}
+function drawRecoveryChart() {
+  const log = DB.get('recovery', []).filter(e=>e.fatigue);
+  if (log.length) drawLineChart('recovery-chart', log.slice(-14).map(e=>({x:e.date,y:e.fatigue})), '#e8a070');
+}
+
+/* ============ SUPPLEMENTS ============ */
+const DEFAULT_SUPPS = ["Creatine","Whey protein","Vitamin D","Zinc","Magnesium","Omega-3","Multivitamin","Caffeine"];
+function suppsView() {
+  const supps = DB.get('supps_list', DEFAULT_SUPPS);
+  const taken = DB.get('supps_taken', {});
+  const today = todayStr();
+  const todayTaken = taken[today] || {};
+
+  let h = `<div class="panel"><div class="panel-title">Supplements</div><div class="panel-sub">Tap + each time you take a supplement — it stamps the time. Log the same one multiple times a day.</div>`;
+
+  h += `<div class="card"><div class="card-title">Today — ${fmtDate(today)}</div>`;
+  supps.forEach(s => {
+    const doses = todayTaken[s] || []; // array of time strings
+    h += `<div class="supp-time-row">
+      <div style="flex:1;">
+        <div class="supp-time-name">${s}</div>
+        <div class="supp-times">
+          ${doses.length ? doses.map((t,ti)=>`<span class="supp-time-chip">${t}<span onclick="removeDose('${s.replace(/'/g,"\\'")}',${ti})">×</span></span>`).join('') : '<span style="font-size:10px;color:var(--dim);">Not taken yet</span>'}
+        </div>
+      </div>
+      <button class="supp-add-btn" onclick="addDose('${s.replace(/'/g,"\\'")}')">+</button>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // Add custom supplement
+  h += `<div class="card"><div class="card-title">Manage supplements</div>
+    <div class="input-row">
+      <input type="text" id="new-supp" placeholder="e.g. Ashwagandha">
+      <button class="btn" onclick="addSupp()">Add</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+      ${supps.map(s=>`<span style="font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 8px;border-radius:3px;">${s} <span onclick="removeSupp('${s.replace(/'/g,"\\'")}')" style="color:var(--danger);cursor:pointer;margin-left:2px;">×</span></span>`).join('')}
+    </div>
+  </div>`;
+
+  // 7 day consistency (counts days where taken at least once)
+  const last7 = [];
+  for (let i=6;i>=0;i--) { const d=new Date(); d.setDate(d.getDate()-i); last7.push(d.toISOString().slice(0,10)); }
+  h += `<div class="card"><div class="card-title">7-day consistency</div>`;
+  supps.forEach(s => {
+    let count = 0;
+    last7.forEach(d => { if (taken[d] && taken[d][s] && taken[d][s].length) count++; });
+    h += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:90px;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s}</div>
+      <div style="flex:1;display:flex;gap:3px;">
+        ${last7.map(d=>{ const n = taken[d]&&taken[d][s]?taken[d][s].length:0; return `<div title="${n} doses" style="flex:1;height:14px;border-radius:2px;background:${n>=2?'var(--green-bright)':n===1?'var(--green)':'var(--surface2)'};"></div>`; }).join('')}
+      </div>
+      <div style="width:30px;text-align:right;font-size:10px;color:var(--gold);">${count}/7</div>
+    </div>`;
+  });
+  h += `</div></div>`;
+  return h;
+}
+function nowTime() {
+  const d = new Date();
+  return d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+function addDose(s) {
+  const taken = DB.get('supps_taken', {});
+  const today = todayStr();
+  if (!taken[today]) taken[today] = {};
+  if (!taken[today][s]) taken[today][s] = [];
+  taken[today][s].push(nowTime());
+  DB.set('supps_taken', taken);
+  renderWellnessSub();
+}
+function removeDose(s, ti) {
+  const taken = DB.get('supps_taken', {});
+  const today = todayStr();
+  if (taken[today] && taken[today][s]) {
+    taken[today][s].splice(ti, 1);
+    if (!taken[today][s].length) delete taken[today][s];
+    DB.set('supps_taken', taken);
+    renderWellnessSub();
+  }
+}
+function addSupp() {
+  const val = document.getElementById('new-supp').value.trim();
+  if (!val) return;
+  const supps = DB.get('supps_list', DEFAULT_SUPPS);
+  if (!supps.includes(val)) supps.push(val);
+  DB.set('supps_list', supps);
+  renderWellnessSub();
+}
+function removeSupp(s) {
+  let supps = DB.get('supps_list', DEFAULT_SUPPS);
+  supps = supps.filter(x=>x!==s);
+  DB.set('supps_list', supps);
+  renderWellnessSub();
+}
+
+/* ============ LOG WORKOUT + HISTORY ============ */
+function logWorkoutBtn() {
+  const dayIdx = activeDay;
+  const w = W[dayIdx];
+  if (!w) return;
+  const sessions = DB.get('sessions', {});
+  const key = dayIdx + ':' + todayStr();
+  const sess = sessions[key];
+  if (!sess) { showToast("Log some sets first"); return; }
+
+  // Build a history snapshot
+  const entry = { day: DAYS[dayIdx].l, dayIdx, date: todayStr(), ts: Date.now(), exercises: [], volume: 0, notes: sess._notes || '' };
+  let anyData = false;
+  w.secs.forEach((sec,si) => sec.ex.forEach((ex,ei) => {
+    const sets = [];
+    for (let s=0; s<ex.sets; s++) {
+      const c = sess[`${si}-${ei}-${s}`];
+      if (c && (c.w || c.reps)) {
+        sets.push({w: c.w||'', reps: c.reps||'', done: !!c.done});
+        if (c.w && c.reps) entry.volume += +c.w * +c.reps;
+        anyData = true;
+      }
+    }
+    if (sets.length) entry.exercises.push({name: ex.n, sets});
+  }));
+
+  if (!anyData) { showToast("Log some sets first"); return; }
+
+  entry.volume = Math.round(entry.volume);
+
+  // Save to history
+  const history = DB.get('history', []);
+  history.push(entry);
+  DB.set('history', history);
+
+  // Reset current session inputs
+  delete sessions[key];
+  DB.set('sessions', sessions);
+
+  showToast(`Workout logged · ${entry.volume} lbs volume`);
+  renderDay();
+  renderDayTabs();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast-pop');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+function historySection() {
+  const history = DB.get('history', []);
+  if (!history.length) {
+    return `<div class="card"><div class="card-title">Workout Memory</div><div class="chart-empty">No logged workouts yet. Finish a session in the Train tab and hit "Log Workout" to save it here.</div></div>`;
+  }
+  const recent = [...history].reverse().slice(0, 30);
+  let h = `<div class="card" style="border-color:var(--gold-dim);"><div class="card-title">Workout Memory — ${history.length} logged</div>`;
+  recent.forEach((e, i) => {
+    const realIdx = history.length - 1 - i;
+    h += `<div class="hist-entry">
+      <div class="hist-head" onclick="toggleHist(${realIdx})" id="hist-head-${realIdx}">
+        <div><div class="hist-day">${e.day}</div><div class="hist-date">${fmtDate(e.date)}</div></div>
+        <div style="text-align:right;"><div class="hist-vol">${(e.volume/1000).toFixed(1)}t</div><span class="mg-chevron">▶</span></div>
+      </div>
+      <div class="hist-body" id="hist-body-${realIdx}">
+        ${e.exercises.map(ex=>`<div class="hist-ex"><div class="hist-ex-name">${ex.name}</div><div class="hist-sets">${ex.sets.map((s,si)=>`${s.w||'—'}lbs × ${s.reps||'—'}`).join('  ·  ')}</div></div>`).join('')}
+        ${e.notes?`<div class="hist-ex"><div class="hist-sets" style="font-style:italic;">"${e.notes}"</div></div>`:''}
+        <div style="padding:8px 14px;"><button class="btn btn-sm btn-danger" onclick="deleteHist(${realIdx})">Delete</button></div>
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+  return h;
+}
+function toggleHist(idx) {
+  document.getElementById('hist-head-'+idx).classList.toggle('open');
+  document.getElementById('hist-body-'+idx).classList.toggle('open');
+  const chev = document.querySelector('#hist-head-'+idx+' .mg-chevron');
+  if (chev) chev.style.transform = document.getElementById('hist-body-'+idx).classList.contains('open') ? 'rotate(90deg)' : '';
+}
+function deleteHist(idx) {
+  const history = DB.get('history', []);
+  history.splice(idx, 1);
+  DB.set('history', history);
+  renderView();
+}
+
+/* ============ DIET & FASTING VIEW (revamped) ============ */
+const DIETS = [
+  {
+    name:"16:8 Intermittent Fasting", tag:"Recommended for your cut",
+    desc:"Eat within an 8-hour window, fast 16. Pairs well with restaurant shifts.",
+    meals:[
+      {t:"12:00", m:"Meal 1 — Rice, chicken breast, mixed veg. ~700 kcal, 50g protein"},
+      {t:"15:30", m:"Pre-workout snack — banana + Greek yogurt. ~250 kcal"},
+      {t:"17:00", m:"Train (fed and fuelled)"},
+      {t:"18:30", m:"Meal 2 — Salmon, sweet potato, greens. ~750 kcal, 45g protein"},
+      {t:"20:00", m:"Meal 3 — Cottage cheese + berries. ~350 kcal, 30g protein. Window closes."},
+    ],
+    pros:"Simplifies eating, suppresses appetite, fits late shifts. Hit 175g protein across 3 solid meals.",
+  },
+  {
+    name:"High-Protein Cut", tag:"2,350 kcal · 175g protein",
+    desc:"Standard deficit spread across the day. Maximum muscle retention.",
+    meals:[
+      {t:"08:00", m:"Breakfast — 4 eggs, oats, berries. ~550 kcal, 35g protein"},
+      {t:"12:30", m:"Lunch — Chicken, rice, broccoli. ~650 kcal, 50g protein"},
+      {t:"16:00", m:"Snack — Whey shake + almonds. ~350 kcal, 35g protein"},
+      {t:"19:30", m:"Dinner — Lean beef, potatoes, salad. ~800 kcal, 55g protein"},
+    ],
+    pros:"Steady energy all day, easiest to hit protein, no hunger spikes. Best if you train midday.",
+  },
+  {
+    name:"OMAD (One Meal A Day)", tag:"Advanced · aggressive cut",
+    desc:"All calories in one large meal. Maximum simplicity, requires discipline.",
+    meals:[
+      {t:"18:00", m:"The meal — large protein source (300g+), complex carbs, vegetables, healthy fats. All 2,350 kcal, 175g protein in one sitting."},
+    ],
+    pros:"Extreme simplicity. Hard to hit 175g protein in one meal — eat slowly. Not ideal on heavy training days. Don't train fasted on this.",
+  },
+  {
+    name:"Water Fast (Religious / Reset)", tag:"1–2 weeks · supervised",
+    desc:"No calories, water and electrolytes only. For religious and mental reasons.",
+    meals:[
+      {t:"All day", m:"2.5–3L water minimum"},
+      {t:"Morning", m:"Electrolytes — sodium, potassium, magnesium"},
+      {t:"Midday", m:"Light walking only — no heavy training"},
+      {t:"Evening", m:"More electrolytes. Monitor for dizziness or palpitations."},
+    ],
+    pros:"Drop training to walking and mobility only. Break the fast slowly over 2 days before resuming lifting. Monitor electrolytes closely — they're the real risk.",
+  },
+  {
+    name:"Lean Bulk", tag:"For after your cut",
+    desc:"Slight surplus for clean muscle gain once you reach 15% body fat.",
+    meals:[
+      {t:"08:00", m:"Breakfast — Eggs, oats, peanut butter, banana. ~700 kcal"},
+      {t:"12:30", m:"Lunch — Chicken, rice, avocado. ~800 kcal"},
+      {t:"16:00", m:"Snack — Shake, oats, honey. ~450 kcal"},
+      {t:"19:30", m:"Dinner — Steak, potatoes, veg. ~900 kcal"},
+      {t:"21:30", m:"Pre-bed — Casein or cottage cheese. ~300 kcal"},
+    ],
+    pros:"~300 kcal surplus, 1g protein per lb. Slow gain (0.25kg/week) keeps fat off. Save this for after you hit 15%.",
+  },
+];
+
+function dietView() {
+  const fast = DB.get('fast', null);
+  let h = `<div class="panel"><div class="panel-title">Diet & Fasting</div><div class="panel-sub">Track your fasting window and explore eating protocols matched to your goals.</div>`;
+
+  // Fasting timer card
+  h += `<div class="card">
+    <div class="card-title">Fasting Timer</div>
+    <div class="fast-display">
+      <div class="fast-ring"><svg viewBox="0 0 120 120" id="fast-ring-svg"></svg></div>
+      <div class="fast-time" id="fast-time">—</div>
+      <div class="fast-status" id="fast-status"></div>
+    </div>
+    <div class="input-row" style="margin-top:12px;">
+      <select id="fast-target">
+        ${[12,14,16,18,20,24,36,48].map(hr=>`<option value="${hr}" ${fast&&fast.target===hr?'selected':''}>${hr}h fast</option>`).join('')}
+      </select>
+    </div>
+    <div id="fast-btns"></div>
+  </div>`;
+
+  // Diet protocols
+  h += `<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--gold);margin:18px 0 10px;">Diet Protocols & Meal Plans</div>`;
+  DIETS.forEach((diet, di) => {
+    h += `<div class="diet-card">
+      <div class="diet-head" onclick="toggleDiet(${di})" id="diet-head-${di}">
+        <div><div class="diet-name">${diet.name}</div><div class="diet-tag">${diet.tag}</div></div>
+        <span class="mg-chevron">▶</span>
+      </div>
+      <div class="diet-body" id="diet-body-${di}">
+        <div class="diet-inner">
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px;">${diet.desc}</div>
+          <div class="diet-section-t">Sample Day</div>
+          ${diet.meals.map(m=>`<div class="meal-row"><span class="meal-time">${m.t}</span>${m.m}</div>`).join('')}
+          <div class="diet-section-t">Notes</div>
+          <div class="diet-pros">${diet.pros}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  h += `</div>`;
+  return h;
+}
+function toggleDiet(di) {
+  document.getElementById('diet-head-'+di).classList.toggle('open');
+  const body = document.getElementById('diet-body-'+di);
+  body.classList.toggle('open');
+  const chev = document.querySelector('#diet-head-'+di+' .mg-chevron');
+  if (chev) chev.style.transform = body.classList.contains('open') ? 'rotate(90deg)' : '';
+}
+
+/* ============ RESEARCH / EVIDENCE ============ */
+const RESEARCH = [
+  {
+    title:"High-protein eating windows cut fat without losing muscle",
+    source:"Int. J. Sport Nutr. Exerc. Metab., 2025",
+    finding:"An 8-week trial combining time-restricted eating, 1.6 g/kg protein, and resistance training reduced visceral and subcutaneous fat while increasing fat-free mass.",
+    apply:"This is exactly your current setup — IF + high protein + lifting. At 75kg your 175g target is ~2.3 g/kg, above the study dose. Keep doing it; this validates the whole approach.",
+    tag:"Validates your plan", color:"var(--green-bright)"
+  },
+  {
+    title:"Sprint intervals burn the same fat in half the time",
+    source:"Frontiers in Physiology, 2025",
+    finding:"A 9-trial meta-analysis found HIIT and sprint intervals cut body fat ~3.5 percentage points vs control. In trained people, sprints matched steady cardio in roughly half the time.",
+    apply:"Add 10–15 min of sprints as a finisher — but NOT around heavy leg days (they compete for recovery). Best after an upper day or on a rest day. See the Sprint Finisher now built into Push and Upper days.",
+    tag:"Added to your program", color:"var(--gold)"
+  },
+  {
+    title:"Omega-3 intake linked to higher testosterone in men",
+    source:"Food Science & Nutrition, 2025",
+    finding:"Analysis of 8,686 men found omega-3 intake (especially DPA) was independently associated with higher serum testosterone across all BMI groups, strongest in obese men.",
+    apply:"Omega-3 is already on your supplement list — keep it. But note: this is observational, not causal. Healthier men both eat more omega-3 AND have higher T. Treat it as one piece of an overall healthy approach, not a T booster on its own.",
+    tag:"Observational — caveat", color:"var(--core)"
+  },
+  {
+    title:"Rest between sets matters less than total volume",
+    source:"Eur. J. Applied Physiology, 2025",
+    finding:"Cluster sets and traditional sets produced identical muscle and lean-mass gains when total reps, sets, load, and proximity to failure (RIR) were matched. Structure doesn't override volume.",
+    apply:"Don't obsess over hitting exactly 90 seconds. What matters is weekly volume per muscle and training close enough to failure (1–3 reps in reserve). Your prescribed rest is fine — focus on progressive overload instead.",
+    tag:"Train smarter", color:"var(--str)"
+  },
+  {
+    title:"Pre-workout protein activates muscle-building machinery",
+    source:"Nutrients, 2025",
+    finding:"20–40g of whey before resistance training raised fractional synthetic rate 1.3–2.5× and kept the AKT/mTOR pathway active for 4–5 hours post-session.",
+    apply:"On lifting days, get 20–40g protein within ~2 hours before training (a whey shake is ideal). If you train fasted in the morning, you miss this — consider shifting your eating window or training after your first meal when muscle is the priority.",
+    tag:"Action: fuel before lifting", color:"var(--warm)"
+  },
+];
+
+function researchView() {
+  let h = `<div class="panel"><div class="panel-title">Research</div><div class="panel-sub">Evidence-based principles built into this program — what the studies found and how to apply each one to your training.</div>`;
+  RESEARCH.forEach((r,i) => {
+    h += `<div class="card" style="border-left:2px solid ${r.color};">
+      <div style="display:inline-block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:${r.color};border:1px solid ${r.color}33;border-radius:2px;padding:2px 7px;margin-bottom:8px;">${r.tag}</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:6px;">${r.title}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px;">${r.finding}</div>
+      <div style="font-size:11px;color:var(--green-bright);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">How to apply it</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.55;margin-bottom:8px;">${r.apply}</div>
+      <div style="font-size:10px;color:var(--dim);font-style:italic;">${r.source}</div>
+    </div>`;
+  });
+  h += `<div style="font-size:10px;color:var(--dim);line-height:1.5;padding:4px 4px 0;">Each item is a single study or analysis. Read the caveats, not just the headlines — "association" is not proof of cause.</div>`;
+  h += `</div>`;
+  return h;
+}
+
+/* ============ DATA BACKUP (Export / Import) ============ */
+function exportData() {
+  const keys = ['sessions','history','prs','bodylog','recovery','supps_list','supps_taken','wolf','fast','warmup_open','selected_diet'];
+  const dump = { app:"Iron Gold Rising", exported: new Date().toISOString(), data:{} };
+  keys.forEach(k => { const v = localStorage.getItem('ironstoa_'+k); if (v !== null) dump.data[k] = v; });
+  const blob = new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'iron-gold-rising-backup-'+todayStr()+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Backup saved 💾');
+}
+function importData(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const dump = JSON.parse(e.target.result);
+      if (!dump.data) throw new Error('bad file');
+      Object.keys(dump.data).forEach(k => localStorage.setItem('ironstoa_'+k, dump.data[k]));
+      showToast('Backup restored ✓');
+      renderView();
+    } catch(err) { showToast('Import failed — invalid file'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ============ INIT ============ */
+initParticles();
+initQuotes();
+renderNav();
+renderView();
+</script>
+
+<!-- TOAST -->
+<div class="toast-pop" id="toast-pop"></div>
+
+</body>
+</html>
