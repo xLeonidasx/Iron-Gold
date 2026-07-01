@@ -269,6 +269,59 @@
   .done-btn { width: 32px; height: 30px; border-radius: 3px; border: 1px solid var(--border2); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
   .done-btn.done { background: #0d2410; border-color: var(--green); }
   .done-btn svg { width: 14px; height: 14px; }
+  .add-set-btn { width: 100%; margin-top: 2px; padding: 7px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; border-radius: 3px; border: 1px dashed var(--border2); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; }
+  .add-set-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .set-del { width: 22px; height: 22px; border-radius: 50%; border: none; background: transparent; color: var(--dim); font-size: 11px; cursor: pointer; padding: 0; transition: all 0.12s; }
+  .set-del:hover { background: #2a1414; color: #c77; }
+  .ex-name-wrap { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .ex-edit-btn { font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); background: rgba(201,162,39,0.10); border: 1px solid var(--gold-dim); border-radius: 3px; padding: 2px 6px; cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; flex-shrink: 0; }
+  .ex-edit-btn:hover, .ex-edit-btn:active { background: rgba(201,162,39,0.2); color: var(--gold2); }
+  .ex-name-input { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; color: var(--text); background: var(--surface2); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 8px; width: 100%; max-width: 280px; }
+  .ex-name-input:focus { outline: none; border-color: var(--gold2); }
+  .ex-renamed { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold); background: rgba(201,162,39,0.12); border: 1px solid var(--gold-dim); border-radius: 3px; padding: 1px 4px; }
+  .ex-added { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--green-bright); background: rgba(77,138,58,0.14); border: 1px solid var(--green); border-radius: 3px; padding: 1px 4px; }
+  .ex-head-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .ex-remove { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border2); background: transparent; color: var(--dim); font-size: 11px; line-height: 1; cursor: pointer; padding: 0; transition: all 0.12s; flex-shrink: 0; }
+  .ex-remove:hover { background: #2a1414; border-color: #7a3333; color: #c77; }
+  .add-ex-btn { width: 100%; margin-top: 4px; padding: 9px; font-size: 12px; font-weight: 600; letter-spacing: 0.03em; border-radius: 5px; border: 1px dashed var(--gold-dim); background: rgba(201,162,39,0.05); color: var(--gold); cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; }
+  .add-ex-btn:hover { background: rgba(201,162,39,0.12); border-color: var(--gold); }
+  .add-ex-row { display: flex; gap: 6px; margin-top: 4px; align-items: center; }
+  .add-ex-input { flex: 1; min-width: 0; padding: 9px 10px; font-size: 13px; border-radius: 5px; border: 1px solid var(--gold); background: var(--surface2); color: var(--text); font-family: 'Inter', sans-serif; }
+  .add-ex-input:focus { outline: none; border-color: var(--gold2); }
+  .add-ex-save { flex-shrink: 0; padding: 9px 14px; font-size: 12px; font-weight: 700; border-radius: 5px; border: none; background: var(--gold); color: #0c140c; cursor: pointer; font-family: 'Inter', sans-serif; }
+  .add-ex-cancel { flex-shrink: 0; width: 34px; padding: 9px 0; font-size: 12px; border-radius: 5px; border: 1px solid var(--border2); background: transparent; color: var(--dim); cursor: pointer; }
+  /* repeat last session */
+  .repeat-btn { display: flex; align-items: center; gap: 8px; width: 100%; margin: 0 0 14px; padding: 11px 14px; border-radius: 8px; border: 1px solid var(--gold-dim); background: linear-gradient(90deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03)); color: var(--gold); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.14s; font-family: 'Inter', sans-serif; }
+  .repeat-btn:hover, .repeat-btn:active { background: linear-gradient(90deg, rgba(201,162,39,0.18), rgba(201,162,39,0.06)); border-color: var(--gold); }
+  .repeat-ico { font-size: 16px; line-height: 1; }
+  .repeat-sub { margin-left: auto; font-size: 11px; color: var(--muted); font-weight: 500; }
+  /* plate calculator */
+  .plate-btn { flex-shrink: 0; width: 28px; height: 28px; border-radius: 3px; border: 1px solid var(--border2); background: transparent; color: var(--gold); font-size: 13px; cursor: pointer; padding: 0; transition: all 0.12s; }
+  .plate-btn:hover, .plate-btn:active { border-color: var(--gold-dim); background: rgba(201,162,39,0.1); }
+  .plate-modal { position: fixed; inset: 0; z-index: 70; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 20px; }
+  .plate-modal.show { display: flex; }
+  .plate-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid var(--gold-dim); border-radius: 12px; padding: 18px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+  .plate-header { display: flex; align-items: center; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 0.03em; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+  .plate-close { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border2); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+  .plate-total { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; color: var(--text); text-align: center; }
+  .plate-bar-note { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .plate-perside { text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 10px 0 6px; }
+  .plate-visual { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 80px; padding: 10px 0; position: relative; }
+  .plate-sleeve { width: 30px; height: 10px; background: linear-gradient(#5a5a5a, #2a2a2a); border-radius: 2px; flex-shrink: 0; }
+  .plate-disc { width: 15px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #0c140c; flex-shrink: 0; box-shadow: inset 0 0 3px rgba(0,0,0,0.3); }
+  .plate-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+  .plate-chip { font-size: 12px; color: var(--text); background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 4px 9px; font-family: 'Barlow Condensed', sans-serif; }
+  .plate-chip b { color: var(--gold); }
+  .plate-empty { font-size: 12px; color: var(--muted); text-align: center; padding: 16px 8px; line-height: 1.5; }
+  .plate-leftover { font-size: 11px; color: #d4a04a; text-align: center; margin-top: 10px; line-height: 1.4; }
+  /* weighted vs bodyweight cells inside a set row */
+  .wt-cell { display: flex; align-items: center; gap: 4px; }
+  .wt-cell input { flex: 1; min-width: 0; }
+  .bw-toggle { flex-shrink: 0; width: 26px; height: 28px; border-radius: 3px; border: 1px solid var(--border2); background: transparent; color: var(--dim); font-size: 9px; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; padding: 0; transition: all 0.12s; font-family: 'Barlow Condensed', sans-serif; }
+  .bw-toggle:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .bw-cell { display: flex; align-items: center; gap: 4px; }
+  .bw-tag { flex-shrink: 0; height: 28px; padding: 0 9px; border-radius: 3px; border: 1px solid var(--gold-dim); background: rgba(201,162,39,0.14); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; }
+  .bw-add { flex: 1; min-width: 0; }
 
   .notes-field { width: 100%; margin-top: 8px; padding: 8px 10px; font-size: 12px; border-radius: 3px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-family: 'Inter', sans-serif; resize: vertical; min-height: 38px; }
   .notes-field:focus { outline: none; border-color: var(--gold-dim); }
@@ -520,6 +573,14 @@
 
 </div>
 
+<!-- PLATE CALCULATOR -->
+<div class="plate-modal" id="plate-modal" onclick="if(event.target===this)closePlateCalc()">
+  <div class="plate-card">
+    <div class="plate-header"><span>Plate Loading</span><button class="plate-close" onclick="closePlateCalc()">✕</button></div>
+    <div id="plate-body"></div>
+  </div>
+</div>
+
 <!-- REST TIMER -->
 <div class="rest-timer" id="rest-timer">
   <div class="rt-progress" id="rt-progress"></div>
@@ -543,7 +604,7 @@ const DAYS = [
   {l:"Rest",s:"D4",r:true},{l:"Upper",s:"D5"},{l:"Lower",s:"D6"},{l:"Rest",s:"D7",r:true}
 ];
 
-const SECTION_REST = { warm: 60, str: 210, hype: 90, iso: 60, pull: 90, core: 60 };
+const SECTION_REST = { warm: 60, str: 180, hype: 90, iso: 90, pull: 180, core: 90 };
 
 const W = {
   0:{title:"Push — Chest · Shoulders · Triceps",tip:"Lead with your heaviest compound first. On incline press, tuck elbows to 45°, drive feet into the floor, think about pushing yourself away from the bar.",secs:[
@@ -1008,6 +1069,269 @@ function isDayComplete(dayIdx, sessions) {
 
 function setDay(i) { activeDay = i; renderDayTabs(); renderDay(); }
 
+// ── Per-exercise set count (default 1) and custom names ──
+// Set counts live in the day's session under "_sc:si-ei". Default 1.
+function getSetCount(sess, si, ei) {
+  const v = sess && sess[`_sc:${si}-${ei}`];
+  const n = parseInt(v, 10);
+  return (n && n > 0) ? n : 1;
+}
+function addSet(si, ei) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cur = getSetCount(sessions[key], si, ei);
+  sessions[key][`_sc:${si}-${ei}`] = Math.min(cur + 1, 12);
+  DB.set('sessions', sessions);
+  renderDay();
+}
+function removeSet(si, ei, s) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cur = getSetCount(sessions[key], si, ei);
+  if (cur <= 1) return;
+  // shift later set cells down so numbering stays contiguous
+  for (let s2 = s; s2 < cur - 1; s2++) {
+    sessions[key][`${si}-${ei}-${s2}`] = sessions[key][`${si}-${ei}-${s2+1}`];
+  }
+  delete sessions[key][`${si}-${ei}-${cur-1}`];
+  sessions[key][`_sc:${si}-${ei}`] = cur - 1;
+  DB.set('sessions', sessions);
+  renderDay();
+}
+// Custom exercise names persist across sessions, keyed by day-si-ei.
+function exName(dayIdx, si, ei, def) {
+  const names = DB.get('exnames', {});
+  const c = names[`${dayIdx}-${si}-${ei}`];
+  return (c && c.trim()) ? c : def;
+}
+// Inline rename — tapping the name turns it into a text field (prompt() is unreliable on mobile).
+function startRename(si, ei) {
+  const wrap = document.getElementById(`exname-${si}-${ei}`);
+  if (!wrap) return;
+  const ex = exObj(activeDay, si, ei);
+  const def = ex ? ex.n : '';
+  const names = DB.get('exnames', {});
+  const current = names[`${activeDay}-${si}-${ei}`] || def;
+  wrap.innerHTML = `<input class="ex-name-input" id="exinput-${si}-${ei}" type="text" value="${esc(current)}"
+    onkeydown="if(event.key==='Enter'){this.blur();}else if(event.key==='Escape'){this.dataset.cancel='1';this.blur();}"
+    onblur="commitRename(${si},${ei},this)">`;
+  const inp = document.getElementById(`exinput-${si}-${ei}`);
+  if (inp) { inp.focus(); inp.select(); }
+}
+function commitRename(si, ei, inp) {
+  const ex = exObj(activeDay, si, ei);
+  const def = ex ? ex.n : '';
+  const names = DB.get('exnames', {});
+  const k = `${activeDay}-${si}-${ei}`;
+  if (inp.dataset.cancel === '1') { renderDay(); return; } // Escape -> no change
+  const v = inp.value.trim();
+  if (ex && ex.custom) {
+    // renaming a custom exercise edits its stored name directly
+    if (v) {
+      const all = DB.get('excustom', {});
+      const list = all[`${activeDay}-${si}`];
+      if (list && list[ei-1000]) { list[ei-1000].n = v; DB.set('excustom', all); }
+    }
+  } else {
+    if (!v || v === def) { delete names[k]; }
+    else names[k] = v;
+    DB.set('exnames', names);
+  }
+  renderDay();
+}
+// HTML-attribute-safe escaping for input values
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Plate calculator ──
+// Standard lb plates and a 45 lb bar. Computes plates PER SIDE for a target total.
+const PLATE_BAR = 45;
+const PLATE_SIZES = [45, 35, 25, 10, 5, 2.5];
+const PLATE_COLORS = { 45:'#c9a227', 35:'#b8862f', 25:'#9a7b2a', 10:'#7a5f10', 5:'#5a4410', 2.5:'#403008' };
+function computePlates(total) {
+  let perSide = (total - PLATE_BAR) / 2;
+  if (perSide < 0) return { ok:false, plates:[], leftover:0 };
+  const plates = [];
+  PLATE_SIZES.forEach(p => {
+    while (perSide >= p - 0.001) { plates.push(p); perSide -= p; }
+  });
+  return { ok:true, plates, leftover: Math.round(perSide*100)/100 };
+}
+function openPlateCalc(total) {
+  total = +total;
+  const modal = document.getElementById('plate-modal');
+  const body = document.getElementById('plate-body');
+  if (!total || total <= 0) {
+    body.innerHTML = `<div class="plate-empty">Enter a weight first, then tap the plate icon to see the loading.</div>`;
+  } else if (total < PLATE_BAR) {
+    body.innerHTML = `<div class="plate-total">${total} lbs</div><div class="plate-empty">That's below the 45 lb bar — no plates needed (use lighter dumbbells or a fixed bar).</div>`;
+  } else {
+    const { plates, leftover } = computePlates(total);
+    const counts = {};
+    plates.forEach(p => counts[p] = (counts[p]||0)+1);
+    let visual = plates.map(p =>
+      `<div class="plate-disc" style="background:${PLATE_COLORS[p]};height:${28+p*0.7}px;">${p}</div>`
+    ).join('');
+    if (!plates.length) visual = `<div class="plate-empty" style="padding:8px;">Just the bar.</div>`;
+    let list = PLATE_SIZES.filter(p=>counts[p]).map(p =>
+      `<span class="plate-chip"><b>${counts[p]}×</b> ${p}</span>`
+    ).join('');
+    body.innerHTML = `
+      <div class="plate-total">${total} lbs <span class="plate-bar-note">(45 lb bar)</span></div>
+      <div class="plate-perside">Per side:</div>
+      <div class="plate-visual"><div class="plate-sleeve"></div>${visual}</div>
+      <div class="plate-chips">${list || '—'}</div>
+      ${leftover>0?`<div class="plate-leftover">⚠ ${leftover} lb/side can't be made with standard plates — nearest is ${total-leftover*2} lbs.</div>`:''}
+    `;
+  }
+  modal.classList.add('show');
+}
+function closePlateCalc() { document.getElementById('plate-modal').classList.remove('show'); }
+
+// Custom (user-added) exercises live per day+section under key "day-si" as an array.
+// They get indices starting at 1000 so they never collide with built-in exercise indices.
+function customExs(dayIdx, si) {
+  const all = DB.get('excustom', {});
+  return all[`${dayIdx}-${si}`] || [];
+}
+// Show an inline input in place of the add-exercise button (prompt() is unreliable on mobile).
+function showAddExercise(si) {
+  const slot = document.getElementById(`addex-${si}`);
+  if (!slot) return;
+  slot.innerHTML = `<div class="add-ex-row">
+    <input class="add-ex-input" id="addexinput-${si}" type="text" placeholder="Exercise name…"
+      onkeydown="if(event.key==='Enter'){commitAddExercise(${si});}else if(event.key==='Escape'){renderDay();}">
+    <button class="add-ex-save" onclick="commitAddExercise(${si})">Add</button>
+    <button class="add-ex-cancel" onclick="renderDay()">✕</button>
+  </div>`;
+  const inp = document.getElementById(`addexinput-${si}`);
+  if (inp) inp.focus();
+}
+function commitAddExercise(si) {
+  const inp = document.getElementById(`addexinput-${si}`);
+  if (!inp) return;
+  const v = inp.value.trim();
+  if (!v) { renderDay(); return; }
+  const all = DB.get('excustom', {});
+  const k = `${activeDay}-${si}`;
+  if (!all[k]) all[k] = [];
+  all[k].push({ n: v });
+  DB.set('excustom', all);
+  renderDay();
+}
+// Resolve an exercise object whether it's built-in or custom (ei >= 1000).
+function exObj(dayIdx, si, ei) {
+  if (ei >= 1000) {
+    const list = customExs(dayIdx, si);
+    const item = list[ei - 1000];
+    return item ? { n: item.n, custom: true } : null;
+  }
+  const sec = W[dayIdx] && W[dayIdx].secs[si];
+  return sec ? sec.ex[ei] : null;
+}
+// Hidden/removed exercises (built-in ones the user took out), keyed "day-si-ei".
+function isHidden(dayIdx, si, ei) {
+  const h = DB.get('exhidden', {});
+  return !!h[`${dayIdx}-${si}-${ei}`];
+}
+function removeExercise(si, ei) {
+  if (ei >= 1000) {
+    // custom exercise -> delete from the list and re-index its session cells away
+    const all = DB.get('excustom', {});
+    const k = `${activeDay}-${si}`;
+    if (all[k]) { all[k].splice(ei - 1000, 1); DB.set('excustom', all); }
+    // clear any saved cells/setcount for this custom slot
+    clearExCells(si, ei);
+  } else {
+    const h = DB.get('exhidden', {});
+    h[`${activeDay}-${si}-${ei}`] = true;
+    DB.set('exhidden', h);
+  }
+  renderDay();
+}
+function restoreExercise(si, ei) {
+  const h = DB.get('exhidden', {});
+  delete h[`${activeDay}-${si}-${ei}`];
+  DB.set('exhidden', h);
+  renderDay();
+}
+function clearExCells(si, ei) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) return;
+  Object.keys(sessions[key]).forEach(kk => {
+    if (kk.startsWith(`${si}-${ei}-`) || kk === `_sc:${si}-${ei}`) delete sessions[key][kk];
+  });
+  DB.set('sessions', sessions);
+}
+// Toggle a set between weighted and bodyweight. Bodyweight cells store bw:true.
+function toggleBW(si, ei, s) {
+  const sessions = DB.get('sessions', {});
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cell = sessions[key][`${si}-${ei}-${s}`] || {};
+  cell.bw = !cell.bw;
+  if (cell.bw) cell.w = ''; // clear lbs when switching to bodyweight (added weight goes in the +lbs field)
+  sessions[key][`${si}-${ei}-${s}`] = cell;
+  DB.set('sessions', sessions);
+  renderDay();
+}
+
+// Format a logged set for history display, handling bodyweight sets.
+function fmtSet(s) {
+  if (s.bw) return s.w ? `BW+${s.w} × ${s.reps||'—'}` : `BW × ${s.reps||'—'}`;
+  return `${s.w||'—'} lbs × ${s.reps||'—'}`;
+}
+// Render one exercise card (built-in or custom). Handles rename, remove, sets, and the bodyweight toggle.
+function renderExCard(sec, si, ex, ei, lastSess, sess) {
+  const dispName = exName(activeDay, si, ei, ex.n);
+  const renamed = !ex.custom && dispName !== ex.n;
+  let h = `<div class="ex-card"><div class="ex-head"><div class="ex-top">
+    <div style="flex:1;min-width:0;"><div class="ex-name-wrap" id="exname-${si}-${ei}"><span class="ex-name">${dispName}</span><button class="ex-edit-btn" onclick="startRename(${si},${ei})" title="Rename exercise">✎ edit</button>${renamed?`<span class="ex-renamed">swapped</span>`:''}${ex.custom?`<span class="ex-added">added</span>`:''}</div>${ex.tip?`<div class="ex-tip">${ex.tip}</div>`:''}</div>
+    <div class="ex-head-right">${ex.t?`<div class="ex-target">${ex.t}</div>`:''}<button class="ex-remove" onclick="removeExercise(${si},${ei})" title="Remove exercise">✕</button></div>
+  </div>`;
+  if (ex.sets > 0 && lastSess) {
+    const ref = lastBest(lastSess.data, si, ei);
+    if (ref) h += `<div class="last-ref">Last (${fmtDate(lastSess.date)}): ${ref}</div>`;
+  }
+  h += `</div>`;
+  if (ex.sets > 0) {
+    const setCount = getSetCount(sess, si, ei);
+    h += `<div class="sets-wrap"><div class="set-head"><span>Set</span><span>Weight</span><span>Reps</span><span></span></div>`;
+    for (let s=0; s<setCount; s++) {
+      const cell = sess[`${si}-${ei}-${s}`] || {};
+      const doneC = cell.done ? 'done' : '';
+      // weight cell: either a lbs input, or a Bodyweight ( +lbs ) field
+      let weightCell;
+      if (cell.bw) {
+        weightCell = `<div class="bw-cell">
+          <button class="bw-tag" onclick="toggleBW(${si},${ei},${s})" title="Switch to weighted">BW</button>
+          <input type="number" inputmode="decimal" class="bw-add" placeholder="+lbs" value="${cell.w||''}" onchange="saveSet(${si},${ei},${s},'w',this.value)">
+        </div>`;
+      } else {
+        weightCell = `<div class="wt-cell">
+          <input type="number" inputmode="decimal" placeholder="lbs" value="${cell.w||''}" onchange="saveSet(${si},${ei},${s},'w',this.value)" id="wi-${si}-${ei}-${s}">
+          <button class="plate-btn" onclick="openPlateCalc(document.getElementById('wi-${si}-${ei}-${s}').value)" title="Plate calculator">▣</button>
+          <button class="bw-toggle" onclick="toggleBW(${si},${ei},${s})" title="Use bodyweight">BW</button>
+        </div>`;
+      }
+      h += `<div class="set-row" id="sr-${si}-${ei}-${s}">
+        <span class="set-num">${setCount>1?`<button class="set-del" onclick="removeSet(${si},${ei},${s})" title="Remove set">${s+1}</button>`:`${s+1}`}</span>
+        ${weightCell}
+        <input type="number" inputmode="numeric" placeholder="—" value="${cell.reps||''}" onchange="saveSet(${si},${ei},${s},'reps',this.value)">
+        <button class="done-btn ${doneC}" onclick="toggleSet(${si},${ei},${s},'${sec.c}')">${checkSvg(cell.done)}</button>
+      </div>`;
+    }
+    h += `<button class="add-set-btn" onclick="addSet(${si},${ei})">+ Add set</button>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
 function renderDay() {
   const el = document.getElementById('day-content');
   const d = DAYS[activeDay];
@@ -1024,39 +1348,31 @@ function renderDay() {
 
   let h = `<div class="content"><div class="day-title">${w.title}</div>`;
 
+  // Repeat last session — prefill today's empty cells from the most recent matching workout
+  if (lastSess) {
+    h += `<button class="repeat-btn" onclick="prefillFromLast()">
+      <span class="repeat-ico">⟳</span> Repeat last session
+      <span class="repeat-sub">${fmtDate(lastSess.date)}</span>
+    </button>`;
+  }
+
   // Warm-up generator
   h += warmupCard(w);
 
   w.secs.forEach((sec,si) => {
     h += `<div class="section"><div class="section-label label-${sec.c}">${sec.l}</div>`;
+    // built-in exercises (skip hidden ones)
     sec.ex.forEach((ex,ei) => {
-      h += `<div class="ex-card"><div class="ex-head"><div class="ex-top">
-        <div><div class="ex-name">${ex.n}</div>${ex.tip?`<div class="ex-tip">${ex.tip}</div>`:''}</div>
-        <div class="ex-target">${ex.t}</div>
-      </div>`;
-      // last ref
-      if (ex.sets > 0 && lastSess) {
-        const ref = lastBest(lastSess.data, si, ei);
-        if (ref) h += `<div class="last-ref">Last (${fmtDate(lastSess.date)}): ${ref}</div>`;
-      }
-      h += `</div>`;
-      // sets
-      if (ex.sets > 0) {
-        h += `<div class="sets-wrap"><div class="set-head"><span>Set</span><span>lbs</span><span>Reps</span><span></span></div>`;
-        for (let s=0; s<ex.sets; s++) {
-          const cell = sess[`${si}-${ei}-${s}`] || {};
-          const doneC = cell.done ? 'done' : '';
-          h += `<div class="set-row" id="sr-${si}-${ei}-${s}">
-            <span class="set-num">${s+1}</span>
-            <input type="number" inputmode="decimal" placeholder="—" value="${cell.w||''}" onchange="saveSet(${si},${ei},${s},'w',this.value)">
-            <input type="number" inputmode="numeric" placeholder="—" value="${cell.reps||''}" onchange="saveSet(${si},${ei},${s},'reps',this.value)">
-            <button class="done-btn ${doneC}" onclick="toggleSet(${si},${ei},${s},'${sec.c}')">${checkSvg(cell.done)}</button>
-          </div>`;
-        }
-        h += `</div>`;
-      }
-      h += `</div>`;
+      if (isHidden(activeDay, si, ei)) return;
+      h += renderExCard(sec, si, ex, ei, lastSess, sess);
     });
+    // custom (user-added) exercises for this section
+    customExs(activeDay, si).forEach((ex, ci) => {
+      const ei = 1000 + ci;
+      h += renderExCard(sec, si, {n: ex.n, t: '', sets: 1, custom: true}, ei, lastSess, sess);
+    });
+    // add-exercise button (reveals an inline input)
+    h += `<div id="addex-${si}"><button class="add-ex-btn" onclick="showAddExercise(${si})">+ Add exercise</button></div>`;
     h += `</div>`;
   });
 
@@ -1089,6 +1405,45 @@ function findLastSession(dayIdx, sessions) {
     }
   });
   return best;
+}
+
+// Copy last session's weights/reps into today's matching cells. Only fills cells that are
+// currently empty (won't overwrite anything you've already entered today), and brings the
+// per-exercise set count up to match last time so all sets appear.
+function prefillFromLast() {
+  const sessions = DB.get('sessions', {});
+  const last = findLastSession(activeDay, sessions);
+  if (!last) { showToast('No previous session to copy'); return; }
+  const key = activeDay + ':' + todayStr();
+  if (!sessions[key]) sessions[key] = {};
+  const cur = sessions[key];
+  let filled = 0;
+  // figure out how many sets each exercise had last time, and copy cell values
+  const setCounts = {};
+  Object.keys(last.data).forEach(k => {
+    const parts = k.split('-');
+    if (parts.length === 3) {
+      const si = parts[0], ei = parts[1], s = +parts[2];
+      const tag = `${si}-${ei}`;
+      setCounts[tag] = Math.max(setCounts[tag] || 0, s + 1);
+      const src = last.data[k];
+      if (src && (src.w || src.reps || src.bw)) {
+        const existing = cur[k];
+        // only fill if today's cell is empty (no weight/reps entered)
+        if (!existing || (!existing.w && !existing.reps)) {
+          cur[k] = { w: src.w || '', reps: src.reps || '', bw: !!src.bw, done: false };
+          filled++;
+        }
+      }
+    }
+  });
+  // restore set counts so multi-set exercises show all their rows
+  Object.keys(setCounts).forEach(tag => {
+    if (setCounts[tag] > 1) cur[`_sc:${tag}`] = Math.max(getSetCount(cur, +tag.split('-')[0], +tag.split('-')[1]), setCounts[tag]);
+  });
+  DB.set('sessions', sessions);
+  renderDay();
+  showToast(filled ? `Filled ${filled} set${filled>1?'s':''} from ${fmtDate(last.date)}` : 'Nothing new to fill');
 }
 
 function lastBest(data, si, ei) {
@@ -1144,29 +1499,31 @@ function saveNotes(val) {
 
 /* ============ PR TRACKING ============ */
 function maybeUpdatePR(si, ei) {
-  const ex = W[activeDay].secs[si].ex[ei];
+  const ex = exObj(activeDay, si, ei);
+  if (!ex) return;
   if (!MAIN_LIFTS.some(m => ex.n.includes(m.split(' (')[0]))) return;
   const sessions = DB.get('sessions', {});
   const key = activeDay + ':' + todayStr();
   const sess = sessions[key]; if (!sess) return;
-  // find best e1RM today for this exercise
+  const name = exName(activeDay, si, ei, ex.n); // track under the variation actually performed
+  const setCount = getSetCount(sess, si, ei);
+  // find best e1RM today (external load only — bodyweight sets don't yield a barbell 1RM)
   let bestE1RM = 0, bestW = 0, bestR = 0;
-  for (let s=0; s<ex.sets; s++) {
+  for (let s=0; s<setCount; s++) {
     const c = sess[`${si}-${ei}-${s}`];
-    if (c && c.w && c.reps) {
+    if (c && !c.bw && c.w && c.reps) {
       const e1rm = +c.w * (1 + (+c.reps)/30); // Epley
       if (e1rm > bestE1RM) { bestE1RM = e1rm; bestW = +c.w; bestR = +c.reps; }
     }
   }
   if (bestE1RM === 0) return;
   const prs = DB.get('prs', {});
-  if (!prs[ex.n]) prs[ex.n] = [];
-  // upsert today's entry
+  if (!prs[name]) prs[name] = [];
   const today = todayStr();
-  const existing = prs[ex.n].find(e => e.date === today);
+  const existing = prs[name].find(e => e.date === today);
   if (existing) { existing.e1rm = Math.round(bestE1RM); existing.w = bestW; existing.reps = bestR; }
-  else { prs[ex.n].push({date: today, e1rm: Math.round(bestE1RM), w: bestW, reps: bestR}); }
-  prs[ex.n].sort((a,b)=>a.date.localeCompare(b.date));
+  else { prs[name].push({date: today, e1rm: Math.round(bestE1RM), w: bestW, reps: bestR}); }
+  prs[name].sort((a,b)=>a.date.localeCompare(b.date));
   DB.set('prs', prs);
 }
 
@@ -1566,7 +1923,7 @@ function summaryView() {
           ${entry.exercises.map(ex=>`
             <div class="hist-ex">
               <div class="hist-ex-name">${ex.name}</div>
-              <div class="hist-sets">${ex.sets.map((s,i)=>`<span class="hist-set">${s.w||'—'}lbs × ${s.reps||'—'}</span>`).join('')}</div>
+              <div class="hist-sets">${ex.sets.map((s,i)=>`<span class="hist-set">${fmtSet(s)}</span>`).join('')}</div>
             </div>`).join('')}
           ${entry.notes?`<div class="hist-notes">"${entry.notes}"</div>`:''}
           <button class="btn btn-sm btn-danger" style="margin-top:8px;" onclick="deleteHist(${realIdx})">Delete entry</button>
@@ -1890,18 +2247,32 @@ function logWorkoutBtn() {
   // Build a history snapshot
   const entry = { day: DAYS[dayIdx].l, dayIdx, date: todayStr(), ts: Date.now(), exercises: [], volume: 0, notes: sess._notes || '' };
   let anyData = false;
-  w.secs.forEach((sec,si) => sec.ex.forEach((ex,ei) => {
+  // bodyweight for volume estimate on BW sets (kg -> lbs); fall back to a default if not logged
+  const bodyLog = DB.get('bodylog', []);
+  const bwLbs = bodyLog.length ? (+bodyLog[bodyLog.length-1].weight || 75) * 2.20462 : 165;
+
+  const logEx = (sec, si, ex, ei) => {
     const sets = [];
-    for (let s=0; s<ex.sets; s++) {
+    const setCount = getSetCount(sess, si, ei);
+    for (let s=0; s<setCount; s++) {
       const c = sess[`${si}-${ei}-${s}`];
-      if (c && (c.w || c.reps)) {
-        sets.push({w: c.w||'', reps: c.reps||'', done: !!c.done});
-        if (c.w && c.reps) entry.volume += +c.w * +c.reps;
+      // a set counts as logged if it has weight, reps, or is a marked bodyweight set with reps
+      if (c && (c.w || c.reps || (c.bw && c.reps))) {
+        sets.push({w: c.w||'', reps: c.reps||'', done: !!c.done, bw: !!c.bw});
+        if (c.reps) {
+          if (c.bw) entry.volume += (bwLbs + (+c.w||0)) * +c.reps; // bodyweight + any added load
+          else if (c.w) entry.volume += +c.w * +c.reps;
+        }
         anyData = true;
       }
     }
-    if (sets.length) entry.exercises.push({name: ex.n, sets});
-  }));
+    if (sets.length) entry.exercises.push({name: exName(dayIdx, si, ei, ex.n), sets});
+  };
+
+  w.secs.forEach((sec,si) => {
+    sec.ex.forEach((ex,ei) => { if (!isHidden(dayIdx, si, ei)) logEx(sec, si, ex, ei); });
+    customExs(dayIdx, si).forEach((ex, ci) => logEx(sec, si, {n: ex.n, sets: 1}, 1000 + ci));
+  });
 
   if (!anyData) { showToast("Log some sets first"); return; }
 
@@ -1942,7 +2313,7 @@ function historySection() {
         <div style="text-align:right;"><div class="hist-vol">${(e.volume/1000).toFixed(1)}t</div><span class="mg-chevron">▶</span></div>
       </div>
       <div class="hist-body" id="hist-body-${realIdx}">
-        ${e.exercises.map(ex=>`<div class="hist-ex"><div class="hist-ex-name">${ex.name}</div><div class="hist-sets">${ex.sets.map((s,si)=>`${s.w||'—'}lbs × ${s.reps||'—'}`).join('  ·  ')}</div></div>`).join('')}
+        ${e.exercises.map(ex=>`<div class="hist-ex"><div class="hist-ex-name">${ex.name}</div><div class="hist-sets">${ex.sets.map((s,si)=>fmtSet(s)).join('  ·  ')}</div></div>`).join('')}
         ${e.notes?`<div class="hist-ex"><div class="hist-sets" style="font-style:italic;">"${e.notes}"</div></div>`:''}
         <div style="padding:8px 14px;"><button class="btn btn-sm btn-danger" onclick="deleteHist(${realIdx})">Delete</button></div>
       </div>
@@ -2131,7 +2502,7 @@ function researchView() {
 
 /* ============ DATA BACKUP (Export / Import) ============ */
 function exportData() {
-  const keys = ['sessions','history','prs','bodylog','recovery','supps_list','supps_taken','wolf','fast','warmup_open','selected_diet'];
+  const keys = ['sessions','history','prs','bodylog','recovery','supps_list','supps_taken','wolf','fast','warmup_open','selected_diet','exnames','exhidden','excustom'];
   const dump = { app:"Iron Gold Rising", exported: new Date().toISOString(), data:{} };
   keys.forEach(k => { const v = localStorage.getItem('ironstoa_'+k); if (v !== null) dump.data[k] = v; });
   const blob = new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
